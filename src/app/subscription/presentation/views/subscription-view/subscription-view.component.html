@@ -1,0 +1,27 @@
+<div class="subscription-view">
+  <h2>My Subscriptions</h2>
+
+  @if (isLoading) {
+    <div class="loading">Loading...</div>
+  }
+
+  @if (!isLoading) {
+    <div class="subscriptions-list">
+      @for (subscription of subscriptions; track subscription.getId()) {
+        <app-subscription-card
+          [subscription]="subscription"
+          (onSelect)="onSelectSubscription($event)">
+        </app-subscription-card>
+      }
+    </div>
+
+    @if (selectedSubscriptionId) {
+      <app-subscription-actions
+        [selectedSubscriptionId]="selectedSubscriptionId"
+        (onPurchase)="onPurchaseSubscription()"
+        (onRenew)="onRenewSubscription(selectedSubscriptionId)"
+        (onCancel)="onCancelSubscription(selectedSubscriptionId)">
+      </app-subscription-actions>
+    }
+  }
+</div>

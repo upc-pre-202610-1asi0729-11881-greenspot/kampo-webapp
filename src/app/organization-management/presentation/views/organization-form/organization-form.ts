@@ -7,29 +7,34 @@ import { MatButtonModule } from '@angular/material/button';
 import { OrganizationStore } from '../../../application/organization.store';
 import { Organization } from '../../../domain/model/organization.entity';
 import { MatIconModule } from '@angular/material/icon';
+import { OrganizationService } from '../../../infrastructure/services/organization.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-organization-form',
   standalone: true,
   imports: [
+    CommonModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
     MatIconModule
   ],
-  templateUrl: './organization-form.html'
+  templateUrl: './organization-form.html',
+  styleUrl: './organization-form.css'
 })
 export class OrganizationFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   public store = inject(OrganizationStore);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private organizationService = inject(OrganizationService); // Inyección vital
 
   form: FormGroup = this.fb.group({
     id: [0],
     name: ['', Validators.required],
-    ruc: ['', [Validators.required, Validators.maxLength(11)]],
+    ruc: ['', [Validators.required, Validators.maxLength(11), Validators.minLength(11)]],
     address: [''],
     phone: [''],
     email: ['', Validators.email]
@@ -55,20 +60,34 @@ export class OrganizationFormComponent implements OnInit {
     }
   }
 
-  save() {
+  onSubmit(): void {
     if (this.form.invalid) return;
+
     const val = this.form.value;
     const entity = new Organization(val.id, val.name, val.ruc, val.address, val.phone, val.email);
 
     if (this.isEdit) {
-      this.store.updateOrganization(entity);
+      this.organizationService.update(val.id, val).subscribe({
+        next: () => {
+          this.store.updateOrganization(entity);
+          this.router.navigate(['/']);
+        },
+        error: (err) => console.error('Error al actualizar:', err)
+      });
     } else {
-      this.store.addOrganization(entity);
+      const { id, ...newOrg } = val;
+      this.organizationService.create(newOrg).subscribe({
+        next: (response: any) => {
+          const entityWithId = new Organization(response.id, val.name, val.ruc, val.address, val.phone, val.email);
+          this.store.addOrganization(entityWithId);
+          this.router.navigate(['/']);
+        },
+        error: (err) => console.error('Error al guardar:', err)
+      });
     }
-    this.router.navigate(['/organization-management']);
   }
 
-  cancel() {
-    this.router.navigate(['/organization-management']);
+  cancel(): void {
+    this.router.navigate(['/']);
   }
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalles de observaciones</title>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <button mat-button (click)="back()">
+      <mat-icon>arrow_back</mat-icon> Volver
+    </button>
+    <h2>Detalle de Visita</h2>
+    <button mat-raised-button color="primary" (click)="onAddObservation()">
+      <mat-icon>add</mat-icon> Nueva Observación
+    </button>
+  </div>
+
+  @if (fieldVisit) {
+    <mat-card class="visit-card">
+      <mat-card-header>
+        <mat-card-title>Visita #{{ fieldVisit.getId() }}</mat-card-title>
+        <mat-card-subtitle>
+          Lote: {{ fieldVisit.getFieldId() }} |
+          Programada: {{ fieldVisit.getScheduledAt() | date: 'shortDate' }} |
+          Estado: {{ fieldVisit.getStatus() }}
+        </mat-card-subtitle>
+      </mat-card-header>
+    </mat-card>
+
+    <h3>Observaciones</h3>
+
+    @if (fieldVisit.getObservations().length === 0) {
+      <p class="empty-message">No hay observaciones registradas para esta visita.</p>
+    }
+
+    @for (obs of fieldVisit.getObservations(); track obs.getId()) {
+      <mat-card class="observation-card">
+        <mat-card-header>
+          <mat-card-title>Observación #{{ obs.getId() }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p><strong>Notas:</strong> {{ obs.getNotes() }}</p>
+          <mat-divider></mat-divider>
+          <div class="severity-row">
+            <div>
+              <p><strong>Plaga:</strong> {{ obs.getPestName() || '—' }}</p>
+              <p><strong>Severidad:</strong> {{ showPestSeverity(obs.getPestSeverity()) }}</p>
+            </div>
+            <div>
+              <p><strong>Enfermedad:</strong> {{ obs.getDiseaseName() || '—' }}</p>
+              <p><strong>Severidad:</strong> {{ showDiseaseSeverity(obs.getDiseaseSeverity()) }}</p>
+            </div>
+          </div>
+          @if (obs.getRecommendation()) {
+            <p><strong>Recomendación:</strong> {{ obs.getRecommendation() }}</p>
+          }
+          @if (obs.getEvidenceUrl()) {
+            <p><strong>Evidencia:</strong>
+              <a [href]="obs.getEvidenceUrl()" target="_blank">Ver archivo</a>
+            </p>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  } @else {
+    <p>Cargando visita...</p>
+  }
+</div>
+
+</body>
+</html>

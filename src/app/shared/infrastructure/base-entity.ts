@@ -1,12 +1,8 @@
+
 export class BaseEntity {
-  private id: number;
+  constructor(private id: number) {}
 
-  constructor(id: number) {
-    this.id = id;
-  }
-
-  getId(): number{
+  getId(): number {
     return this.id;
   }
-
 }

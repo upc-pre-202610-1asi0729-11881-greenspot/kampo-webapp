@@ -1,0 +1,33 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>🌱 {{ 'common.add' | translate }}</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'employee.dni' | translate }}</mat-label>
+      <input matInput [(ngModel)]="firstName" name="firstName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'common.name' | translate }}</mat-label>
+      <input matInput [(ngModel)]="lastName" name="lastName" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'organization.email' | translate }}</mat-label>
+      <input matInput [(ngModel)]="email" name="email" type="email" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'organization.phone' | translate }}</mat-label>
+      <input matInput [(ngModel)]="phone" name="phone" />
+    </mat-form-field>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="onRegisterUser()">
+      {{ 'common.save' | translate }}
+    </button>
+  </mat-card-actions>
+</mat-card>

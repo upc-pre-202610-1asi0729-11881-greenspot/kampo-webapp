@@ -1,0 +1,39 @@
+.container {
+  padding: 16px;
+}
+
+.form-card {
+  margin-bottom: 24px;
+}
+
+.order-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  align-items: start;
+  margin-top: 8px;
+}
+
+.form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.section-title {
+  margin: 16px 0 8px;
+}
+
+.table-wrap {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.state-block {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+}

@@ -12,27 +12,25 @@ import { environment } from '../../../environments/environment';
 export class EmployeeApi extends BaseApi {
   private readonly endpoint = `${environment.apiBaseUrl}/employees`;
 
-  constructor(private assembler: EmployeeAssembler) {
-    super();
-  }
+  constructor(private assembler: EmployeeAssembler) { super(); }
 
   getEmployees(): Observable<Employee[]> {
     return this.get<EmployeeResponse[]>(this.endpoint).pipe(
-      map((responses) => this.assembler.toEntitiesFromResponse(responses)),
+      map(responses => this.assembler.toEntitiesFromResponse(responses))
     );
   }
 
   createEmployee(employee: Employee): Observable<Employee> {
     const resource: EmployeeResource = this.assembler.toResourceFromEntity(employee);
     return this.post<EmployeeResponse>(this.endpoint, resource).pipe(
-      map((r) => this.assembler.toEntityFromResponse(r)),
+      map(r => this.assembler.toEntityFromResponse(r))
     );
   }
 
   modifyEmployee(employee: Employee): Observable<Employee> {
     const resource: EmployeeResource = this.assembler.toResourceFromEntity(employee);
     return this.put<EmployeeResponse>(`${this.endpoint}/${employee.getId()}`, resource).pipe(
-      map((r) => this.assembler.toEntityFromResponse(r)),
+      map(r => this.assembler.toEntityFromResponse(r))
     );
   }
 

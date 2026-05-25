@@ -2,6 +2,8 @@ import { environment } from '../../../environments/environment';
 
 export class BaseApiEndpoint {
   protected buildPath(...segments: string[]): string {
-    return [environment.apiBaseUrl, ...segments].join('/');
+    const base = environment.apiBaseUrl;
+    const cleanSegments = segments.map(s => s.replace(/^\/|\/$/g, ''));
+    return [base, ...cleanSegments].join('/');
   }
 }

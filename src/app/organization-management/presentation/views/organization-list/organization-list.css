@@ -1,14 +1,66 @@
 .container {
-  padding: 20px;
+  /* Usamos la superficie más limpia de tu tema */
+  background-color: var(--mat-sys-surface-container-lowest);
+  border-radius: 20px; /* Bordes un poco más modernos */
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08); /* Sombra personalizada más suave */
+  margin: 32px auto;
+  max-width: 1240px;
+  overflow: hidden;
+  border: 1px solid var(--mat-sys-outline-variant);
 }
 
 .header {
+  padding: 32px 40px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  /* Aplicamos el color PRIMARIO de tu proyecto (el Azure) al fondo o texto del header */
+  background-color: var(--mat-sys-surface-container-low);
+}
+
+.header h2 {
+  /* Usamos el color Primario (Azure) para el título */
+  color: var(--mat-sys-primary);
+  font: var(--mat-sys-headline-small);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: -0.5px;
 }
 
 table {
   width: 100%;
+  background: transparent;
+}
+
+/* Estilo para los encabezados de la tabla con tus colores */
+.mat-mdc-header-cell {
+  color: var(--mat-sys-on-surface-variant) !important;
+  font: var(--mat-sys-label-large) !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 20px 24px !important;
+  background-color: var(--mat-sys-surface-container-lowest) !important;
+  border-bottom: 2px solid var(--mat-sys-primary-container); /* Línea sutil con tu color primario */
+}
+
+.mat-mdc-cell {
+  padding: 16px 24px !important;
+  font: var(--mat-sys-body-medium);
+  color: var(--mat-sys-on-surface);
+}
+
+/* Efecto al pasar el mouse por las filas */
+.mat-mdc-row:hover {
+  background-color: var(--mat-sys-hover-state-layer) !important;
+  transition: background-color 0.2s ease;
+}
+
+/* Estilo para los iconos de acción */
+.mat-icon-button.mat-accent {
+  color: var(--mat-sys-tertiary); /* Usa el color terciario (Blue) de tu tema */
+}
+
+.mat-icon-button.mat-warn {
+  color: var(--mat-sys-error);
 }

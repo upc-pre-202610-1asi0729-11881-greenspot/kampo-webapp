@@ -1,0 +1,34 @@
+.container {
+  padding: 16px;
+}
+
+.table-wrap {
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}
+
+.selected-row {
+  background: rgba(63, 81, 181, 0.08);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 16px;
+  background: rgba(63, 81, 181, 0.12);
+  color: #3f51b5;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.state-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 32px;
+  color: rgba(0, 0, 0, 0.6);
+}

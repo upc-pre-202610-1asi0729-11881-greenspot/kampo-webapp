@@ -1,0 +1,6 @@
+.spacer { flex: 1; }
+.toolbar-select { margin-top: 20px; margin-right: 12px; width: 160px;
+  --mat-form-field-container-text-color: white;
+  --mat-select-enabled-trigger-text-color: white; }
+.view-body { padding: 24px; display: flex; flex-direction: column; gap: 24px; }
+.rec-actions { display: flex; align-items: center; gap: 16px; }

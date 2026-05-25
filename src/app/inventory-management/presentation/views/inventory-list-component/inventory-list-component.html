@@ -1,0 +1,55 @@
+<div class="container">
+  @if (store.isLoading()) {
+    <div class="state-block">
+      <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+      <p>Cargando inventario…</p>
+    </div>
+  } @else if (!store.inventories().length) {
+    <mat-card>
+      <mat-card-content>No hay ítems registrados.</mat-card-content>
+    </mat-card>
+  } @else {
+    <div class="table-wrap mat-elevation-z1">
+      <table mat-table [dataSource]="store.inventories()">
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Nombre</th>
+          <td mat-cell *matCellDef="let row">{{ row.getName() }}</td>
+        </ng-container>
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+          <td mat-cell *matCellDef="let row">{{ row.getQuantity() }}</td>
+        </ng-container>
+        <ng-container matColumnDef="unit">
+          <th mat-header-cell *matHeaderCellDef>Unidad</th>
+          <td mat-cell *matCellDef="let row">{{ row.getUnit() }}</td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let row">
+            <span class="status-badge">{{ statusLabel(row.getStatus()) }}</span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            <button
+              mat-stroked-button
+              color="primary"
+              type="button"
+              (click)="onSelectInventory(row.getId()); $event.stopPropagation()"
+            >
+              Seleccionar
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: displayedColumns"
+          [class.selected-row]="isSelected(row)"
+          (click)="onSelectInventory(row.getId())"
+        ></tr>
+      </table>
+    </div>
+  }
+</div>

@@ -10,6 +10,9 @@ export class SeasonService {
   private readonly http = inject(HttpClient);
   private readonly resourcePath = `${environment.apiBaseUrl}/seasons`;
 
+  getAll(): Observable<SeasonResponse[]> {
+    return this.http.get<SeasonResponse[]>(this.resourcePath);
+  }
   getByField(fieldId: number): Observable<SeasonResponse[]> {
     const params = new HttpParams().set('fieldId', String(fieldId));
     return this.http.get<SeasonResponse[]>(this.resourcePath, { params });
@@ -17,6 +20,10 @@ export class SeasonService {
 
   create(body: SeasonResource): Observable<SeasonResponse> {
     return this.http.post<SeasonResponse>(this.resourcePath, body);
+  }
+
+  update(id: number, body: SeasonResource): Observable<SeasonResponse> {
+    return this.http.put<SeasonResponse>(`${this.resourcePath}/${id}`, body);
   }
 
   assignCrop(seasonId: number, cropId: number): Observable<SeasonResponse> {
@@ -33,5 +40,9 @@ export class SeasonService {
       status: 'ENDED',
       endedAt: now
     });
+  }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.resourcePath}/${id}`);
   }
 }

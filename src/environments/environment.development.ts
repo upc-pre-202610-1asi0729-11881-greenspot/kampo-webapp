@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:3000/api/v1'
+  apiBaseUrl: 'https://kampo-mockapi-frfsf4f9g4c6c4dg.canadacentral-01.azurewebsites.net',
 };

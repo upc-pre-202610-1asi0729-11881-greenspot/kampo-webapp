@@ -1,0 +1,5 @@
+export enum ReportType {
+  FINANCIAL = 'FINANCIAL',
+  IOT = 'IOT',
+  RECOMMENDATION = 'RECOMMENDATION',
+}

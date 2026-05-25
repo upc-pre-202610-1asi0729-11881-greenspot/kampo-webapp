@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div class="container">
+  <h2>Programar Visita de Campo</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onScheduleFieldVisit()">
+    <div class="form-grid">
+      <mat-form-field appearance="outline">
+        <mat-label>ID Lote</mat-label>
+        <input matInput type="number" formControlName="fieldId" />
+        @if (form.get('fieldId')?.invalid && form.get('fieldId')?.touched) {
+          <mat-error>Lote requerido</mat-error>
+        }
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha Programada</mat-label>
+        <input matInput type="date" formControlName="scheduledAt" />
+        @if (form.get('scheduledAt')?.invalid && form.get('scheduledAt')?.touched) {
+          <mat-error>Fecha requerida</mat-error>
+        }
+      </mat-form-field>
+    </div>
+
+    <div class="form-actions">
+      <button mat-button type="button" (click)="cancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        <mat-icon>save</mat-icon> Programar
+      </button>
+    </div>
+  </form>
+</div>
+
+</body>
+</html>

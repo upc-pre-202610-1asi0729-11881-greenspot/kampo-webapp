@@ -1,0 +1,8 @@
+<div class="subscription-actions">
+  <h4>Actions for Subscription #{{ selectedSubscriptionId }}</h4>
+  <div class="actions-buttons">
+    <button class="btn btn-purchase" (click)="onPurchase.emit()">Purchase</button>
+    <button class="btn btn-renew"    (click)="onRenew.emit()">Renew</button>
+    <button class="btn btn-cancel"   (click)="onCancel.emit()">Cancel</button>
+  </div>
+</div>

@@ -9,6 +9,7 @@ import { SeasonAssembler } from '../infrastructure/assemblers/season.assembler';
 export class SeasonStore {
   private readonly seasonService = inject(SeasonService);
   private assembler = new SeasonAssembler();
+
   readonly seasons = signal<Season[]>([]);
   readonly selectedSeasonId = signal<number | null>(null);
   readonly isLoading = signal<boolean>(false);
@@ -26,13 +27,17 @@ export class SeasonStore {
     }))
   );
 
+  setSeasons(responses: SeasonResponse[]): void {
+    const entities = responses.map((r) => this.assembler.toEntityFromResponse(r));
+    this.seasons.set(entities);
+  }
+
   loadSeasonsByField(fieldId: number): void {
     this.isLoading.set(true);
     this.error.set(null);
     this.seasonService.getByField(fieldId).subscribe({
       next: (responses: SeasonResponse[]) => {
-        const entities = responses.map((r) => this.assembler.toEntityFromResponse(r));
-        this.seasons.set(entities);
+        this.setSeasons(responses);
       },
       error: (err) => {
         console.error(err);
@@ -40,6 +45,25 @@ export class SeasonStore {
         this.isLoading.set(false);
       },
       complete: () => this.isLoading.set(false),
+    });
+  }
+
+  loadAllSeasons(): void {
+    this.isLoading.set(true);
+    this.seasonService.getAll().subscribe({
+      next: (responses) => this.setSeasons(responses),
+      error: (err) => console.error(err),
+      complete: () => this.isLoading.set(false)
+    });
+  }
+
+  createSeason(body: any): void {
+    this.seasonService.create(body).subscribe({
+      next: (response) => {
+        const entity = this.assembler.toEntityFromResponse(response);
+        this.addSeason(entity);
+      },
+      error: (err) => console.error(err)
     });
   }
 
@@ -57,32 +81,5 @@ export class SeasonStore {
 
   updateSeason(entity: Season): void {
     this.seasons.update((list) => list.map((s) => (s.getId() === entity.getId() ? entity : s)));
-  }
-
-  assignCropToSeason(seasonId: number, cropId: number): void {
-    this.seasonService.assignCrop(seasonId, cropId).subscribe({
-      next: (res) => this.updateSeason(this.assembler.toEntityFromResponse(res)),
-      error: (err) => console.error(err),
-    });
-  }
-
-  updateSeasonStatus(seasonId: number, status: SeasonStatus): void {
-    this.seasonService.updateStatus(seasonId, status).subscribe({
-      next: (res) => {
-        const updated = this.assembler.toEntityFromResponse(res);
-        this.updateSeason(updated);
-      },
-      error: (err) => console.error(err),
-    });
-  }
-
-  endSeason(seasonId: number): void {
-    this.seasonService.endSeason(seasonId).subscribe({
-      next: (res) => {
-        const updated = this.assembler.toEntityFromResponse(res);
-        this.updateSeason(updated);
-      },
-      error: (err) => console.error(err),
-    });
   }
 }

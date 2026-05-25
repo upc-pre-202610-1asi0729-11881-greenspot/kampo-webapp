@@ -1,0 +1,199 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "firstName": "Juan",
+      "lastName": "Pérez",
+      "email": "juan@kampo.com",
+      "phone": "987654321",
+      "createdAt": "2026-05-10T10:00:00Z"
+    }
+  ],
+  "roles": [
+    {
+      "id": 1,
+      "position": "ADMIN",
+      "description": "Administrador total del sistema"
+    },
+    {
+      "id": 2,
+      "position": "AGRONOMIST",
+      "description": "Ingeniero agrónomo supervisor"
+    }
+  ],
+  "permissions": [
+    {
+      "id": 1,
+      "category": "USERS",
+      "description": "Gestión completa de usuarios"
+    },
+    {
+      "id": 2,
+      "category": "REPORTS",
+      "description": "Acceso a generación de reportes"
+    }
+  ],
+  "organizations": [
+    {
+      "id": 1,
+      "name": "AgroExportadora Sur",
+      "ruc": "20123456789",
+      "address": "Valle de Ica",
+      "phone": "056-123456",
+      "email": "contacto@agrosur.com"
+    },
+    {
+      "name": "Prueba1",
+      "ruc": "11111111111",
+      "address": "Jr Prueba1",
+      "phone": "999999999",
+      "email": "prueba1@gmail.com",
+      "apiId": "v1",
+      "id": 2
+    }
+  ],
+  "fundos": [
+    {
+      "id": 1,
+      "name": "Fundo Santa Clara",
+      "organizationId": 1,
+      "location": "Ica, Perú",
+      "totalArea": 150.5
+    }
+  ],
+  "fields": [
+    {
+      "id": 1,
+      "name": "Parcela A1",
+      "fundoId": 1,
+      "area": 50,
+      "soilType": "Franco-arenoso",
+      "irrigationType": "Goteo"
+    }
+  ],
+  "crops": [
+    {
+      "id": 1,
+      "name": "Uva Red Globe",
+      "scientificName": "Vitis vinifera",
+      "variety": "Red Globe",
+      "growthCycle": 120
+    }
+  ],
+  "seasons": [
+    {
+      "id": 1,
+      "fieldId": 1,
+      "cropId": 1,
+      "cropName": "Uva Red Globe",
+      "status": "ACTIVE",
+      "startedAt": "2026-01-15T08:00:00Z",
+      "endedAt": null
+    }
+  ],
+  "fieldOperations": [
+    {
+      "id": 1,
+      "fieldId": 1,
+      "seasonId": 1,
+      "technician": "Carlos Ruiz",
+      "purpose": "Revisión de plagas",
+      "visitDate": "2026-05-12T09:30:00Z"
+    }
+  ],
+  "observations": [
+    {
+      "id": 1,
+      "fieldOperationId": 1,
+      "type": "PLAGA",
+      "severity": "Media",
+      "recommendation": "Aplicar pesticida orgánico en el cuadrante norte"
+    }
+  ],
+  "expenses": [
+    {
+      "id": 1,
+      "fundoId": 1,
+      "seasonId": 1,
+      "category": "FERTILIZANTES",
+      "amount": 850,
+      "date": "2026-04-10"
+    },
+    {
+      "id": 2,
+      "fundoId": 1,
+      "seasonId": 1,
+      "category": "MAQUINARIA",
+      "amount": 1200.5,
+      "date": "2026-04-12"
+    }
+  ],
+  "sales": [
+    {
+      "id": 1,
+      "fundoId": 1,
+      "seasonId": 1,
+      "category": "COSECHA",
+      "amount": 5400,
+      "date": "2026-05-01"
+    }
+  ],
+  "inventories": [
+    {
+      "id": 1,
+      "name": "Fertilizante NPK",
+      "unit": "Sacos",
+      "minStock": 10,
+      "location": "Almacén Principal",
+      "expiration": "2027-01-01"
+    }
+  ],
+  "suppliers": [
+    {
+      "id": 1,
+      "name": "AgroInsumos S.A.",
+      "contact": "Ventas: 999888777"
+    }
+  ],
+  "alerts": [
+    {
+      "id": 1,
+      "title": "Bajo nivel de humedad en Parcela A1",
+      "severity": "HIGH"
+    }
+  ],
+  "alertRules": [
+    {
+      "id": 1,
+      "ruleName": "Humedad Crítica",
+      "condition": "< 20%"
+    }
+  ],
+  "employees": [
+    {
+      "id": 1,
+      "dni": "76543210",
+      "role": "TECHNICIAN",
+      "startDate": "2025-11-01",
+      "salary": 2500
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": 1,
+      "plan": "PREMIUM",
+      "startDate": "2026-01-01",
+      "endDate": "2026-12-31",
+      "price": 99.99,
+      "status": "ACTIVE"
+    }
+  ],
+  "reports": [
+    {
+      "id": 1,
+      "type": "FINANCIERO",
+      "period": "Q1 2026",
+      "downloadUrl": "https://kampo.com/reports/1"
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+<div class="container">
+  <div class="header">
+    <div class="header-titles">
+      <h2>Rentabilidad</h2>
+      <p class="subtitle">Resumen calculado a partir de ingresos, ventas y gastos cargados.</p>
+    </div>
+    <button mat-stroked-button color="primary" type="button" (click)="loadProfitability()">
+      <mat-icon>refresh</mat-icon>
+      Recalcular
+    </button>
+  </div>
+
+  @if (store.isLoading()) {
+    <div class="state-block">
+      <mat-progress-spinner mode="indeterminate" diameter="48"></mat-progress-spinner>
+      <p>Cargando…</p>
+    </div>
+  } @else if (!store.hasRecord()) {
+    <mat-card class="state-card">
+      <mat-card-content>
+        <mat-icon color="warn">info</mat-icon>
+        <p>No hay datos financieros para calcular rentabilidad.</p>
+      </mat-card-content>
+    </mat-card>
+  } @else if (store.profitability(); as p) {
+    <div class="cards-grid">
+      <mat-card class="metric-card">
+        <mat-card-header>
+          <div mat-card-avatar class="avatar income">
+            <mat-icon>trending_up</mat-icon>
+          </div>
+          <mat-card-title>Ingresos</mat-card-title>
+          <mat-card-subtitle>Otros ingresos</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="metric-amount">
+            {{ p.getTotalIncome().getAmount() | number: '1.2-2' }}
+            <span class="currency">{{ p.getTotalIncome().getCurrency() }}</span>
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="metric-card">
+        <mat-card-header>
+          <div mat-card-avatar class="avatar sales">
+            <mat-icon>sell</mat-icon>
+          </div>
+          <mat-card-title>Ventas</mat-card-title>
+          <mat-card-subtitle>Total facturado</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="metric-amount">
+            {{ p.getTotalSales().getAmount() | number: '1.2-2' }}
+            <span class="currency">{{ p.getTotalSales().getCurrency() }}</span>
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="metric-card">
+        <mat-card-header>
+          <div mat-card-avatar class="avatar expense">
+            <mat-icon>trending_down</mat-icon>
+          </div>
+          <mat-card-title>Gastos</mat-card-title>
+          <mat-card-subtitle>Total egresos</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <p class="metric-amount">
+            {{ p.getTotalExpenses().getAmount() | number: '1.2-2' }}
+            <span class="currency">{{ p.getTotalExpenses().getCurrency() }}</span>
+          </p>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="highlight-card" [style.border-left-color]="getMarginColor()">
+        <mat-card-header>
+          <mat-card-title>Resultado</mat-card-title>
+          <mat-card-subtitle>Beneficio neto y margen</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="result-row">
+            <span class="result-label">Neto</span>
+            <span class="result-value" [style.color]="getMarginColor()">
+              {{ p.getNetProfit().getAmount() | number: '1.2-2' }}
+              {{ p.getNetProfit().getCurrency() }}
+            </span>
+          </div>
+          <mat-divider class="divider"></mat-divider>
+          <div class="result-row">
+            <span class="result-label">Margen</span>
+            <span class="result-value" [style.color]="getMarginColor()">
+              {{ p.getMargin() | number: '1.2-2' }} %
+            </span>
+          </div>
+          <div class="chip-row">
+            <span class="status-chip" [class.profit]="p.isProfit()" [class.loss]="!p.isProfit()">
+              {{ p.isProfit() ? 'Utilidad' : 'Pérdida' }}
+            </span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  } @else {
+    <mat-card class="state-card">
+      <mat-card-content>
+        <p>No se pudo calcular la rentabilidad.</p>
+        <button mat-raised-button color="primary" type="button" (click)="loadProfitability()">
+          Intentar de nuevo
+        </button>
+      </mat-card-content>
+    </mat-card>
+  }
+</div>

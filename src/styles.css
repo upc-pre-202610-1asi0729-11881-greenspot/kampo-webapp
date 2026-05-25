@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+
+@import "@angular/material/prebuilt-themes/indigo-pink.css";
+
+:root {
+  --primary-color: #2e7d32;
+  --bg-color: #f0f2f5;
+}
+
+body {
+  background-color: var(--bg-color);
+  margin: 0;
+}
+
+.main-content-wrapper {
+  background-color: var(--bg-color);
+  min-height: calc(100vh - 64px);
+  padding: 40px 20px;
+}
+
+.main-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.mat-mdc-raised-button {
+  border-radius: 8px !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+}

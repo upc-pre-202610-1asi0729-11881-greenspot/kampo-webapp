@@ -1,0 +1,54 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <mat-icon>folder_open</mat-icon>
+      Report Detail
+    </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    @if (isLoading) {
+      <div class="spinner-container">
+        <mat-spinner diameter="40" />
+      </div>
+    } @else if (report) {
+      <div class="detail-grid">
+        <div class="detail-item">
+          <span class="label">ID</span>
+          <span class="value">#{{ report.getId() }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">Type</span>
+          <mat-chip>{{ report.getType() }}</mat-chip>
+        </div>
+        <div class="detail-item">
+          <span class="label">Season</span>
+          <span class="value">{{ report.getSeasonsId() }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="label">User</span>
+          <span class="value">{{ report.getUsersId() }}</span>
+        </div>
+      </div>
+
+      <mat-divider />
+
+      <div class="file-url">
+        <mat-icon>link</mat-icon>
+        <span>{{ report.getFileUrl() }}</span>
+      </div>
+    }
+  </mat-card-content>
+
+  <mat-card-actions align="end">
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="openFile()"
+      [disabled]="!report || isLoading"
+    >
+      <mat-icon>open_in_new</mat-icon>
+      Open File
+    </button>
+  </mat-card-actions>
+</mat-card>

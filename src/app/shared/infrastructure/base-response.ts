@@ -1,8 +1,3 @@
 export class BaseResponse {
-  id: number;
-
-  constructor(id: number) {
-    this.id = id;
-  }
-
+  constructor(public id: number) {}
 }

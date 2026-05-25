@@ -1,0 +1,18 @@
+<div class="subscription-card" (click)="onSelect.emit(subscription.getId())">
+  <div class="card-header">
+    <h3>{{ subscription.getName() }}</h3>
+    <span class="status" [class]="subscription.getStatus().toLowerCase()">
+      {{ showStatus() }}
+    </span>
+  </div>
+  <div class="card-body">
+    <p class="description">{{ subscription.getDescription() }}</p>
+    <div class="details">
+      <span class="price">${{ subscription.getPrice() }} / month</span>
+      <span class="dates">
+        {{ subscription.getStartDate() | date:'mediumDate' }} –
+        {{ subscription.getEndDate() | date:'mediumDate' }}
+      </span>
+    </div>
+  </div>
+</div>

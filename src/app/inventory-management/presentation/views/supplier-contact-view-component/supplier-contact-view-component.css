@@ -1,0 +1,22 @@
+.container {
+  padding: 16px;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.contact-line {
+  font-size: 1rem;
+  margin-bottom: 12px;
+}
+
+.avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(63, 81, 181, 0.12);
+  border-radius: 50%;
+}
+
+.avatar mat-icon {
+  color: #3f51b5;
+}

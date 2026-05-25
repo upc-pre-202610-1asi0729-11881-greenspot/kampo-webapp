@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+// src/app/app.component.ts
+import { NavbarComponent } from './shared/presentation/components/navbar/navbar.component';
+import { FooterComponent } from './shared/presentation/components/footer-content/footer.component';
+import { LanguageSwitcherComponent } from './shared/presentation/components/language-switcher/language-switcher.component';
 import { RouterOutlet } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import {Component} from '@angular/core';
+import { Layout } from './shared/presentation/views/layout/layout';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  template: `<router-outlet />`,
+  standalone: true,
+  imports: [Layout],
+  templateUrl: './app.html',
+  styleUrl: './app.css',
 })
-export class App {
-  constructor(private translate: TranslateService) {
-    this.translate.addLangs(['es', 'en']);
-    this.translate.setDefaultLang('es');
-    this.translate.use('es');
-  }
-}
+export class App {}

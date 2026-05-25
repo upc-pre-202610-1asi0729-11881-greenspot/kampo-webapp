@@ -1,32 +1,40 @@
 .organization-form-container {
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  max-width: 800px;
-  margin: 0 auto;
+  padding: 40px;
+  max-width: 650px;
+  margin: 40px auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #2e7d32;
+  margin-bottom: 32px;
+  text-align: center;
 }
 
 .form-field-full-width {
   width: 100%;
+  margin-bottom: 8px;
 }
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 12px;
-  margin-top: 20px;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
 }
 
-/* Estilo para los iconos dentro de los botones */
-mat-icon {
-  margin-right: 8px;
-  vertical-align: middle;
+button[color="primary"] {
+  padding: 0 24px;
+  height: 48px;
+  border-radius: 8px;
 }
 
-/* Contenedor del título */
-h2 {
-  color: #333;
-  margin-bottom: 24px;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+button[color="warn"] {
+  border-radius: 8px;
 }

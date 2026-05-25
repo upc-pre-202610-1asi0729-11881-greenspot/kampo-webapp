@@ -1,0 +1,39 @@
+:host {
+  --kampo-green: #2e7d32;
+  --kampo-light-green: #4caf50;
+  --kampo-dark: #1b1f23;
+  --kampo-gray: #f5f6f8;
+  --kampo-white: #ffffff;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--kampo-gray);
+  font-family: 'Inter', sans-serif;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - 140px);
+}
+
+router-outlet + * {
+  flex-grow: 1;
+}
+
+app-footer-content {
+  margin-top: auto;
+  width: 100%;
+}

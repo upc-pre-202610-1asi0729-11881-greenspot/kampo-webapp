@@ -1,0 +1,30 @@
+<div class="container">
+  <h2>Panel de stock</h2>
+  <p class="subtitle">Estado rápido de cada ítem en inventario.</p>
+
+  @if (store.isLoading()) {
+    <div class="state-block">
+      <mat-progress-spinner diameter="48" mode="indeterminate"></mat-progress-spinner>
+    </div>
+  } @else if (!store.inventories().length) {
+    <mat-card><mat-card-content>Sin datos de inventario.</mat-card-content></mat-card>
+  } @else {
+    <div class="cards">
+      @for (inv of store.inventories(); track inv.getId()) {
+        <mat-card class="stock-card">
+          <mat-card-header>
+            <div mat-card-avatar class="avatar">
+              <mat-icon>inventory</mat-icon>
+            </div>
+            <mat-card-title>{{ inv.getName() }}</mat-card-title>
+            <mat-card-subtitle>{{ showStockStatus(inv) }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="qty"><strong>{{ inv.getQuantity() }}</strong> {{ inv.getUnit() }}</p>
+            <p class="meta">Mínimo: {{ inv.getMinStock() }} {{ inv.getUnit() }}</p>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  }
+</div>

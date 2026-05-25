@@ -1,0 +1,9 @@
+mat-card-title { display: flex; align-items: center; gap: 8px; }
+.spinner-container { display: flex; justify-content: center; padding: 32px; }
+.empty-state { display: flex; flex-direction: column; align-items: center; padding: 32px; color: #888; gap: 8px; }
+.empty-state mat-icon { font-size: 48px; width: 48px; height: 48px; }
+.clickable-row { cursor: pointer; }
+.clickable-row:hover { background: rgba(0,0,0,0.04); }
+.chip-financial { background-color: #e3f2fd !important; color: #1565c0 !important; }
+.chip-iot { background-color: #e8f5e9 !important; color: #2e7d32 !important; }
+.chip-recommendation { background-color: #fff3e0 !important; color: #e65100 !important; }

@@ -1,9 +1,11 @@
 import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
 export abstract class BaseApi {
   protected http: HttpClient = inject(HttpClient);
+  protected readonly baseUrl: string = environment.apiBaseUrl;
 
   protected get<T>(url: string): Observable<T> {
     return this.http.get<T>(url);

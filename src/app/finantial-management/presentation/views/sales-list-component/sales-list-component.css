@@ -1,0 +1,116 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  margin-bottom: 16px;
+}
+
+.header-titles h2 {
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.9rem;
+}
+
+.summary-card {
+  margin-bottom: 16px;
+}
+
+.summary-content {
+  padding: 12px 16px !important;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.summary-item mat-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+}
+
+.summary-label {
+  display: block;
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.summary-value {
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.currency {
+  margin-left: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.panel-block {
+  margin-bottom: 16px;
+}
+
+mat-panel-title mat-icon {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.inline-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.span-2 {
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 720px) {
+  .inline-form {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .span-2 {
+    grid-column: span 2;
+  }
+}
+
+.inline-form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.table-wrap {
+  overflow: auto;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+}
+
+.col-actions {
+  width: 96px;
+  text-align: right;
+}
+
+.state-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.state-card {
+  max-width: 480px;
+}

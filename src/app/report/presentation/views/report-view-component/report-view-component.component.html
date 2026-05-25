@@ -1,0 +1,60 @@
+<mat-toolbar color="primary" style="margin-top: 12px">
+  <mat-icon>analytics</mat-icon>
+  <span style="margin-left: 8px">Reports</span>
+  <span class="spacer"></span>
+
+  <mat-form-field appearance="outline" class="toolbar-select">
+    <mat-label>Type</mat-label>
+    <mat-select [(ngModel)]="selectedType">
+      @for (t of reportTypes; track t) {
+        <mat-option [value]="t">{{ t }}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  <button mat-stroked-button [disabled]="store.isLoading()" (click)="onGenerateReport()">
+    <mat-icon>add</mat-icon>
+    Generate Report
+  </button>
+</mat-toolbar>
+
+<div class="view-body">
+  <app-report-list-component
+    [reports]="store.reports()"
+    [isLoading]="store.isLoading()"
+    (selectReport)="onSelectReport($event)"
+  />
+
+  @if (store.selectedReport()) {
+    <mat-divider />
+
+    <app-report-file-component
+      [report]="store.selectedReport()!"
+      [isLoading]="store.isLoading()"
+    />
+
+    <div class="rec-actions">
+      <mat-form-field appearance="outline">
+        <mat-label>Priority</mat-label>
+        <mat-select [(ngModel)]="selectedPriority">
+          @for (p of priorities; track p) {
+            <mat-option [value]="p">{{ p }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="accent"
+              [disabled]="store.isLoading()"
+              (click)="onGenerateRecommendation()">
+        <mat-icon>auto_fix_high</mat-icon>
+        Generate Recommendation
+      </button>
+    </div>
+
+    <app-recommendation-list-component
+      [recommendations]="store.recommendations()"
+      [isLoading]="store.isLoading()"
+      (implement)="onImplementRecommendation($event)"
+    />
+  }
+</div>

@@ -1,0 +1,106 @@
+.container {
+  padding: 20px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.header-titles h2 {
+  margin: 0 0 4px;
+}
+
+.subtitle {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 0.9rem;
+}
+
+.toolbar-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.filter-field {
+  min-width: 220px;
+}
+
+.table-wrap {
+  overflow: auto;
+  border-radius: 4px;
+}
+
+table {
+  width: 100%;
+}
+
+.currency {
+  margin-left: 6px;
+  color: rgba(0, 0, 0, 0.55);
+  font-size: 0.85rem;
+}
+
+.category-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 16px;
+  background: rgba(63, 81, 181, 0.12);
+  color: #3f51b5;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.col-actions {
+  width: 96px;
+  text-align: right;
+}
+
+.state-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.state-card {
+  max-width: 520px;
+}
+
+.state-card-inner {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+
+.state-card-inner mat-icon {
+  font-size: 40px;
+  width: 40px;
+  height: 40px;
+}
+
+.state-title {
+  margin: 0 0 8px;
+}
+
+.state-text {
+  margin: 0;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+code {
+  background: rgba(0, 0, 0, 0.06);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.85rem;
+}

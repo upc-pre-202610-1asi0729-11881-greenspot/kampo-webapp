@@ -50,6 +50,13 @@ export class ProfileAccessStore {
     });
   }
 
+  login(email: string): void {
+    this.api.login(email).subscribe({
+      next: (user) => { this.selectedUserId = user.getId(); },
+      error: (err) => console.error(err)
+    });
+  }
+
   modifyProfile(userId: number, firstName: string, lastName: string, email: string, phone: string): void {
     const user = { firstName, lastName, email, phone };
     this.api.modifyProfile(userId, user).subscribe({

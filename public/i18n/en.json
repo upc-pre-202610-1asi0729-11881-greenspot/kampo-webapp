@@ -1,20 +1,20 @@
 {
   "app": {
     "title": "Kampo",
-    "tagline": "Your field in data, your business in control"
+    "subtitle": "Technology for Peruvian Agriculture"
   },
   "nav": {
+    "dashboard": "Dashboard",
     "organizations": "Organizations",
-    "fields": "Fields",
     "seasons": "Seasons",
-    "field_operations": "Field Operations",
-    "financial": "Financials",
     "inventory": "Inventory",
-    "alerts": "Alerts",
-    "monitoring": "IoT Monitoring",
-    "employees": "Employees",
-    "subscription": "Subscription",
-    "reports": "Reports"
+    "financial": "Financial",
+    "reports": "Reports",
+    "settings": "Settings",
+    "expand": "Expand sidebar",
+    "collapse": "Collapse sidebar",
+    "profile": "Profile options",
+    "search": "Search lots, tasks, or operators…"
   },
   "common": {
     "save": "Save",

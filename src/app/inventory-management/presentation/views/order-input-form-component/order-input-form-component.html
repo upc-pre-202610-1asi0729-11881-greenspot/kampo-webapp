@@ -1,0 +1,89 @@
+<div class="container">
+  <h2>Pedidos de insumos</h2>
+
+  <mat-card class="form-card">
+    <mat-card-header>
+      <mat-card-title>Nuevo pedido</mat-card-title>
+      <mat-card-subtitle>Selecciona inventario, proveedor y cantidad.</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form" class="order-grid" (ngSubmit)="onOrderInput()">
+        <mat-form-field appearance="outline">
+          <mat-label>Inventario</mat-label>
+          <mat-select formControlName="inventoryId">
+            @for (inv of store.inventories(); track inv.getId()) {
+              <mat-option [value]="inv.getId()">{{ inv.getName() }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Proveedor</mat-label>
+          <mat-select formControlName="supplierId">
+            @for (sup of store.suppliers(); track sup.getId()) {
+              <mat-option [value]="sup.getId()">{{ sup.getName() }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Cantidad</mat-label>
+          <input matInput type="number" formControlName="quantity" />
+        </mat-form-field>
+        <div class="form-actions">
+          <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || store.isLoading()">
+            <mat-icon>shopping_cart</mat-icon>
+            Crear pedido
+          </button>
+        </div>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <h3 class="section-title">Pedidos registrados</h3>
+  @if (store.isLoading()) {
+    <div class="state-block">
+      <mat-progress-spinner diameter="40" mode="indeterminate"></mat-progress-spinner>
+    </div>
+  } @else {
+    <div class="table-wrap mat-elevation-z1">
+      <table mat-table [dataSource]="store.orders()">
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>ID</th>
+          <td mat-cell *matCellDef="let row">{{ row.getId() }}</td>
+        </ng-container>
+        <ng-container matColumnDef="inventory">
+          <th mat-header-cell *matHeaderCellDef>Inventario</th>
+          <td mat-cell *matCellDef="let row">{{ inventoryLabel(row.getInventoryId()) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="supplier">
+          <th mat-header-cell *matHeaderCellDef>Proveedor</th>
+          <td mat-cell *matCellDef="let row">{{ supplierLabel(row.getSupplierId()) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="quantity">
+          <th mat-header-cell *matHeaderCellDef>Cantidad</th>
+          <td mat-cell *matCellDef="let row">{{ row.getQuantity() }}</td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Estado</th>
+          <td mat-cell *matCellDef="let row">{{ orderStatusLabel(row.getStatus()) }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let row">
+            @if (row.getStatus() === orderStatus.PENDING) {
+              <button
+                mat-stroked-button
+                color="accent"
+                type="button"
+                (click)="onReceiveInput(row.getId(), row.getQuantity())"
+              >
+                Recibir
+              </button>
+            }
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="orderColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: orderColumns"></tr>
+      </table>
+    </div>
+  }
+</div>

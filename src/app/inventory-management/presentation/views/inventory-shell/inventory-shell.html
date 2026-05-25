@@ -1,0 +1,32 @@
+<div class="shell">
+  <mat-toolbar color="primary" class="toolbar">
+    <mat-icon class="toolbar-icon">warehouse</mat-icon>
+    <div class="toolbar-text">
+      <span class="toolbar-title">Inventario</span>
+      <span class="toolbar-sub">Ítems, proveedores y pedidos de insumos</span>
+    </div>
+    <span class="spacer"></span>
+    @if (store.isLoading()) {
+      <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+    }
+  </mat-toolbar>
+
+  <nav class="subnav mat-elevation-z1">
+    @for (link of navLinks; track link.path) {
+      <a
+        mat-stroked-button
+        color="primary"
+        [routerLink]="link.path"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="link.path === 'inventario' ? { exact: false } : { exact: true }"
+      >
+        <mat-icon>{{ link.icon }}</mat-icon>
+        {{ link.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="outlet-wrap mat-elevation-z2">
+    <router-outlet />
+  </div>
+</div>

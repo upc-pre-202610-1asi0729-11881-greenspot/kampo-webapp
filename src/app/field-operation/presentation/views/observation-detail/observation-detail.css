@@ -1,0 +1,6 @@
+.container { margin: 16px; }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.visit-card { margin-bottom: 16px; }
+.observation-card { margin-bottom: 12px; }
+.severity-row { display: flex; gap: 32px; margin: 8px 0; }
+.empty-message { color: gray; font-style: italic; }

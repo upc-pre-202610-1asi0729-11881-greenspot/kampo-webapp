@@ -1,0 +1,34 @@
+<div class="shell">
+  <mat-toolbar color="primary" class="toolbar">
+    <mat-icon class="toolbar-icon">account_balance_wallet</mat-icon>
+    <div class="toolbar-text">
+      <span class="toolbar-title">Gestión financiera</span>
+      <span class="toolbar-sub">Fundo {{ fundoLabel() }} · Temporada {{ seasonLabel() }}</span>
+    </div>
+    <span class="spacer"></span>
+    @if (store.isLoading()) {
+      <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+    }
+  </mat-toolbar>
+
+  <nav class="subnav mat-elevation-z1">
+    @for (link of navLinks; track link.path) {
+      <a
+        mat-stroked-button
+        color="primary"
+        [routerLink]="['./', link.path]"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{ exact: false }"
+        queryParamsHandling="preserve"
+        class="nav-button"
+      >
+        <mat-icon>{{ link.icon }}</mat-icon>
+        {{ link.label }}
+      </a>
+    }
+  </nav>
+
+  <div class="outlet-wrap mat-elevation-z2">
+    <router-outlet></router-outlet>
+  </div>
+</div>

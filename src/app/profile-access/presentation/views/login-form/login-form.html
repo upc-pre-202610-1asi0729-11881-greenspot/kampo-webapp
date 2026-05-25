@@ -1,0 +1,20 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>🌱 Kampo</mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <form (submit)="onLogin()">
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'organization.email' | translate }}</mat-label>
+        <input matInput [(ngModel)]="email" name="email" type="email" required />
+      </mat-form-field>
+    </form>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button mat-raised-button color="primary" (click)="onLogin()">
+      {{ 'common.save' | translate }}
+    </button>
+  </mat-card-actions>
+</mat-card>

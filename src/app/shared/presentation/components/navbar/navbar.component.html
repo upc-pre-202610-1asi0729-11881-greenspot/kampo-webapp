@@ -1,0 +1,117 @@
+<!-- ─── Mobile overlay ─────────────────────────────────────────────────── -->
+<div
+  class="mobile-overlay"
+  [class.visible]="isMobileOpen"
+  (click)="closeMobile()"
+></div>
+
+<!-- ─── Sidebar ────────────────────────────────────────────────────────── -->
+<aside
+  class="sidebar"
+  [class.collapsed]="isCollapsed"
+  [class.mobile-open]="isMobileOpen"
+>
+  <!-- Brand -->
+  <div class="sidebar-brand" [routerLink]="['/dashboard']">
+    <div class="brand-logo">
+      <mat-icon class="brand-icon">grass</mat-icon>
+    </div>
+    <div class="brand-text" *ngIf="!isCollapsed">
+      <span class="brand-name">{{ 'app.title' | translate }}</span>
+      <span class="brand-tagline">{{ 'app.subtitle' | translate }}</span>
+    </div>
+  </div>
+
+  <mat-divider class="brand-divider"></mat-divider>
+
+  <!-- Toggle button -->
+  <button
+    class="collapse-btn"
+    mat-icon-button
+    (click)="toggleCollapse()"
+    [matTooltip]="isCollapsed ? ('nav.expand' | translate) : ('nav.collapse' | translate)"
+    matTooltipPosition="right"
+  >
+    <mat-icon>{{ isCollapsed ? 'chevron_right' : 'chevron_left' }}</mat-icon>
+  </button>
+
+  <!-- Main nav items -->
+  <nav class="sidebar-nav">
+    <a
+      *ngFor="let item of navItems"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      class="nav-item"
+      matRipple
+      [matRippleColor]="'rgba(255,255,255,0.08)'"
+      [matTooltip]="isCollapsed ? (item.labelKey | translate) : ''"
+      matTooltipPosition="right"
+    >
+      <div class="nav-icon-wrap">
+        <mat-icon
+          [matBadge]="item.badge"
+          [matBadgeHidden]="!item.badge"
+          matBadgeSize="small"
+          matBadgeColor="warn"
+        >{{ item.icon }}</mat-icon>
+      </div>
+      <span class="nav-label" *ngIf="!isCollapsed">
+        {{ item.labelKey | translate }}
+      </span>
+      <div class="active-indicator"></div>
+    </a>
+  </nav>
+
+  <!-- Spacer -->
+  <div class="sidebar-spacer"></div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Bottom nav items -->
+  <nav class="sidebar-nav bottom-nav">
+    <a
+      *ngFor="let item of bottomItems"
+      [routerLink]="item.route"
+      routerLinkActive="active"
+      class="nav-item"
+      matRipple
+      [matRippleColor]="'rgba(255,255,255,0.08)'"
+      [matTooltip]="isCollapsed ? (item.labelKey | translate) : ''"
+      matTooltipPosition="right"
+    >
+      <div class="nav-icon-wrap">
+        <mat-icon>{{ item.icon }}</mat-icon>
+      </div>
+      <span class="nav-label" *ngIf="!isCollapsed">
+        {{ item.labelKey | translate }}
+      </span>
+      <div class="active-indicator"></div>
+    </a>
+  </nav>
+
+  <!-- User profile -->
+  <div class="sidebar-user" [class.collapsed]="isCollapsed">
+    <div class="user-avatar">{{ currentUser.avatarInitials }}</div>
+    <div class="user-info" *ngIf="!isCollapsed">
+      <span class="user-name">{{ currentUser.name }}</span>
+      <span class="user-role">{{ currentUser.role }}</span>
+    </div>
+    <button
+      mat-icon-button
+      class="user-menu-btn"
+      *ngIf="!isCollapsed"
+      [matTooltip]="'nav.profile' | translate"
+    >
+      <mat-icon>more_vert</mat-icon>
+    </button>
+  </div>
+</aside>
+
+<!-- ─── Mobile hamburger (rendered outside sidebar) ───────────────────── -->
+<button
+  class="mobile-hamburger"
+  mat-icon-button
+  (click)="toggleMobile()"
+>
+  <mat-icon>{{ isMobileOpen ? 'close' : 'menu' }}</mat-icon>
+</button>

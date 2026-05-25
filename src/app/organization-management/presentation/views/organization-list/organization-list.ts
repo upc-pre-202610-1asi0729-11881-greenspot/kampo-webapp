@@ -6,13 +6,22 @@ import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { OrganizationStore } from '../../../application/organization.store';
-
+import { RouterModule } from '@angular/router';
+import {CommonModule} from '@angular/common';
 @Component({
   selector: 'app-organization-list',
   standalone: true,
-  imports: [MatTableModule, MatPaginatorModule, MatSortModule, MatButtonModule, MatIconModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatTableModule,
+    MatButtonModule,
+    MatIconModule,
+    MatPaginatorModule,
+    MatSortModule
+  ],
   templateUrl: './organization-list.html',
-  styleUrls: ['./organization-list.css']
+  styleUrl: './organization-list.css'
 })
 export class OrganizationListComponent {
   public store = inject(OrganizationStore);

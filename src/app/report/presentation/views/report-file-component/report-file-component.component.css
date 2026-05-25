@@ -1,0 +1,8 @@
+mat-card-title { display: flex; align-items: center; gap: 8px; }
+.spinner-container { display: flex; justify-content: center; padding: 32px; }
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 16px 0; }
+.detail-item { display: flex; flex-direction: column; gap: 4px; }
+.label { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: .05em; }
+.value { font-size: 15px; font-weight: 500; }
+.file-url { display: flex; align-items: center; gap: 8px; padding: 12px 0; color: #555; word-break: break-all; }
+mat-divider { margin: 8px 0; }
