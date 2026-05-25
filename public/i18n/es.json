@@ -1,20 +1,20 @@
 {
   "app": {
     "title": "Kampo",
-    "tagline": "Tu campo en datos, tu negocio en control"
+    "subtitle": "Tecnología para la Agricultura Peruana"
   },
   "nav": {
+    "dashboard": "Inicio",
     "organizations": "Organizaciones",
-    "fields": "Parcelas",
     "seasons": "Temporadas",
-    "field_operations": "Operaciones de Campo",
-    "financial": "Finanzas",
     "inventory": "Inventario",
-    "alerts": "Alertas",
-    "monitoring": "Monitoreo IoT",
-    "employees": "Empleados",
-    "subscription": "Suscripción",
-    "reports": "Reportes"
+    "financial": "Finanzas",
+    "reports": "Reportes",
+    "settings": "Configuración",
+    "expand": "Expandir menú",
+    "collapse": "Colapsar menú",
+    "profile": "Opciones de perfil",
+    "search": "Buscar lotes, tareas u operadores…"
   },
   "common": {
     "save": "Guardar",

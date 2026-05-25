@@ -1,0 +1,335 @@
+// ─── Design Tokens ──────────────────────────────────────────────────────────
+$sidebar-width-expanded:  220px;
+$sidebar-width-collapsed:  68px;
+$transition-speed:        220ms;
+$transition-ease:         cubic-bezier(0.4, 0, 0.2, 1);
+
+// Palette — dark forest green sidebar matching Kampo agri aesthetic
+$color-sidebar-bg:        #0f1f14;
+$color-sidebar-border:    #1e3424;
+$color-brand-green:       #4caf50;
+$color-brand-green-light: #81c784;
+$color-active-bg:         rgba(76, 175, 80, 0.15);
+$color-active-border:     #4caf50;
+$color-hover-bg:          rgba(255, 255, 255, 0.06);
+$color-text-primary:      #e8f5e9;
+$color-text-secondary:    #78909c;
+$color-icon:              #a5d6a7;
+$color-divider:           rgba(255, 255, 255, 0.08);
+$color-avatar-bg:         #2e7d32;
+
+// ─── Sidebar shell ───────────────────────────────────────────────────────────
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: $sidebar-width-expanded;
+  background: $color-sidebar-bg;
+  border-right: 1px solid $color-sidebar-border;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: width $transition-speed $transition-ease;
+  z-index: 100;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.35);
+
+  // Subtle grain texture overlay
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  & > * { position: relative; z-index: 1; }
+
+  &.collapsed {
+    width: $sidebar-width-collapsed;
+
+    .brand-divider { margin: 0 12px; }
+    .collapse-btn  { align-self: center; }
+  }
+}
+
+// ─── Brand ───────────────────────────────────────────────────────────────────
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 20px 16px 16px;
+  cursor: pointer;
+  text-decoration: none;
+  overflow: hidden;
+  white-space: nowrap;
+
+  .brand-logo {
+    flex-shrink: 0;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2e7d32, #66bb6a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.4);
+
+    .brand-icon {
+      color: #fff;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .brand-name {
+      font-family: 'Georgia', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: $color-text-primary;
+      letter-spacing: 0.5px;
+      line-height: 1.2;
+    }
+
+    .brand-tagline {
+      font-size: 9px;
+      font-weight: 500;
+      color: $color-text-secondary;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      margin-top: 2px;
+    }
+  }
+}
+
+.brand-divider {
+  margin: 0 16px;
+  border-color: $color-divider !important;
+}
+
+// ─── Collapse toggle ─────────────────────────────────────────────────────────
+.collapse-btn {
+  align-self: flex-end;
+  margin: 8px 10px 4px;
+  color: $color-text-secondary !important;
+  width: 28px !important;
+  height: 28px !important;
+  line-height: 28px !important;
+
+  mat-icon { font-size: 18px; width: 18px; height: 18px; }
+
+  &:hover { color: $color-text-primary !important; }
+}
+
+// ─── Navigation items ────────────────────────────────────────────────────────
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 0;
+  gap: 2px;
+}
+
+.nav-item {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  margin: 0 8px;
+  border-radius: 10px;
+  color: $color-text-secondary;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background $transition-speed $transition-ease,
+  color $transition-speed $transition-ease;
+  overflow: hidden;
+  white-space: nowrap;
+
+  .nav-icon-wrap {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    transition: background $transition-speed $transition-ease;
+
+    mat-icon {
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+      color: $color-icon;
+      transition: color $transition-speed $transition-ease;
+    }
+  }
+
+  .nav-label {
+    font-size: 13.5px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+    transition: opacity $transition-speed $transition-ease;
+  }
+
+  .active-indicator {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 3px;
+    height: 0;
+    border-radius: 3px 0 0 3px;
+    background: $color-active-border;
+    transition: height $transition-speed $transition-ease;
+  }
+
+  &:hover {
+    background: $color-hover-bg;
+    color: $color-text-primary;
+
+    .nav-icon-wrap mat-icon { color: $color-brand-green-light; }
+  }
+
+  &.active {
+    background: $color-active-bg;
+    color: $color-text-primary;
+
+    .nav-icon-wrap {
+      background: rgba(76, 175, 80, 0.18);
+
+      mat-icon { color: $color-brand-green; }
+    }
+
+    .nav-label { font-weight: 600; }
+
+    .active-indicator { height: 24px; }
+  }
+}
+
+// ─── Spacer & bottom nav ─────────────────────────────────────────────────────
+.sidebar-spacer { flex: 1; }
+
+mat-divider { border-color: $color-divider !important; margin: 4px 0; }
+
+.bottom-nav { padding: 8px 0; }
+
+// ─── User profile strip ──────────────────────────────────────────────────────
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: background $transition-speed $transition-ease;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &:hover { background: $color-hover-bg; }
+
+  &.collapsed {
+    justify-content: center;
+    padding: 14px 8px;
+  }
+
+  .user-avatar {
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: $color-avatar-bg;
+    border: 2px solid rgba(76, 175, 80, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #e8f5e9;
+    letter-spacing: 0.5px;
+  }
+
+  .user-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 600;
+      color: $color-text-primary;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .user-role {
+      font-size: 10px;
+      color: $color-text-secondary;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .user-menu-btn {
+    flex-shrink: 0;
+    color: $color-text-secondary !important;
+    width: 28px !important;
+    height: 28px !important;
+
+    mat-icon { font-size: 18px; width: 18px; height: 18px; }
+  }
+}
+
+// ─── Mobile overlay ──────────────────────────────────────────────────────────
+.mobile-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 99;
+  opacity: 0;
+  transition: opacity 200ms ease;
+
+  &.visible {
+    opacity: 1;
+  }
+}
+
+.mobile-hamburger {
+  display: none;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 101;
+  background: $color-sidebar-bg !important;
+  color: $color-text-primary !important;
+  border: 1px solid $color-sidebar-border !important;
+  border-radius: 8px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
+}
+
+// ─── Responsive ──────────────────────────────────────────────────────────────
+@media (max-width: 767px) {
+  .mobile-overlay { display: block; }
+  .mobile-hamburger { display: flex; }
+
+  .sidebar {
+    transform: translateX(-100%);
+    width: $sidebar-width-expanded !important; // always full width when sliding in
+
+    &.mobile-open {
+      transform: translateX(0);
+    }
+  }
+}
+
+// ─── Layout: push content right ──────────────────────────────────────────────
+// Add this to your layout host or global styles:
+// .content-wrapper { margin-left: 220px; transition: margin-left 220ms cubic-bezier(0.4,0,0.2,1); }
+// app-navbar.collapsed ~ .content-wrapper { margin-left: 68px; }

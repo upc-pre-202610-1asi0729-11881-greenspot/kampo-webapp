@@ -1,0 +1,38 @@
+<!-- layout.component.html -->
+
+<app-navbar #navbar></app-navbar>
+
+<div
+  class="content-wrapper"
+  [class.collapsed]="navbar.isCollapsed"
+  [class.mobile-hidden]="!navbar.isMobileOpen"
+>
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-search">
+      <mat-icon class="search-icon">search</mat-icon>
+      <input
+        class="search-input"
+        [placeholder]="'nav.search' | translate"
+        type="text"
+      />
+    </div>
+
+    <div class="topbar-actions">
+      <app-language-switcher></app-language-switcher>
+
+      <button mat-icon-button class="topbar-btn" [matBadge]="3" matBadgeColor="warn" matBadgeSize="small">
+        <mat-icon>notifications_none</mat-icon>
+      </button>
+
+      <button mat-icon-button class="topbar-btn">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+    </div>
+  </header>
+
+  <!-- Page content -->
+  <main class="page-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>
