@@ -41,17 +41,15 @@ export class NavbarComponent implements OnInit {
   isMobileOpen = false;
 
   navItems: NavItem[] = [
-    { labelKey: 'nav.dashboard',     icon: 'dashboard',       route: '/dashboard' },
-    { labelKey: 'nav.organizations', icon: 'corporate_fare',  route: '/organization-management' },
-    { labelKey: 'nav.seasons',       icon: 'eco',             route: '/season-management' },
-    { labelKey: 'nav.inventory',     icon: 'inventory_2',     route: '/inventory-management' },
-    { labelKey: 'nav.financial',     icon: 'account_balance', route: '/finantial-management' },
-    { labelKey: 'nav.reports',       icon: 'bar_chart',       route: '/report-management' },
+    { labelKey: 'nav.dashboard', icon: 'dashboard', route: '/dashboard' },
+    { labelKey: 'nav.organizations', icon: 'corporate_fare', route: '/organization-management' },
+    { labelKey: 'nav.seasons', icon: 'eco', route: '/season-management' },
+    { labelKey: 'nav.inventory', icon: 'inventory_2', route: '/inventory-management' },
+    { labelKey: 'nav.financial', icon: 'account_balance', route: '/finantial-management' },
+    { labelKey: 'nav.reports', icon: 'bar_chart', route: '/report-management' },
   ];
 
-  bottomItems: NavItem[] = [
-    { labelKey: 'nav.settings', icon: 'settings', route: '/settings' },
-  ];
+  bottomItems: NavItem[] = [{ labelKey: 'nav.settings', icon: 'settings', route: '/settings' }];
 
   /** Mock user — replace with your AuthService */
   currentUser = {

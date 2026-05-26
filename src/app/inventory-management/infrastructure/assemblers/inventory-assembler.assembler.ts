@@ -9,7 +9,6 @@ import { InventoryStatus } from '../../domain/model/enums/inventory-status.enum'
 // - InventoryResponse: datos recibidos desde el backend.
 // - InventoryResource: datos enviados hacia el backend.
 import { InventoryResource, InventoryResponse } from '../responses/inventory-response.response';
-
 // Assembler encargado de transformar objetos entre:
 // - infraestructura,
 // - respuestas HTTP,

@@ -2,10 +2,10 @@ import { Routes } from '@angular/router';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'organization-management',
     loadChildren: () =>
       import('./organization-management/presentation/views/organization-management.routes').then(
-        (m) => m.ORGANIZATION_ROUTES
+        (m) => m.ORGANIZATION_ROUTES,
       ),
   },
 
@@ -13,7 +13,7 @@ export const routes: Routes = [
     path: 'profile-access',
     loadChildren: () =>
       import('./profile-access/presentation/views/profile-access.routes').then(
-        (m) => m.PROFILE_ACCESS_ROUTES
+        (m) => m.PROFILE_ACCESS_ROUTES,
       ),
   },
 
@@ -21,7 +21,7 @@ export const routes: Routes = [
     path: 'season-management',
     loadChildren: () =>
       import('./season-management/presentation/views/season-management.routes').then(
-        (m) => m.SEASON_ROUTES
+        (m) => m.SEASON_ROUTES,
       ),
   },
 
@@ -44,9 +44,7 @@ export const routes: Routes = [
   {
     path: 'report-management',
     loadChildren: () =>
-      import('./report/presentation/views/report.routes').then(
-        (m) => m.REPORT_ROUTES,
-      ),
+      import('./report/presentation/views/report.routes').then((m) => m.REPORT_ROUTES),
   },
 
   {
@@ -68,9 +66,7 @@ export const routes: Routes = [
   {
     path: 'alert-management',
     loadChildren: () =>
-      import('./alert-management/presentation/views/alert.route').then(
-        (m) => m.ALERT_ROUTES,
-      ),
+      import('./alert-management/presentation/views/alert.route').then((m) => m.ALERT_ROUTES),
   },
 
   {
@@ -81,5 +77,5 @@ export const routes: Routes = [
       ),
   },
 
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];

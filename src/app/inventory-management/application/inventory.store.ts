@@ -27,16 +27,12 @@ export class InventoryStore {
 
   // Signal que almacena la lista de inventarios disponibles.
   readonly inventories = signal<Inventory[]>([]);
-
   // Signal que almacena la lista de proveedores registrados.
   readonly suppliers = signal<Supplier[]>([]);
-
   // Signal que almacena los pedidos de insumos realizados.
   readonly orders = signal<OrderInput[]>([]);
-
   // Signal que mantiene el inventario actualmente seleccionado.
   readonly selectedInventory = signal<Inventory | null>(null);
-
   // Signal utilizado para controlar estados de carga en la interfaz.
   readonly isLoading = signal(false);
 

@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 
 // Importa Injectable para registrar el servicio dentro
 // del sistema de inyección de dependencias de Angular.
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 // Importa herramientas RxJS.
 // - Observable: representa flujos de datos asíncronos.
@@ -28,6 +28,7 @@ import { SupplierAssembler } from './assemblers/supplier-assembler.assembler';
 import { InventoryResponse } from './responses/inventory-response.response';
 import { OrderInputResponse } from './responses/order-input-response.response';
 import { SupplierResponse } from './responses/supplier-response.response';
+import { environment } from '../../../environments/environment';
 
 // Servicio de infraestructura encargado de comunicarse
 // con los endpoints REST relacionados al módulo de inventario.
@@ -44,15 +45,16 @@ export class InventoryApi {
 
   // Assembler utilizado para transformar pedidos de insumos.
   private readonly orderAssembler = new OrderInputAssembler();
+  //private readonly http = inject(HttpClient);
 
   // Endpoint principal de inventarios.
-  private readonly inventoriesEndpoint = '/api/inventories';
+  private readonly inventoriesEndpoint =`${environment.apiBaseUrl}/inventories`;
 
   // Endpoint principal de proveedores.
-  private readonly suppliersEndpoint = '/api/suppliers';
+  private readonly suppliersEndpoint =`${environment.apiBaseUrl}/suppliers`;
 
   // Endpoint principal de pedidos de insumos.
-  private readonly ordersEndpoint = '/api/orders-input';
+  private readonly ordersEndpoint =`${environment.apiBaseUrl}/orders`;
 
   // Constructor del servicio.
   // Inyecta HttpClient para realizar peticiones HTTP.
