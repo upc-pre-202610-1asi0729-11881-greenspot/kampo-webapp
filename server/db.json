@@ -141,11 +141,19 @@
   "inventories": [
     {
       "id": 1,
-      "name": "Fertilizante NPK",
-      "unit": "Sacos",
-      "minStock": 10,
-      "location": "Almacén Principal",
-      "expiration": "2027-01-01"
+      "name": "Fertilizante Hzp",
+      "quantity": 120,
+      "unit": "kg.",
+      "minStock": 80,
+      "status": "AVAILABLE"
+    },
+    {
+      "id": 2,
+      "name": "Hidroxido de Dimetile",
+      "quantity": 120,
+      "unit": "Lt.",
+      "minStock": 80,
+      "status": "AVAILABLE"
     }
   ],
   "suppliers": [

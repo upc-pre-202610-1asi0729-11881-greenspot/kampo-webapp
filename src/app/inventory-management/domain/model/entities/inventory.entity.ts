@@ -10,61 +10,48 @@ export class Inventory {
   constructor(
     // Identificador único del inventario.
     private readonly id: number,
-
     // Nombre del insumo o producto.
     private readonly name: string,
-
     // Cantidad disponible en stock.
     private quantity: number,
-
     // Unidad de medida del inventario.
     // Ejemplos: kg, litros, cajas, unidades.
     private readonly unit: string,
-
     // Cantidad mínima permitida antes de considerar bajo stock.
     private readonly minStock: number,
-
     // Estado actual del inventario.
     // Puede ser AVAILABLE, LOW_STOCK u OUT_OF_STOCK.
     private status: InventoryStatus,
   ) {}
-
   // Retorna el identificador del inventario.
   getId(): number {
     return this.id;
   }
-
   // Retorna el nombre del inventario.
   getName(): string {
     return this.name;
   }
-
   // Retorna la cantidad disponible.
   getQuantity(): number {
     return this.quantity;
   }
-
   // Retorna la unidad de medida.
   getUnit(): string {
     return this.unit;
   }
-
   // Retorna el stock mínimo configurado.
   getMinStock(): number {
     return this.minStock;
   }
-
   // Retorna el estado actual del inventario.
   getStatus(): InventoryStatus {
     return this.status;
   }
-
   // Actualiza la cantidad disponible del inventario.
   // Además recalcula automáticamente el estado del stock.
   setQuantity(quantity: number): void {
     // Actualiza la cantidad almacenada.
     this.quantity = quantity;
-
     // Recalcula el estado del inventario según las reglas del negocio.
     this.status = Inventory.resolveStatus(quantity, this.minStock);
   }
