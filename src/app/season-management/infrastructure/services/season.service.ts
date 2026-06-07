@@ -22,7 +22,7 @@ export class SeasonService {
     return this.http.post<SeasonResponse>(this.resourcePath, body);
   }
 
-  update(id: number, body: SeasonResource): Observable<SeasonResponse> {
+  update(id: number, body: any): Observable<SeasonResponse> {
     return this.http.put<SeasonResponse>(`${this.resourcePath}/${id}`, body);
   }
 
@@ -45,4 +45,5 @@ export class SeasonService {
   delete(id: number): Observable<any> {
     return this.http.delete<any>(`${this.resourcePath}/${id}`);
   }
+
 }

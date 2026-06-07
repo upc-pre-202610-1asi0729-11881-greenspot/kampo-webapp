@@ -1,52 +1,88 @@
-<div class="container mat-elevation-z8">
-  <div class="header">
-    <h2>Temporadas (campo {{ fieldId }})</h2>
+<div style="padding: 24px;">
+
+  <div style="margin-bottom: 8px;">
+    <button mat-button routerLink="/dashboard">
+      <mat-icon>arrow_back</mat-icon> Inicio
+    </button>
+  </div>
+
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+    <div>
+      <h2 style="margin: 0; font-size: 1.5rem; font-weight: 700; color: #1b2d1e;">Gestión de Temporadas</h2>
+      <p style="margin: 4px 0 0; font-size: 0.85rem; color: #78909c;">Campo {{ fieldId }}</p>
+    </div>
     <button mat-raised-button color="primary" (click)="navigateToNew()">
       <mat-icon>add</mat-icon> Nueva temporada
     </button>
   </div>
 
-  <table mat-table [dataSource]="store.seasonTableData()">
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef>ID</th>
-      <td mat-cell *matCellDef="let row">{{ row.id }}</td>
-    </ng-container>
+  <div style="background: white; border-radius: 8px; border: 1px solid #e8eaed; overflow: hidden;">
+    <table mat-table [dataSource]="store.seasonTableData()" style="width: 100%;">
 
-    <ng-container matColumnDef="fieldId">
-      <th mat-header-cell *matHeaderCellDef>Campo</th>
-      <td mat-cell *matCellDef="let row">{{ row.fieldId }}</td>
-    </ng-container>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>ID</th>
+        <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="cropName">
-      <th mat-header-cell *matHeaderCellDef>Cultivo</th>
-      <td mat-cell *matCellDef="let row">{{ row.cropName }}</td>
-    </ng-container>
+      <ng-container matColumnDef="fieldId">
+        <th mat-header-cell *matHeaderCellDef>CAMPO</th>
+        <td mat-cell *matCellDef="let row">{{ row.fieldId }}</td>
+      </ng-container>
 
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef>Estado</th>
-      <td mat-cell *matCellDef="let row">{{ row.status }}</td>
-    </ng-container>
+      <ng-container matColumnDef="cropName">
+        <th mat-header-cell *matHeaderCellDef>CULTIVO</th>
+        <td mat-cell *matCellDef="let row">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <mat-icon style="color: #2e7d32; font-size: 18px; width: 18px; height: 18px;">eco</mat-icon>
+            {{ row.cropName }}
+          </div>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="startedAt">
-      <th mat-header-cell *matHeaderCellDef>Inicio</th>
-      <td mat-cell *matCellDef="let row">{{ row.startedAt | date: 'shortDate' }}</td>
-    </ng-container>
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>ESTADO</th>
+        <td mat-cell *matCellDef="let row">
+          <span
+            [style.background]="row.status === 'ACTIVE' ? '#e8f5e9' : row.status === 'ENDED' ? '#ffebee' : '#fff3e0'"
+            [style.color]="row.status === 'ACTIVE' ? '#2e7d32' : row.status === 'ENDED' ? '#c62828' : '#e65100'"
+            style="padding: 4px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: 600;">
+            {{ row.status }}
+          </span>
+        </td>
+      </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Acciones</th>
-      <td mat-cell *matCellDef="let row">
-        <button mat-icon-button color="accent" (click)="view(row.id)" title="Ver">
-          <mat-icon>visibility</mat-icon>
-        </button>
-        <button mat-icon-button color="primary" (click)="edit(row.id)" title="Editar">
-          <mat-icon>edit</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+      <ng-container matColumnDef="startedAt">
+        <th mat-header-cell *matHeaderCellDef>INICIO</th>
+        <td mat-cell *matCellDef="let row" style="color: #546e7a;">
+          {{ row.startedAt | date: 'mediumDate' }}
+        </td>
+      </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-  </table>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>ACCIONES</th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button color="accent" (click)="view(row.id)" title="Ver">
+            <mat-icon>visibility</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" (click)="edit(row.id)" title="Editar">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteSeason(row.id)" title="Eliminar">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+      <tr class="mat-row" *matNoDataRow>
+        <td colspan="6" style="text-align: center; padding: 40px; color: #78909c;">
+          <mat-icon style="font-size: 40px; height: 40px; width: 40px; color: #ccc;">eco</mat-icon>
+          <br>No hay temporadas registradas.
+        </td>
+      </tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
 </div>

@@ -73,13 +73,22 @@
   ],
   "seasons": [
     {
-      "id": "1",
+      "id": 1,
       "fieldId": 1,
       "cropId": 1,
       "cropName": "Uva Red Globe",
       "status": "ACTIVE",
       "startedAt": "2026-01-15T08:00:00Z",
       "endedAt": null
+    },
+    {
+      "fieldId": 1,
+      "cropId": 1,
+      "cropName": "Zanahoria",
+      "status": "PLANTING",
+      "startedAt": "2026-06-27T05:00:00.000Z",
+      "endedAt": null,
+      "id": 2
     }
   ],
   "fieldOperations": [
@@ -92,30 +101,6 @@
       "scheduledAt": "2026-06-04T08:42:00Z",
       "doneAt": null,
       "status": "SCHEDULED"
-    },
-    {
-      "fieldId": 2,
-      "purpose": "riego",
-      "technician": "Pepito",
-      "scheduledAt": "2026-06-27T05:00:00.000Z",
-      "status": "SCHEDULED",
-      "id": "Hjnl_d8"
-    },
-    {
-      "fieldId": 2,
-      "purpose": "riego",
-      "technician": "Carlos",
-      "scheduledAt": "2026-06-02T05:00:00.000Z",
-      "status": "SCHEDULED",
-      "id": "JWNSXpp"
-    },
-    {
-      "fieldId": 3,
-      "purpose": "riego",
-      "technician": "Ramos",
-      "scheduledAt": "2026-06-20T05:00:00.000Z",
-      "status": "SCHEDULED",
-      "id": "AV-xHd5"
     }
   ],
   "observations": [],
@@ -179,13 +164,6 @@
       "priority": "HIGH",
       "isRead": false,
       "fieldId": 1
-    },
-    {
-      "id": "2",
-      "message": "Falla en sistema de riego B2",
-      "priority": "CRITICAL",
-      "isRead": false,
-      "fieldId": 2
     }
   ],
   "alertRules": [

@@ -9,6 +9,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { SeasonStore } from '../../../application/season.store';
 import { Season } from '../../../domain/model/season.entity';
 import { SeasonStatus } from '../../../domain/model/season-status.enum';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @Component({
   selector: 'app-season-form',
@@ -20,8 +22,11 @@ import { SeasonStatus } from '../../../domain/model/season-status.enum';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   templateUrl: './season-form.html',
+  styleUrl: './season-form.css',
 })
 export class SeasonFormComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -44,48 +49,57 @@ export class SeasonFormComponent implements OnInit {
 
   ngOnInit(): void {
     const fieldIdParam = this.route.snapshot.queryParamMap.get('fieldId');
-    if (fieldIdParam) {
-      this.form.patchValue({ fieldId: Number(fieldIdParam) });
-    }
+    const fieldId = fieldIdParam ? Number(fieldIdParam) : 1;
 
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.isEdit = true;
-      const season = this.store.getSeasonById(+id);
-      if (season) {
-        const start = season.getStartedAt();
-        const startStr = start.toISOString().slice(0, 10);
-        this.form.patchValue({
-          id: season.getId(),
-          fieldId: season.getFieldId(),
-          cropId: season.getCropId(),
-          cropName: season.getCropName(),
-          status: season.getStatus(),
-          startedAt: startStr,
-        });
-      }
+      this.store.loadAllSeasons();
+
+      setTimeout(() => {
+        const season = this.store.getSeasonById(+id);
+        if (season) {
+          this.form.patchValue({
+            id: season.getId(),
+            fieldId: season.getFieldId(),
+            cropId: season.getCropId(),
+            cropName: season.getCropName(),
+            status: season.getStatus(),
+            startedAt: season.getStartedAt().toISOString().slice(0, 10),
+          });
+        }
+      }, 1000);
+    } else {
+      this.form.patchValue({ fieldId });
     }
   }
 
   save(): void {
     if (this.form.invalid) return;
     const val = this.form.value;
-    const startedAt = new Date(val.startedAt);
-    const entity = new Season(
-      val.id,
-      val.fieldId,
-      val.cropId,
-      val.cropName,
-      val.status as SeasonStatus,
-      startedAt,
-      null
-    );
 
     if (this.isEdit) {
+      const entity = new Season(
+        val.id,
+        val.fieldId,
+        val.cropId,
+        val.cropName,
+        val.status as SeasonStatus,
+        new Date(val.startedAt),
+        null,
+      );
       this.store.updateSeason(entity);
     } else {
-      this.store.addSeason(entity);
+      this.store.createSeason({
+        fieldId: val.fieldId,
+        cropId: val.cropId,
+        cropName: val.cropName,
+        status: val.status,
+        startedAt: new Date(val.startedAt).toISOString(),
+        endedAt: null,
+      });
     }
+
     this.router.navigate(['/season-management'], {
       queryParams: { fieldId: val.fieldId },
     });

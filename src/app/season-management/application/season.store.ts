@@ -24,7 +24,7 @@ export class SeasonStore {
       status: s.getStatus(),
       startedAt: s.getStartedAt(),
       endedAt: s.getEndedAt(),
-    }))
+    })),
   );
 
   setSeasons(responses: SeasonResponse[]): void {
@@ -53,7 +53,7 @@ export class SeasonStore {
     this.seasonService.getAll().subscribe({
       next: (responses) => this.setSeasons(responses),
       error: (err) => console.error(err),
-      complete: () => this.isLoading.set(false)
+      complete: () => this.isLoading.set(false),
     });
   }
 
@@ -63,7 +63,7 @@ export class SeasonStore {
         const entity = this.assembler.toEntityFromResponse(response);
         this.addSeason(entity);
       },
-      error: (err) => console.error(err)
+      error: (err) => console.error(err),
     });
   }
 
@@ -72,7 +72,7 @@ export class SeasonStore {
   }
 
   getSeasonById(id: number): Season | undefined {
-    return this.seasons().find((s) => s.getId() === id);
+    return this.seasons().find((s) => String(s.getId()) === String(id));
   }
 
   addSeason(entity: Season): void {
@@ -80,6 +80,23 @@ export class SeasonStore {
   }
 
   updateSeason(entity: Season): void {
-    this.seasons.update((list) => list.map((s) => (s.getId() === entity.getId() ? entity : s)));
+    this.seasonService
+      .update(entity.getId(), {
+        fieldId: entity.getFieldId(),
+        cropId: entity.getCropId(),
+        cropName: entity.getCropName(),
+        status: entity.getStatus(),
+        startedAt: entity.getStartedAt().toISOString(),
+        endedAt: entity.getEndedAt()?.toISOString() ?? null,
+      })
+      .subscribe({
+        next: (response) => {
+          const updated = this.assembler.toEntityFromResponse(response);
+          this.seasons.update((list) =>
+            list.map((s) => (s.getId() === updated.getId() ? updated : s)),
+          );
+        },
+        error: (err) => console.error(err),
+      });
   }
 }
