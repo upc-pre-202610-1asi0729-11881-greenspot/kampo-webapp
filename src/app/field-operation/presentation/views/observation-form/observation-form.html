@@ -1,78 +1,109 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Registrar Observación</title>
-</head>
-<body>
-<div class="container">
-  <h2>Registrar Observación</h2>
+<div class="form-wrapper">
+  <div class="obs-form-container">
 
-  <form [formGroup]="form" (ngSubmit)="onRegisterObservation()">
-    <div class="form-grid">
-      <mat-form-field appearance="outline">
-        <mat-label>ID Visita de Campo</mat-label>
-        <input matInput type="number" formControlName="fieldVisitId" />
-        @if (form.get('fieldVisitId')?.invalid && form.get('fieldVisitId')?.touched) {
-          <mat-error>Visita requerida</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Notas</mat-label>
-        <textarea matInput formControlName="notes" rows="3"></textarea>
-        @if (form.get('notes')?.invalid && form.get('notes')?.touched) {
-          <mat-error>Notas requeridas</mat-error>
-        }
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Nombre de Plaga</mat-label>
-        <input matInput formControlName="pestName" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Severidad Plaga</mat-label>
-        <mat-select formControlName="pestSeverity">
-          @for (s of severityOptions; track s) {
-            <mat-option [value]="s">{{ s }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Nombre de Enfermedad</mat-label>
-        <input matInput formControlName="diseaseName" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Severidad Enfermedad</mat-label>
-        <mat-select formControlName="diseaseSeverity">
-          @for (s of severityOptions; track s) {
-            <mat-option [value]="s">{{ s }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Recomendación</mat-label>
-        <textarea matInput formControlName="recommendation" rows="2"></textarea>
-      </mat-form-field>
-    </div>
-
-    <div class="evidence-upload">
-      <label>Evidencia (imagen/archivo):</label>
-      <input type="file" (change)="onUploadEvidence($event)" accept="image/*,.pdf" />
-    </div>
-
-    <div class="form-actions">
-      <button mat-button type="button" (click)="cancel()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-        <mat-icon>save</mat-icon> Registrar
+    <div class="obs-form-header">
+      <button mat-icon-button (click)="cancel()" class="back-btn">
+        <mat-icon>arrow_back</mat-icon>
       </button>
+      <div>
+        <h2 class="obs-form-title">Registrar Observación</h2>
+        <p class="obs-form-subtitle">Visita de Campo #{{ fieldVisitId }}</p>
+      </div>
     </div>
-  </form>
-</div>
 
-</body>
-</html>
+    <form [formGroup]="form" (ngSubmit)="onRegisterObservation()">
+
+      <div class="obs-section">
+        <div class="obs-section-label">
+          <mat-icon>notes</mat-icon>
+          <span>Notas generales</span>
+        </div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Descripción de la visita</mat-label>
+          <textarea matInput formControlName="notes" rows="3"
+                    placeholder="Describe las condiciones generales observadas..."></textarea>
+          @if (form.get('notes')?.invalid && form.get('notes')?.touched) {
+            <mat-error>Las notas son requeridas</mat-error>
+          }
+        </mat-form-field>
+      </div>
+
+      <div class="obs-section pest-section">
+        <div class="obs-section-label">
+          <mat-icon>bug_report</mat-icon>
+          <span>Plaga detectada</span>
+        </div>
+        <div class="obs-section-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre de la plaga</mat-label>
+            <input matInput formControlName="pestName" placeholder="Ej. Trips, Ácaros" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Severidad</mat-label>
+            <mat-select formControlName="pestSeverity">
+              @for (s of severityOptions; track s) {
+                <mat-option [value]="s">{{ s }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="obs-section disease-section">
+        <div class="obs-section-label">
+          <mat-icon>coronavirus</mat-icon>
+          <span>Enfermedad detectada</span>
+        </div>
+        <div class="obs-section-grid">
+          <mat-form-field appearance="outline">
+            <mat-label>Nombre de la enfermedad</mat-label>
+            <input matInput formControlName="diseaseName" placeholder="Ej. Mildiu, Botritis" />
+          </mat-form-field>
+          <mat-form-field appearance="outline">
+            <mat-label>Severidad</mat-label>
+            <mat-select formControlName="diseaseSeverity">
+              @for (s of severityOptions; track s) {
+                <mat-option [value]="s">{{ s }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div class="obs-section">
+        <div class="obs-section-label">
+          <mat-icon>lightbulb</mat-icon>
+          <span>Recomendación</span>
+        </div>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Acción recomendada</mat-label>
+          <textarea matInput formControlName="recommendation" rows="2"
+                    placeholder="Ej. Aplicar fungicida cúprico en zona norte..."></textarea>
+        </mat-form-field>
+      </div>
+
+      <div class="obs-section evidence-section">
+        <div class="obs-section-label">
+          <mat-icon>attach_file</mat-icon>
+          <span>Evidencia fotográfica</span>
+        </div>
+        <div class="evidence-upload">
+          <input type="file" id="evidenceFile" (change)="onUploadEvidence($event)"
+                 accept="image/*,.pdf" style="display:none" />
+          <label for="evidenceFile" class="evidence-btn">
+            <mat-icon>upload</mat-icon> Seleccionar archivo
+          </label>
+          <span class="evidence-hint">JPG, PNG o PDF — máx. 5MB</span>
+        </div>
+      </div>
+
+      <div class="obs-form-actions">
+        <button mat-stroked-button type="button" (click)="cancel()">Cancelar</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+          <mat-icon>save</mat-icon> Registrar observación
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

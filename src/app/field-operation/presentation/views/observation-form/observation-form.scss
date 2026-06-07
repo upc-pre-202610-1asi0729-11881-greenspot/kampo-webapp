@@ -1,0 +1,163 @@
+/* --- CENTRADO PRINCIPAL --- */
+.form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 40px 20px;
+  background-color: #f4f7f6; /* Fondo gris suave para que el formulario resalte */
+  box-sizing: border-box;
+}
+
+.obs-form-container {
+  max-width: 760px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06); /* Sombra elegante */
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+/* --- ENCABEZADO --- */
+.obs-form-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #eef0f2;
+}
+
+.back-btn {
+  background-color: #f4f7f6;
+  color: #2e7d32;
+}
+
+.obs-form-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #1b2d1e;
+  margin: 0;
+}
+
+.obs-form-subtitle {
+  font-size: 0.9rem;
+  color: #78909c;
+  margin: 4px 0 0;
+  font-weight: 500;
+}
+
+/* --- SECCIONES INTERNAS --- */
+.obs-section {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid #e8eaed;
+  padding: 24px;
+  margin-bottom: 24px; /* Más espacio entre cajas */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pest-section {
+  border-left: 5px solid #e53935;
+  background: #fffafa;
+}
+
+.disease-section {
+  border-left: 5px solid #f57f17;
+  background: #fffdf5;
+}
+
+.evidence-section {
+  border-left: 5px solid #1565c0;
+  background: #f8fbff;
+}
+
+.obs-section-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1b2d1e;
+  margin-bottom: 20px;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+    color: #2e7d32;
+  }
+}
+
+.obs-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px; /* Más aire entre columnas */
+  width: 100%;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* --- BOTONES Y ARCHIVOS --- */
+.evidence-upload {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.evidence-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: 1.5px solid #1565c0;
+  color: #1565c0;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+
+  &:hover {
+    background: #e3f2fd;
+  }
+
+  mat-icon {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.evidence-hint {
+  font-size: 0.8rem;
+  color: #90a4ae;
+}
+
+.obs-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #eef0f2;
+}
+
+/* --- AJUSTES MATERIAL DESIGN --- */
+mat-form-field {
+  width: 100%;
+}
+
+/* Quitar fondos grises extraños en las cajas de Material */
+.pest-section .mat-mdc-form-field,
+.pest-section .mat-mdc-text-field-wrapper,
+.disease-section .mat-mdc-form-field,
+.disease-section .mat-mdc-text-field-wrapper,
+.evidence-section .mat-mdc-form-field,
+.evidence-section .mat-mdc-text-field-wrapper {
+  background: transparent !important;
+}

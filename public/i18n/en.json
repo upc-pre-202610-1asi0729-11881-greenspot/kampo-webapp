@@ -143,5 +143,16 @@
     "type": "Report type",
     "period": "Period",
     "download": "Download"
+  },
+  "dashboard_view": {
+    "main_title": "Main",
+    "welcome": "Welcome to KAMPO — Smart Agricultural Management",
+    "monthly_activity": "Monthly Activity",
+    "quick_access": "Quick Access",
+    "recent_logs": "Recent Farm Logs",
+    "system_alerts": "System Alerts",
+    "view_history": "View History →",
+    "clear_all": "Clear All",
+    "view_all_alerts": "View All Alerts"
   }
 }

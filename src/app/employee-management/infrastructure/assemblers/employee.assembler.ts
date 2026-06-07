@@ -6,15 +6,15 @@ import { Employee } from '../../domain/model/entities/employee.entity';
 
 @Injectable({ providedIn: 'root' })
 export class EmployeeAssembler extends BaseAssembler<Employee, EmployeeResponse> {
-
-  toEntityFromResponse(response: EmployeeResponse): Employee {
+  toEntityFromResponse(response: any): Employee {
     return new Employee(
-      response.id,
-      response.name,
-      response.email,
-      response.role,
-      response.status,
-      response.fieldId
+
+      Number(response['id']) || 0,
+      response['name'] ?? '',
+      response['email'] ?? '',
+      response['role'] ?? '',
+      response['status'] ?? 'ACTIVE',
+      Number(response['fieldId']) || 0,
     );
   }
 
@@ -23,7 +23,8 @@ export class EmployeeAssembler extends BaseAssembler<Employee, EmployeeResponse>
       name: entity.getName(),
       email: entity.getEmail(),
       role: entity.getRole(),
-      fieldId: entity.getFieldId()
+      status: entity.getStatus(),
+      fieldId: entity.getFieldId(),
     };
   }
 }

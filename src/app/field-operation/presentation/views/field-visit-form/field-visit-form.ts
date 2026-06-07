@@ -5,6 +5,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 import { FieldOperationStore } from '../../../application/field-operation.store';
 
 @Component({
@@ -15,9 +18,13 @@ import { FieldOperationStore } from '../../../application/field-operation.store'
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
-  templateUrl: './field-visit-form.html'
+  templateUrl: './field-visit-form.html',
+  styleUrl: './field-visit-form.css',
 })
 export class FieldVisitFormComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -30,7 +37,9 @@ export class FieldVisitFormComponent implements OnInit {
 
   form: FormGroup = this.fb.group({
     fieldId: [1, [Validators.required, Validators.min(1)]],
-    scheduledAt: ['', Validators.required]
+    purpose: ['', Validators.required],
+    technician: ['', Validators.required],
+    scheduledAt: ['', Validators.required],
   });
 
   ngOnInit(): void {
@@ -44,13 +53,17 @@ export class FieldVisitFormComponent implements OnInit {
   onScheduleFieldVisit(): void {
     if (this.form.invalid) return;
     const val = this.form.value;
-    this.store.scheduleFieldVisit(val.fieldId, new Date(val.scheduledAt));
+    this.store.scheduleFieldVisit(
+      val.fieldId,
+      val.purpose,
+      val.technician,
+      new Date(val.scheduledAt),
+    );
     this.router.navigate(['/field-operation'], { queryParams: { fieldId: val.fieldId } });
   }
-
   cancel(): void {
     this.router.navigate(['/field-operation'], {
-      queryParams: { fieldId: this.form.get('fieldId')?.value ?? 1 }
+      queryParams: { fieldId: this.form.get('fieldId')?.value ?? 1 },
     });
   }
 }

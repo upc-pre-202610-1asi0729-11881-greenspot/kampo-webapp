@@ -12,7 +12,7 @@ import { ObservationAssembler } from './assemblers/observation.assembler';
 @Injectable({ providedIn: 'root' })
 export class FieldOperationApi {
   private readonly http = inject(HttpClient);
-  private readonly fieldVisitsEndpoint = `${environment.apiBaseUrl}/field-visits`;
+  private readonly fieldVisitsEndpoint = `${environment.apiBaseUrl}/fieldOperations`;
   private readonly observationsEndpoint = `${environment.apiBaseUrl}/observations`;
   private readonly evidenceEndpoint = `${environment.apiBaseUrl}/evidence`;
 
@@ -21,45 +21,50 @@ export class FieldOperationApi {
 
   getFieldVisitsByField(fieldId: number): Observable<FieldVisit[]> {
     const params = new HttpParams().set('fieldId', String(fieldId));
-    return this.http.get<FieldVisitResponse[]>(this.fieldVisitsEndpoint, { params }).pipe(
-      map(responses => responses.map(r => this.fieldVisitAssembler.toEntityFromResponse(r)))
-    );
+    return this.http
+      .get<FieldVisitResponse[]>(this.fieldVisitsEndpoint, { params })
+      .pipe(
+        map((responses) => responses.map((r) => this.fieldVisitAssembler.toEntityFromResponse(r))),
+      );
   }
 
   scheduleFieldVisit(fieldVisit: FieldVisit): Observable<FieldVisit> {
     const body = this.fieldVisitAssembler.toResourceFromEntity(fieldVisit);
-    return this.http.post<FieldVisitResponse>(this.fieldVisitsEndpoint, body).pipe(
-      map(res => this.fieldVisitAssembler.toEntityFromResponse(res))
-    );
+    return this.http
+      .post<FieldVisitResponse>(this.fieldVisitsEndpoint, body)
+      .pipe(map((res) => this.fieldVisitAssembler.toEntityFromResponse(res)));
   }
 
   completeFieldVisit(fieldVisitId: number): Observable<FieldVisit> {
     const url = `${this.fieldVisitsEndpoint}/${fieldVisitId}/complete`;
-    return this.http.patch<FieldVisitResponse>(url, {}).pipe(
-      map(res => this.fieldVisitAssembler.toEntityFromResponse(res))
-    );
+    return this.http
+      .patch<FieldVisitResponse>(url, {})
+      .pipe(map((res) => this.fieldVisitAssembler.toEntityFromResponse(res)));
   }
 
   registerObservation(observation: Observation): Observable<Observation> {
     const body = this.observationAssembler.toResourceFromEntity(observation);
-    return this.http.post<ObservationResponse>(this.observationsEndpoint, body).pipe(
-      map(res => this.observationAssembler.toEntityFromResponse(res))
-    );
+    return this.http
+      .post<ObservationResponse>(this.observationsEndpoint, body)
+      .pipe(map((res) => this.observationAssembler.toEntityFromResponse(res)));
   }
 
   uploadEvidence(fieldVisitId: number, file: File): Observable<string> {
     const formData = new FormData();
     formData.append('file', file);
     formData.append('fieldVisitId', String(fieldVisitId));
-    return this.http.post<{ url: string }>(`${this.evidenceEndpoint}`, formData).pipe(
-      map(res => res.url)
-    );
+    return this.http
+      .post<{ url: string }>(`${this.evidenceEndpoint}`, formData)
+      .pipe(map((res) => res.url));
   }
 
   implementRecommendation(observationId: number, recommendation: string): Observable<Observation> {
     const url = `${this.observationsEndpoint}/${observationId}/recommendation`;
-    return this.http.patch<ObservationResponse>(url, { recommendation }).pipe(
-      map(res => this.observationAssembler.toEntityFromResponse(res))
-    );
+    return this.http
+      .patch<ObservationResponse>(url, { recommendation })
+      .pipe(map((res) => this.observationAssembler.toEntityFromResponse(res)));
+  }
+  deleteFieldVisit(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.fieldVisitsEndpoint}/${id}`);
   }
 }

@@ -1,40 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
-<div class="container">
-  <h2>Programar Visita de Campo</h2>
+<div class="visit-form-container">
+
+  <div class="visit-form-header">
+    <button mat-icon-button (click)="cancel()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h2 class="visit-form-title">Programar Visita de Campo</h2>
+      <p class="visit-form-subtitle">Lote {{ form.get('fieldId')?.value }}</p>
+    </div>
+  </div>
 
   <form [formGroup]="form" (ngSubmit)="onScheduleFieldVisit()">
-    <div class="form-grid">
-      <mat-form-field appearance="outline">
-        <mat-label>ID Lote</mat-label>
-        <input matInput type="number" formControlName="fieldId" />
+
+    <div class="visit-section">
+      <div class="visit-section-label">
+        <mat-icon>location_on</mat-icon>
+        <span>Parcela</span>
+      </div>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Parcela (Lote)</mat-label>
+        <mat-select formControlName="fieldId">
+          <mat-option [value]="1">Lote 1 - Zona Norte</mat-option>
+          <mat-option [value]="2">Lote 2 - Zona Sur</mat-option>
+          <mat-option [value]="3">Lote 3 - Invernadero</mat-option>
+        </mat-select>
         @if (form.get('fieldId')?.invalid && form.get('fieldId')?.touched) {
           <mat-error>Lote requerido</mat-error>
         }
       </mat-form-field>
+    </div>
 
-      <mat-form-field appearance="outline">
+    <div class="visit-section purpose-section">
+      <div class="visit-section-label">
+        <mat-icon>assignment</mat-icon>
+        <span>Detalles de la visita</span>
+      </div>
+      <div class="visit-section-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Propósito de la visita</mat-label>
+          <mat-select formControlName="purpose">
+            <mat-option value="plagas">Revisión de Plagas</mat-option>
+            <mat-option value="riego">Ciclo de Riego</mat-option>
+            <mat-option value="cosecha">Inspección de Cosecha</mat-option>
+          </mat-select>
+          @if (form.get('purpose')?.invalid && form.get('purpose')?.touched) {
+            <mat-error>Propósito requerido</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Técnico Asignado</mat-label>
+          <input matInput formControlName="technician" placeholder="Ej. Carlos Ruiz" />
+          @if (form.get('technician')?.invalid && form.get('technician')?.touched) {
+            <mat-error>Técnico requerido</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="visit-section date-section">
+      <div class="visit-section-label">
+        <mat-icon>event</mat-icon>
+        <span>Fecha programada</span>
+      </div>
+      <mat-form-field appearance="outline" class="full-width">
         <mat-label>Fecha Programada</mat-label>
-        <input matInput type="date" formControlName="scheduledAt" />
+        <input matInput [matDatepicker]="picker" formControlName="scheduledAt" />
+        <mat-hint>DD/MM/AAAA</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
         @if (form.get('scheduledAt')?.invalid && form.get('scheduledAt')?.touched) {
           <mat-error>Fecha requerida</mat-error>
         }
       </mat-form-field>
     </div>
 
-    <div class="form-actions">
-      <button mat-button type="button" (click)="cancel()">Cancelar</button>
+    <!-- Actions -->
+    <div class="visit-form-actions">
+      <button mat-stroked-button type="button" (click)="cancel()">Cancelar</button>
       <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-        <mat-icon>save</mat-icon> Programar
+        <mat-icon>save</mat-icon> Programar visita
       </button>
     </div>
+
   </form>
 </div>
-
-</body>
-</html>

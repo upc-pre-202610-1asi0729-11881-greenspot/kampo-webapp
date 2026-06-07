@@ -1,31 +1,76 @@
-<form [formGroup]="form" (ngSubmit)="onSubmit()">
-  <mat-form-field appearance="outline">
-    <mat-label>Name</mat-label>
-    <input matInput formControlName="name" placeholder="Enter name">
-  </mat-form-field>
+<div class="emp-form-container">
 
-  <mat-form-field appearance="outline">
-    <mat-label>Email</mat-label>
-    <input matInput formControlName="email" placeholder="Enter email">
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Role</mat-label>
-    <mat-select formControlName="role">
-      @for (role of roles; track role) {
-      <mat-option [value]="role">{{ role }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Field ID</mat-label>
-    <input matInput formControlName="fieldId" type="number">
-  </mat-form-field>
-
-  <div class="actions">
-    <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-      {{ employee ? 'Update' : 'Create' }}
+  <div class="emp-form-header">
+    <button mat-icon-button (click)="onCancel()">
+      <mat-icon>arrow_back</mat-icon>
     </button>
+    <div>
+      <h2 class="emp-form-title">{{ employee ? 'Editar Empleado' : 'Nuevo Empleado' }}</h2>
+      <p class="emp-form-subtitle">{{ employee ? 'Actualiza los datos del empleado' : 'Completa los datos del nuevo empleado' }}</p>
+    </div>
   </div>
-</form>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+    <!-- Información personal -->
+    <div class="emp-section">
+      <div class="emp-section-label">
+        <mat-icon>person</mat-icon>
+        <span>Información personal</span>
+      </div>
+      <div class="emp-section-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre completo</mat-label>
+          <input matInput formControlName="name" placeholder="Ej. Carlos Quispe" />
+          @if (form.get('name')?.invalid && form.get('name')?.touched) {
+            <mat-error>Nombre requerido</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Correo electrónico</mat-label>
+          <input matInput formControlName="email" placeholder="Ej. carlos@kampo.com" type="email" />
+          @if (form.get('email')?.invalid && form.get('email')?.touched) {
+            <mat-error>Email válido requerido</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Rol y campo -->
+    <div class="emp-section role-section">
+      <div class="emp-section-label">
+        <mat-icon>badge</mat-icon>
+        <span>Rol y asignación</span>
+      </div>
+      <div class="emp-section-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Rol</mat-label>
+          <mat-select formControlName="role">
+            @for (role of roles; track role) {
+              <mat-option [value]="role">{{ role }}</mat-option>
+            }
+          </mat-select>
+          @if (form.get('role')?.invalid && form.get('role')?.touched) {
+            <mat-error>Rol requerido</mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>ID de Parcela</mat-label>
+          <input matInput formControlName="fieldId" type="number" placeholder="Ej. 1" />
+          @if (form.get('fieldId')?.invalid && form.get('fieldId')?.touched) {
+            <mat-error>Parcela requerida</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="emp-form-actions">
+      <button mat-stroked-button type="button" (click)="onCancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
+        <mat-icon>save</mat-icon> {{ employee ? 'Actualizar' : 'Crear empleado' }}
+      </button>
+    </div>
+
+  </form>
+</div>

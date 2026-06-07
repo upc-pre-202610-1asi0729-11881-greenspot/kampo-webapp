@@ -10,22 +10,25 @@ export class FieldVisitAssembler extends BaseAssembler<FieldVisit, FieldVisitRes
 
   toEntityFromResponse(response: FieldVisitResponse): FieldVisit {
     const observations = response.observations
-      ? response.observations.map(o => this.observationAssembler.toEntityFromResponse(o))
+      ? response.observations.map((o) => this.observationAssembler.toEntityFromResponse(o))
       : [];
     return new FieldVisit(
       response.id,
       response.fieldId,
+      response.purpose,
+      response.technician,
       new Date(response.scheduledAt),
       response.doneAt ? new Date(response.doneAt) : null,
       response.status as FieldVisitStatus,
-      observations
+      observations,
     );
   }
-
   toResourceFromEntity(entity: FieldVisit): FieldVisitResource {
     return new FieldVisitResource(
       entity.getFieldId(),
-      entity.getScheduledAt().toISOString()
+      entity.getPurpose(),
+      entity.getTechnician(),
+      entity.getScheduledAt().toISOString(),
     );
   }
 }

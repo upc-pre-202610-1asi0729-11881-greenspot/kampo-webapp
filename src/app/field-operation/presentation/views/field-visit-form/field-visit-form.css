@@ -1,30 +1,30 @@
-.emp-form-container {
+.visit-form-container {
   max-width: 720px;
   padding: 24px;
   width: 100%;
 }
 
-.emp-form-header {
+.visit-form-header {
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 28px;
 }
 
-.emp-form-title {
+.visit-form-title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #1b2d1e;
   margin: 0;
 }
 
-.emp-form-subtitle {
+.visit-form-subtitle {
   font-size: 0.85rem;
   color: #78909c;
   margin: 2px 0 0;
 }
 
-.emp-section {
+.visit-section {
   background: white;
   border-radius: 10px;
   border: 1px solid #e8eaed;
@@ -34,12 +34,17 @@
   box-sizing: border-box;
 }
 
-.role-section {
+.purpose-section {
   border-left: 4px solid #2e7d32;
   background: #f0f7f0;
 }
 
-.emp-section-label {
+.date-section {
+  border-left: 4px solid #1565c0;
+  background: #f3f8ff;
+}
+
+.visit-section-label {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -49,10 +54,14 @@
   margin-bottom: 16px;
 }
 
-.emp-section-grid {
+.visit-section-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 12px;
+  width: 100%;
+}
+
+.full-width {
   width: 100%;
 }
 
@@ -60,7 +69,7 @@ mat-form-field {
   width: 100%;
 }
 
-.emp-form-actions {
+.visit-form-actions {
   display: flex;
   justify-content: flex-end;
   gap: 12px;

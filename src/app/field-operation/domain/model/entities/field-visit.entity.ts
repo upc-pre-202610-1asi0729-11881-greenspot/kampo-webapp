@@ -4,6 +4,8 @@ import { Observation } from './observation.entity';
 
 export class FieldVisit extends BaseEntity {
   private fieldId: number;
+  private purpose: string;
+  private technician: string;
   private scheduledAt: Date;
   private doneAt: Date | null;
   private status: FieldVisitStatus;
@@ -12,24 +14,44 @@ export class FieldVisit extends BaseEntity {
   constructor(
     id: number,
     fieldId: number,
+    purpose: string,
+    technician: string,
     scheduledAt: Date,
     doneAt: Date | null,
     status: FieldVisitStatus,
-    observations: Observation[]
+    observations: Observation[],
   ) {
     super(id);
     this.fieldId = fieldId;
+    this.purpose = purpose;
+    this.technician = technician;
     this.scheduledAt = scheduledAt;
     this.doneAt = doneAt;
     this.status = status;
     this.observations = observations;
   }
 
-  getFieldId(): number { return this.fieldId; }
-  getScheduledAt(): Date { return this.scheduledAt; }
-  getDoneAt(): Date | null { return this.doneAt; }
-  getStatus(): FieldVisitStatus { return this.status; }
-  getObservations(): Observation[] { return this.observations; }
+  getFieldId(): number {
+    return this.fieldId;
+  }
+  getPurpose(): string {
+    return this.purpose;
+  }
+  getTechnician(): string {
+    return this.technician;
+  }
+  getScheduledAt(): Date {
+    return this.scheduledAt;
+  }
+  getDoneAt(): Date | null {
+    return this.doneAt;
+  }
+  getStatus(): FieldVisitStatus {
+    return this.status;
+  }
+  getObservations(): Observation[] {
+    return this.observations;
+  }
 
   complete(): void {
     this.status = FieldVisitStatus.DONE;

@@ -1,28 +1,14 @@
 <div class="employee-view">
-  <div class="header">
-    <h1>Employee Management</h1>
-    <button mat-raised-button color="primary" (click)="onCreateEmployee()">
-      Add Employee
-    </button>
-  </div>
-
-  <app-employee-list
-    [employees]="store.employees()"
-    [isLoading]="store.isLoading()"
-    (selectEmployee)="onSelectEmployee($event)"
-    (deleteEmployee)="onDeleteEmployee($event)">
-  </app-employee-list>
+  <app-employee-list></app-employee-list>
 
   @if (store.selectedEmployee()) {
-  <app-employee-detail
-    [employee]="store.selectedEmployee()!">
-  </app-employee-detail>
+    <app-employee-detail [employee]="store.selectedEmployee()!"></app-employee-detail>
   }
 
   @if (showForm) {
-  <app-employee-form
-    [employee]="store.selectedEmployee()"
-    (formSubmit)="onFormSubmit($event)">
-  </app-employee-form>
+    <app-employee-form
+      [employee]="store.selectedEmployee()"
+      (formSubmit)="onFormSubmit($event)">
+    </app-employee-form>
   }
 </div>
