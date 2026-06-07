@@ -41,15 +41,6 @@
       "address": "Valle de Ica",
       "phone": "056-123456",
       "email": "contacto@agrosur.com"
-    },
-    {
-      "name": "Prueba1",
-      "ruc": "11111111111",
-      "address": "Jr Prueba1",
-      "phone": "999999999",
-      "email": "prueba1@gmail.com",
-      "apiId": "v1",
-      "id": "2"
     }
   ],
   "fundos": [
@@ -183,14 +174,14 @@
   ],
   "alerts": [
     {
-      "id": 1,
+      "id": "1",
       "message": "Bajo nivel de humedad en Parcela A1",
       "priority": "HIGH",
       "isRead": false,
       "fieldId": 1
     },
     {
-      "id": 2,
+      "id": "2",
       "message": "Falla en sistema de riego B2",
       "priority": "CRITICAL",
       "isRead": false,

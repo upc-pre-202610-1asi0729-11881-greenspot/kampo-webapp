@@ -9,6 +9,7 @@ import { Organization } from '../../../domain/model/organization.entity';
 import { MatIconModule } from '@angular/material/icon';
 import { OrganizationService } from '../../../infrastructure/services/organization.service';
 import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-organization-form',
@@ -19,17 +20,18 @@ import { CommonModule } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatCardModule,
   ],
   templateUrl: './organization-form.html',
-  styleUrl: './organization-form.css'
+  styleUrl: './organization-form.css',
 })
 export class OrganizationFormComponent implements OnInit {
   private fb = inject(FormBuilder);
   public store = inject(OrganizationStore);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-  private organizationService = inject(OrganizationService); // Inyección vital
+  private organizationService = inject(OrganizationService);
 
   form: FormGroup = this.fb.group({
     id: [0],
@@ -37,7 +39,7 @@ export class OrganizationFormComponent implements OnInit {
     ruc: ['', [Validators.required, Validators.maxLength(11), Validators.minLength(11)]],
     address: [''],
     phone: [''],
-    email: ['', Validators.email]
+    email: ['', Validators.email],
   });
 
   isEdit = false;
@@ -46,7 +48,7 @@ export class OrganizationFormComponent implements OnInit {
     const id = this.route.snapshot.params['id'];
     if (id) {
       this.isEdit = true;
-      const org = this.store.organizations().find(o => o.getId() === +id);
+      const org = this.store.organizations().find((o) => o.getId() === +id);
       if (org) {
         this.form.patchValue({
           id: org.getId(),
@@ -54,7 +56,7 @@ export class OrganizationFormComponent implements OnInit {
           ruc: org.getRuc(),
           address: org.getAddress(),
           phone: org.getPhone(),
-          email: org.getEmail()
+          email: org.getEmail(),
         });
       }
     }
@@ -70,24 +72,34 @@ export class OrganizationFormComponent implements OnInit {
       this.organizationService.update(val.id, val).subscribe({
         next: () => {
           this.store.updateOrganization(entity);
-          this.router.navigate(['/']);
+          // CAMBIA ESTO:
+          this.router.navigate(['/organization-management']);
         },
-        error: (err) => console.error('Error al actualizar:', err)
+        error: (err) => console.error('Error al actualizar:', err),
       });
     } else {
       const { id, ...newOrg } = val;
       this.organizationService.create(newOrg).subscribe({
         next: (response: any) => {
-          const entityWithId = new Organization(response.id, val.name, val.ruc, val.address, val.phone, val.email);
+          const entityWithId = new Organization(
+            response.id,
+            val.name,
+            val.ruc,
+            val.address,
+            val.phone,
+            val.email,
+          );
           this.store.addOrganization(entityWithId);
-          this.router.navigate(['/']);
+          // CAMBIA ESTO:
+          this.router.navigate(['/organization-management']);
         },
-        error: (err) => console.error('Error al guardar:', err)
+        error: (err) => console.error('Error al guardar:', err),
       });
     }
   }
 
   cancel(): void {
-    this.router.navigate(['/']);
+    // CAMBIA ESTO:
+    this.router.navigate(['/organization-management']);
   }
 }

@@ -1,46 +1,57 @@
-<div class="container mat-elevation-z8">
-  <div class="header">
-    <h2>Organizaciones</h2>
-    <button mat-raised-button color="primary" routerLink="new">
-      <mat-icon>add</mat-icon> Nueva Organización
-    </button>
-  </div>
+<div class="page-container">
+  <mat-card class="list-card">
+    <mat-card-header class="list-header">
+      <mat-card-title>Organizaciones</mat-card-title>
+      <button mat-flat-button color="primary" (click)="navigateToNew()">
+        <mat-icon>add</mat-icon> Nueva Organización
+      </button>
+    </mat-card-header>
 
-  <table mat-table [dataSource]="store.organizationTableData()" matSort>
+    <mat-card-content>
+      @if (store.organizations().length > 0) {
+        <table mat-table [dataSource]="store.organizationTableData()" class="professional-table">
 
-    <ng-container matColumnDef="id">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
-      <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-    </ng-container>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> ORGANIZACIÓN </th>
+            <td mat-cell *matCellDef="let row">
+              <div class="org-cell">
+                <div class="avatar"><mat-icon>domain</mat-icon></div>
+                <span class="org-name">{{row.name}}</span>
+              </div>
+            </td>
+          </ng-container>
 
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nombre </th>
-      <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-    </ng-container>
+          <ng-container matColumnDef="ruc">
+            <th mat-header-cell *matHeaderCellDef> RUC </th>
+            <td mat-cell *matCellDef="let row" class="secondary-text"> {{row.ruc}} </td>
+          </ng-container>
 
-    <ng-container matColumnDef="ruc">
-      <th mat-header-cell *matHeaderCellDef> RUC </th>
-      <td mat-cell *matCellDef="let element"> {{element.ruc}} </td>
-    </ng-container>
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> ESTADO </th>
+            <td mat-cell *matCellDef="let row">
+              <mat-chip-set>
+                <mat-chip class="status-active">Activo</mat-chip>
+              </mat-chip-set>
+            </td>
+          </ng-container>
 
-    <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef> Acciones </th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-icon-button color="accent" [routerLink]="['edit', element.id]">
-          <mat-icon>edit</mat-icon>
-        </button>
-        <button mat-icon-button color="warn" (click)="delete(element.id)">
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
-    </ng-container>
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef class="text-right"> ACCIONES </th>
+            <td mat-cell *matCellDef="let row" class="text-right">
+              <button mat-icon-button (click)="edit(row.id)"><mat-icon color="primary">edit</mat-icon></button>
+              <button mat-icon-button (click)="delete(row.id)"><mat-icon color="warn">delete</mat-icon></button>
+            </td>
+          </ng-container>
 
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-  </table>
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]"
-                 showFirstLastButtons
-                 aria-label="Seleccionar página de organizaciones">
-  </mat-paginator>
+          <tr mat-header-row *matHeaderRowDef="['name', 'ruc', 'status', 'actions']"></tr>
+          <tr mat-row *matRowDef="let row; columns: ['name', 'ruc', 'status', 'actions'];"></tr>
+        </table>
+      } @else {
+        <div class="empty-state">
+          <mat-icon>business</mat-icon>
+          <p>No hay organizaciones registradas. ¡Empieza creando una!</p>
+        </div>
+      }
+    </mat-card-content>
+  </mat-card>
 </div>

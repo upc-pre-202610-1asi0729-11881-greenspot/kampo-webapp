@@ -60,8 +60,11 @@ export class OrganizationStore {
       list.map(o => o.getId() === org.getId() ? org : o)
     );
   }
-
   deleteOrganization(id: number): void {
-    this.organizations.update(list => list.filter(o => o.getId() !== id));
+    this.organizationService.delete(id).subscribe({
+      next: () => {
+        this.organizations.update(list => list.filter(o => o.getId() !== id));
+      }
+    });
   }
 }
