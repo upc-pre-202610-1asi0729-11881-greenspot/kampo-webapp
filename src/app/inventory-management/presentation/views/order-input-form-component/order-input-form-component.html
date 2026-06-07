@@ -67,18 +67,19 @@
           <td mat-cell *matCellDef="let row">{{ orderStatusLabel(row.getStatus()) }}</td>
         </ng-container>
         <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef></th>
+          <th mat-header-cell *matHeaderCellDef> </th>
           <td mat-cell *matCellDef="let row">
-            @if (row.getStatus() === orderStatus.PENDING) {
-              <button
-                mat-stroked-button
-                color="accent"
-                type="button"
-                (click)="onReceiveInput(row.getId(), row.getQuantity())"
-              >
-                Recibir
+            <div style="display: flex; gap: 8px; align-items: center;">
+              @if (row.status === orderStatus.PENDING) {
+                <button mat-stroked-button color="primary" (click)="onReceiveInput(row.id, row.quantity)">
+                  Recibir
+                </button>
+              }
+
+              <button mat-icon-button color="warn" (click)="onDeleteOrder(row.id)">
+                <mat-icon>delete</mat-icon>
               </button>
-            }
+            </div>
           </td>
         </ng-container>
         <tr mat-header-row *matHeaderRowDef="orderColumns"></tr>

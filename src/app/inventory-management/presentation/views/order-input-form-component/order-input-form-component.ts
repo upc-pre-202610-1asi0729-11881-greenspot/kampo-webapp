@@ -83,12 +83,31 @@ export class OrderInputFormComponent implements OnInit {
       return;
     }
     const v = this.form.getRawValue();
+
     this.store.orderInput(v.inventoryId, v.supplierId, v.quantity);
-    this.snackBar.open('Pedido creado (pendiente de API).', 'OK', { duration: 2500 });
+
+    this.snackBar.open('Pedido creado exitosamente.', 'Cerrar', {
+      duration: 3000,
+      panelClass: ['success-snackbar']
+    });
+
+    this.form.reset({
+      inventoryId: 0,
+      supplierId: 0,
+      quantity: 1
+    });
   }
 
   onReceiveInput(orderId: number, quantity: number): void {
     this.store.receiveInput(orderId, quantity);
     this.snackBar.open('Recepción registrada.', 'OK', { duration: 2000 });
+  }
+
+  onDeleteOrder(orderId: number): void {
+    // Es buena práctica pedir confirmación antes de una acción destructiva
+    if (confirm('¿Estás seguro de que deseas eliminar este pedido?')) {
+      this.store.deleteOrder(orderId);
+      this.snackBar.open('Pedido eliminado exitosamente.', 'Cerrar', { duration: 3000 });
+    }
   }
 }

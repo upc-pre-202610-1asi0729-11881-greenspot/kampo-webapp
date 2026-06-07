@@ -142,15 +142,29 @@ export class InventoryStore {
   receiveInput(orderId: number, quantity: number): void {
     this.isLoading.set(true);
 
+    // Buscamos el pedido actual para saber a qué inventario pertenece
+    const currentOrder = this.orders().find(o => o.getId() === orderId);
+
     this.api
       .receiveInput(orderId, quantity)
       .pipe(finalize(() => this.isLoading.set(false)))
-
-      // Actualiza el pedido recibido.
       .subscribe((updated) => {
+        // 1. Actualiza el estado del pedido en la lista visual
         this.orders.update((list) =>
           list.map((o) => (o.getId() === updated.getId() ? updated : o)),
         );
+
+        // 2. MAGIA: Aumenta el stock en el inventario
+        if (currentOrder) {
+          const inventoryId = currentOrder.getInventoryId(); // Asegúrate de tener este método en tu entidad OrderInput
+          const currentInventory = this.inventories().find(i => i.getId() === inventoryId);
+
+          if (currentInventory) {
+            const newQuantity = currentInventory.getQuantity() + quantity;
+            // Llama a tu función updateStock que ya tienes lista!
+            this.updateStock(inventoryId, newQuantity);
+          }
+        }
       });
   }
 
@@ -220,4 +234,18 @@ export class InventoryStore {
         },
       });
   }
+
+  // Elimina un pedido y actualiza la lista reactiva.
+  deleteOrder(orderId: number): void {
+    this.isLoading.set(true);
+
+    this.api
+      .deleteOrder(orderId)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe(() => {
+        // Filtramos la lista actual para dejar todos los pedidos MENOS el que acabamos de borrar
+        this.orders.update((list) => list.filter((o) => o.getId() !== orderId));
+      });
+  }
+
 }

@@ -26,7 +26,6 @@ export class InventoryShellComponent {
 
   readonly navLinks = [
     { path: 'inventario', label: 'Inventario', icon: 'inventory_2' },
-    { path: 'inventario/registro', label: 'Nuevo ítem', icon: 'add_box' },
     { path: 'proveedores/nuevo', label: 'Proveedor', icon: 'local_shipping' },
     { path: 'pedidos', label: 'Pedidos', icon: 'shopping_cart' },
     { path: 'panel', label: 'Stock', icon: 'dashboard' },

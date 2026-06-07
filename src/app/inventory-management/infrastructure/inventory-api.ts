@@ -150,15 +150,15 @@ export class InventoryApi {
 
   // Registra la recepción parcial o total de un pedido.
   receiveInput(orderId: number, quantity: number): Observable<OrderInput> {
-    return (
-      this.http
+    const patchData = {
+      status: 'RECEIVED'
+    };
 
-        // Realiza petición PATCH para actualizar recepción.
-        .patch<OrderInputResponse>(`${this.ordersEndpoint}/${orderId}/receive`, { quantity })
-
-        // Convierte la respuesta en entidad del dominio.
-        .pipe(map((dto) => this.orderAssembler.toEntityFromResponse(dto)))
-    );
+    return this.http.patch<OrderInputResponse>(`${environment.apiBaseUrl}/orders/${orderId}`, patchData)
+      .pipe(
+        // CAMBIO AQUÍ: this.orderAssembler
+        map(response => this.orderAssembler.toEntityFromResponse(response))
+      );
   }
 
   // Registra un nuevo inventario o insumo.
@@ -176,4 +176,9 @@ export class InventoryApi {
         .pipe(map((dto) => this.inventoryAssembler.toEntityFromResponse(dto)))
     );
   }
+
+  deleteOrder(orderId: number): Observable<void> {
+    return this.http.delete<void>(`${this.ordersEndpoint}/${orderId}`);
+  }
+
 }

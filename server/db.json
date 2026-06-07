@@ -41,6 +41,14 @@
       "address": "Valle de Ica",
       "phone": "056-123456",
       "email": "contacto@agrosur.com"
+    },
+    {
+      "name": "prueba1",
+      "ruc": "12345678901",
+      "address": "jr prueba 1",
+      "phone": "987 123 123",
+      "email": "prueba@gmail.com",
+      "id": "aJ_QB8A"
     }
   ],
   "fundos": [
@@ -148,6 +156,13 @@
       "unit": "Lt.",
       "minStock": 80,
       "status": "AVAILABLE"
+    },
+    {
+      "name": "Fertilizante Prueba",
+      "quantity": 10,
+      "unit": "kg",
+      "minStock": 20,
+      "id": "XtU7abc"
     }
   ],
   "suppliers": [
@@ -155,6 +170,26 @@
       "id": "1",
       "name": "AgroInsumos S.A.",
       "contact": "Ventas: 999888777"
+    },
+    {
+      "name": "InsumosAgro",
+      "contact": "987 123 123",
+      "email": "insumosagro@gmail.com",
+      "id": "Ky6qnux"
+    }
+  ],
+  "orders": [
+    {
+      "inventoryId": "2",
+      "supplierId": "Ky6qnux",
+      "quantity": 1,
+      "id": 2
+    },
+    {
+      "inventoryId": "2",
+      "supplierId": "1",
+      "quantity": 1,
+      "id": 3
     }
   ],
   "alerts": [
