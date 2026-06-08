@@ -5,12 +5,12 @@ import { Money } from '../../domain/model/value-object/money.vo';
 import { ExpenseCategory } from '../../domain/model/enums/expense-category.enum';
 
 export class ExpenseAssembler {
-  toEntityFromResponse(response: ExpenseResponse): Expense {
+  toEntityFromResponse(response: any): Expense {
     const category = ExpenseAssembler.parseCategory(response.category);
     return new Expense(
-      new ExpenseId(response.id),
+      new ExpenseId(response['id'] ?? response.id),
       response.description,
-      new Money(response.amount, response.currency),
+      new Money(response.amount, response.currency ?? 'PEN'),
       category,
       new Date(response.date),
     );

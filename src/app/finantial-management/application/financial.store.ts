@@ -96,69 +96,65 @@ export class FinancialStore {
 
   // Agrega un nuevo gasto al registro financiero actual.
   addExpense(description: string, amount: Money, category: ExpenseCategory, date: Date): void {
-    // Obtiene el registro actual.
     const current = this.record();
+    if (!current) return;
 
-    // Si no existe registro cargado, termina la ejecución.
-    if (!current) {
-      return;
-    }
-
-    // Clona el aggregate para mantener inmutabilidad.
     const next = FinancialStore.cloneRecord(current);
-
-    // Agrega el gasto.
     next.addExpense(description, amount, category, date);
 
-    // Actualiza el estado reactivo.
-    this.record.set(next);
+    // Activamos la carga y ejecutamos la persistencia en el backend
+    this.isLoading.set(true);
 
-    // Recalcula la rentabilidad.
-    this.computeProfitability();
+    this.repository.save(next)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (savedRecord) => {
+          // Si el backend responde OK, actualizamos la vista
+          this.record.set(savedRecord);
+          this.computeProfitability();
+        },
+        error: (err) => console.error('Error al guardar el gasto:', err)
+      });
   }
 
   // Agrega un nuevo ingreso financiero.
   addIncome(description: string, amount: Money, date: Date): void {
     const current = this.record();
+    if (!current) return;
 
-    // Valida existencia del registro.
-    if (!current) {
-      return;
-    }
-
-    // Clona el aggregate actual.
     const next = FinancialStore.cloneRecord(current);
-
-    // Registra el ingreso.
     next.addIncome(description, amount, date);
 
-    // Actualiza el estado.
-    this.record.set(next);
-
-    // Recalcula indicadores financieros.
-    this.computeProfitability();
+    this.isLoading.set(true);
+    this.repository.save(next)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (savedRecord) => {
+          this.record.set(savedRecord);
+          this.computeProfitability();
+        },
+        error: (err) => console.error('Error al guardar ingreso:', err)
+      });
   }
 
   // Registra una nueva venta agrícola.
   addSale(cropName: string, quantity: number, pricePerUnit: Money, date: Date): void {
     const current = this.record();
+    if (!current) return;
 
-    // Verifica que exista un aggregate cargado.
-    if (!current) {
-      return;
-    }
-
-    // Clona el aggregate.
     const next = FinancialStore.cloneRecord(current);
-
-    // Agrega la venta.
     next.addSale(cropName, quantity, pricePerUnit, date);
 
-    // Actualiza el estado reactivo.
-    this.record.set(next);
-
-    // Recalcula rentabilidad.
-    this.computeProfitability();
+    this.isLoading.set(true);
+    this.repository.save(next)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (savedRecord) => {
+          this.record.set(savedRecord);
+          this.computeProfitability();
+        },
+        error: (err) => console.error('Error al guardar venta:', err)
+      });
   }
 
   // Calcula la rentabilidad financiera del aggregate actual.
@@ -199,5 +195,55 @@ export class FinancialStore {
       source.getIncomes(),
       source.getSales(),
     );
+  }
+  deleteExpense(expenseId: string): void {
+    const current = this.record();
+    if (!current) {
+      return;
+    }
+    const next = FinancialStore.cloneRecord(current);
+    next.removeExpense(expenseId);
+    this.isLoading.set(true);
+
+    this.repository.save(next).subscribe({
+      next: (savedRecord) => {
+        // Esto fuerza a Angular a detectar un cambio de referencia
+        this.record.set(new FinancialRecord(
+          savedRecord.getId(),
+          savedRecord.getFundoId(),
+          savedRecord.getSeasonId(),
+          savedRecord.getExpenses(),
+          savedRecord.getIncomes(),
+          savedRecord.getSales()
+        ));
+        this.computeProfitability();
+      }
+    });
+  }
+
+  deleteIncome(incomeId: string): void {
+    const current = this.record();
+    if (!current) return;
+
+    const next = FinancialStore.cloneRecord(current);
+    next.removeIncome(incomeId);
+
+    this.isLoading.set(true);
+    this.repository.save(next)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (savedRecord) => {
+          this.record.set(new FinancialRecord(
+            savedRecord.getId(),
+            savedRecord.getFundoId(),
+            savedRecord.getSeasonId(),
+            savedRecord.getExpenses(),
+            savedRecord.getIncomes(),
+            savedRecord.getSales()
+          ));
+          this.computeProfitability();
+        },
+        error: (err) => console.error('Error al eliminar ingreso:', err)
+      });
   }
 }

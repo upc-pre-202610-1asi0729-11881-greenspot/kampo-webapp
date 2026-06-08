@@ -1,5 +1,5 @@
 <div class="shell">
-  <mat-toolbar color="primary" class="toolbar">
+  <mat-toolbar class="professional-header">
     <mat-icon class="toolbar-icon">account_balance_wallet</mat-icon>
     <div class="toolbar-text">
       <span class="toolbar-title">Gestión financiera</span>
@@ -7,28 +7,31 @@
     </div>
     <span class="spacer"></span>
     @if (store.isLoading()) {
-      <mat-progress-spinner mode="indeterminate" diameter="32"></mat-progress-spinner>
+      <mat-progress-spinner mode="indeterminate" diameter="32" color="accent"></mat-progress-spinner>
     }
   </mat-toolbar>
 
-  <nav class="subnav mat-elevation-z1">
-    @for (link of navLinks; track link.path) {
-      <a
-        mat-stroked-button
-        color="primary"
-        [routerLink]="['./', link.path]"
-        routerLinkActive="active-link"
-        [routerLinkActiveOptions]="{ exact: false }"
-        queryParamsHandling="preserve"
-        class="nav-button"
-      >
-        <mat-icon>{{ link.icon }}</mat-icon>
-        {{ link.label }}
-      </a>
-    }
+  <nav class="subnav">
+    <div class="subnav-container">
+      @for (link of navLinks; track link.path) {
+        <a
+          mat-stroked-button
+          class="mock-btn"
+          [routerLink]="['./', link.path]"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{ exact: false }"
+          queryParamsHandling="preserve"
+        >
+          <mat-icon>{{ link.icon }}</mat-icon>
+          {{ link.label }}
+        </a>
+      }
+    </div>
   </nav>
 
-  <div class="outlet-wrap mat-elevation-z2">
-    <router-outlet></router-outlet>
+  <div class="content-wrapper">
+    <div class="outlet-wrap">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 </div>

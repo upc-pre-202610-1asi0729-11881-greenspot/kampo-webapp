@@ -1,12 +1,11 @@
-<div class="container">
-  <div class="header">
+<div class="page-container">
+  <div class="header-split">
     <div class="header-titles">
-      <h2>Gastos</h2>
+      <h2 class="title">Gastos</h2>
       <p class="subtitle">Registro de egresos del fundo y la temporada seleccionados.</p>
     </div>
-    <button mat-raised-button color="primary" type="button" (click)="onAddExpense()" [disabled]="!hasRecord()">
-      <mat-icon>add</mat-icon>
-      Nuevo gasto
+    <button mat-flat-button color="primary" type="button" (click)="onAddExpense()">
+      <mat-icon>add</mat-icon> Nuevo gasto
     </button>
   </div>
 
@@ -19,82 +18,81 @@
         }
       </mat-select>
     </mat-form-field>
-    @if (categoryFilter()) {
-      <button mat-stroked-button type="button" (click)="clearFilter()">
-        <mat-icon>filter_alt_off</mat-icon>
-        Limpiar filtro
-      </button>
-    }
+
+    <mat-form-field appearance="outline" class="filter-field">
+      <mat-label>Desde - Hasta</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input matStartDate placeholder="dd/mm/aaaa">
+        <input matEndDate placeholder="dd/mm/aaaa">
+      </mat-date-range-input>
+      <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+
+    <button mat-stroked-button type="button" (click)="clearFilter()" class="clear-btn">
+      <mat-icon>calendar_today</mat-icon> Limpiar fechas
+    </button>
   </div>
 
   @if (isLoading()) {
-    <div class="state-block">
+    <div class="empty-state">
       <mat-progress-spinner mode="indeterminate" diameter="48"></mat-progress-spinner>
       <p>Cargando datos financieros…</p>
     </div>
-  } @else if (!hasRecord()) {
-    <mat-card class="state-card">
-      <mat-card-content>
-        <div class="state-card-inner">
-          <mat-icon color="warn">error_outline</mat-icon>
-          <div>
-            <h3 class="state-title">No hay registro financiero</h3>
-            <p class="state-text">
-              Revisa la API o los parámetros <code>fundoId</code> y <code>seasonId</code> en la URL.
-            </p>
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  } @else {
-    <div class="table-wrap mat-elevation-z2">
-      <table mat-table [dataSource]="pagedExpenses()">
-        <ng-container matColumnDef="description">
-          <th mat-header-cell *matHeaderCellDef>Descripción</th>
-          <td mat-cell *matCellDef="let row">{{ row.getDescription() }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="amount">
-          <th mat-header-cell *matHeaderCellDef>Monto</th>
-          <td mat-cell *matCellDef="let row">
-            {{ row.getAmount().getAmount() | number: '1.2-2' }}
-            <span class="currency">{{ row.getAmount().getCurrency() }}</span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="category">
-          <th mat-header-cell *matHeaderCellDef>Categoría</th>
-          <td mat-cell *matCellDef="let row">
-            <span class="category-badge">{{ categoryLabel(row.getCategory()) }}</span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="date">
-          <th mat-header-cell *matHeaderCellDef>Fecha</th>
-          <td mat-cell *matCellDef="let row">{{ row.getDate() | date: 'mediumDate' }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="actions">
-          <th mat-header-cell *matHeaderCellDef class="col-actions">Acciones</th>
-          <td mat-cell *matCellDef="let row" class="col-actions">
-            <button mat-icon-button disabled title="Edición próximamente">
-              <mat-icon>edit</mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
-
-      <mat-paginator
-        [length]="filteredExpenses().length"
-        [pageIndex]="pageIndex()"
-        [pageSize]="pageSize()"
-        [pageSizeOptions]="[5, 10, 25]"
-        showFirstLastButtons
-        (page)="onPage($event)"
-      ></mat-paginator>
+  } @else if (filteredExpenses().length === 0) {
+    <div class="empty-state">
+      <p>No hay registro de gastos para mostrar. (Verifica los parámetros en la URL o registra un nuevo gasto)</p>
     </div>
+  } @else {
+    <table mat-table [dataSource]="pagedExpenses()" class="professional-table">
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Descripción</th>
+        <td mat-cell *matCellDef="let row" class="bold-text">{{ row.getDescription() || 'Sin descripción' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="amount">
+        <th mat-header-cell *matHeaderCellDef>Monto</th>
+        <td mat-cell *matCellDef="let row" class="amount-text">
+          {{ row.getAmount().getAmount() | number: '1.2-2' }}
+          <span class="currency">{{ row.getAmount().getCurrency() }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="category">
+        <th mat-header-cell *matHeaderCellDef>Categoría</th>
+        <td mat-cell *matCellDef="let row">
+          <span class="category-chip">{{ categoryLabel(row.getCategory()) }}</span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="date">
+        <th mat-header-cell *matHeaderCellDef>Fecha</th>
+        <td mat-cell *matCellDef="let row" class="secondary-text">{{ row.getDate() | date: 'mediumDate' }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="text-right">Acciones</th>
+        <td mat-cell *matCellDef="let row" class="text-right">
+          <button mat-icon-button color="primary" (click)="onEdit(row)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="onDelete(row)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+
+    <mat-paginator
+      [length]="filteredExpenses().length"
+      [pageIndex]="pageIndex()"
+      [pageSize]="pageSize()"
+      [pageSizeOptions]="[5, 10, 25]"
+      showFirstLastButtons
+      (page)="onPage($event)"
+    ></mat-paginator>
   }
 </div>
