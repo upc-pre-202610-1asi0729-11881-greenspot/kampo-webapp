@@ -1,9 +1,81 @@
-mat-card-title { display: flex; align-items: center; gap: 8px; }
-.spinner-container { display: flex; justify-content: center; padding: 32px; }
-.empty-state { display: flex; flex-direction: column; align-items: center; padding: 32px; color: #888; gap: 8px; }
-.empty-state mat-icon { font-size: 48px; width: 48px; height: 48px; }
-.clickable-row { cursor: pointer; }
-.clickable-row:hover { background: rgba(0,0,0,0.04); }
-.chip-financial { background-color: #e3f2fd !important; color: #1565c0 !important; }
-.chip-iot { background-color: #e8f5e9 !important; color: #2e7d32 !important; }
-.chip-recommendation { background-color: #fff3e0 !important; color: #e65100 !important; }
+.kampo-table-container {
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #EAEAEA;
+  overflow: hidden;
+}
+
+.kampo-minimal-table {
+  width: 100%;
+  box-shadow: none !important;
+}
+
+.kampo-minimal-table th {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid #EAEAEA;
+  padding: 16px;
+}
+
+.kampo-minimal-table td {
+  padding: 16px;
+  border-bottom: 1px solid #F5F5F5;
+  color: #333;
+}
+
+.bold-text {
+  font-weight: 600;
+  color: #1A1A1A;
+}
+
+.sub-text {
+  color: #666;
+  font-size: 13px;
+}
+
+.kampo-tag {
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.financiero { background: #E8F5E9; color: #2E7D32; }
+.agronomico { background: #E3F2FD; color: #1565C0; }
+
+.hover-row {
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.hover-row:hover {
+  background-color: #FAFAFA;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.action-btn {
+  transform: scale(0.8);
+  color: #888;
+}
+
+.empty-state, .loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0;
+  color: #888;
+}
+
+.empty-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}

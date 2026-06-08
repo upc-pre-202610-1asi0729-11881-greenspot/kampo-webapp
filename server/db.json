@@ -109,6 +109,30 @@
       "scheduledAt": "2026-06-04T08:42:00Z",
       "doneAt": null,
       "status": "SCHEDULED"
+    },
+    {
+      "fieldId": 1,
+      "purpose": "riego",
+      "technician": "Pepe",
+      "scheduledAt": "2026-07-09T05:00:00.000Z",
+      "status": "SCHEDULED",
+      "id": "NAx-lTJ"
+    },
+    {
+      "fieldId": 2,
+      "purpose": "cosecha",
+      "technician": "Alberto",
+      "scheduledAt": "2026-08-07T05:00:00.000Z",
+      "status": "SCHEDULED",
+      "id": "8XbuXeL"
+    },
+    {
+      "fieldId": 3,
+      "purpose": "plagas",
+      "technician": "Mathias",
+      "scheduledAt": "2026-06-10T05:00:00.000Z",
+      "status": "SCHEDULED",
+      "id": "x6e0xJK"
     }
   ],
   "observations": [],
@@ -246,10 +270,28 @@
   ],
   "reports": [
     {
-      "id": "1",
-      "type": "FINANCIERO",
-      "period": "Q1 2026",
-      "downloadUrl": "https://kampo.com/reports/1"
+      "type": "IOT",
+      "usersId": 1,
+      "seasonsId": 1,
+      "id": 1
+    },
+    {
+      "type": "FINANCIAL",
+      "usersId": 1,
+      "seasonsId": 1,
+      "id": 2
+    },
+    {
+      "type": "RECOMMENDATION",
+      "usersId": 1,
+      "seasonsId": 1,
+      "id": 3
+    },
+    {
+      "type": "FINANCIAL",
+      "usersId": 1,
+      "seasonsId": 1,
+      "id": 4
     }
   ],
   "$schema": "./node_modules/json-server/schema.json",
@@ -257,17 +299,72 @@
     {
       "fundoId": 1,
       "seasonId": 1,
-      "expenses": [],
+      "expenses": [
+        {
+          "description": "Fertilizantes",
+          "amount": 60,
+          "currency": "PEN",
+          "category": "INPUT",
+          "date": "2026-06-08T00:00:00.000Z"
+        },
+        {
+          "description": "Carga",
+          "amount": 30,
+          "currency": "PEN",
+          "category": "TRANSPORT",
+          "date": "2026-06-08T00:00:00.000Z"
+        }
+      ],
       "incomes": [
         {
           "description": "Fertilizantes",
           "amount": 50,
           "currency": "PEN",
           "date": "2026-06-08T00:00:00.000Z"
+        },
+        {
+          "description": "Fertilizantes",
+          "amount": 30,
+          "currency": "PEN",
+          "date": "2026-06-08T00:00:00.000Z"
+        },
+        {
+          "description": "Transporte",
+          "amount": 200,
+          "currency": "PEN",
+          "date": "2026-06-08T00:00:00.000Z"
         }
       ],
-      "sales": [],
+      "sales": [
+        {
+          "cropName": "Fertilizantes",
+          "quantity": 10,
+          "pricePerUnit": 15,
+          "currency": "PEN",
+          "date": "2026-06-08T00:00:00.000Z"
+        }
+      ],
       "id": "rec-1-1"
+    }
+  ],
+  "recommendations": [
+    {
+      "reportsId": 4,
+      "priority": "HIGH",
+      "id": 1,
+      "status": "IMPLEMENTED"
+    },
+    {
+      "reportsId": 1,
+      "priority": "LOW",
+      "id": 2,
+      "status": "IMPLEMENTED"
+    },
+    {
+      "reportsId": 2,
+      "priority": "LOW",
+      "id": 3,
+      "status": "IMPLEMENTED"
     }
   ]
 }

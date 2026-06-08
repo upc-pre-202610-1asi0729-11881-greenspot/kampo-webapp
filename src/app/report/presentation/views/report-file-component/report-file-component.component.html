@@ -1,54 +1,67 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>
-      <mat-icon>folder_open</mat-icon>
-      Report Detail
-    </mat-card-title>
-  </mat-card-header>
-
-  <mat-card-content>
-    @if (isLoading) {
-      <div class="spinner-container">
-        <mat-spinner diameter="40" />
+<div class="kampo-dashboard">
+  <div class="k-kpi-grid">
+    <div class="k-kpi-card">
+      <div class="k-kpi-title">Report ID & Status</div>
+      <div class="k-kpi-value">#{{ report.getId() }}</div>
+      <div class="k-kpi-trend text-success">
+        <mat-icon class="k-icon-small">check_circle</mat-icon>
+        <span>Generated Successfully</span>
       </div>
-    } @else if (report) {
-      <div class="detail-grid">
-        <div class="detail-item">
-          <span class="label">ID</span>
-          <span class="value">#{{ report.getId() }}</span>
+    </div>
+
+    <div class="k-kpi-card">
+      <div class="k-kpi-title">Category / Type</div>
+      <div class="k-kpi-value capitalize">{{ report.getType().toLowerCase() }}</div>
+      <div class="k-kpi-trend text-neutral">
+        <mat-icon class="k-icon-small">analytics</mat-icon>
+        <span>Standard Analysis</span>
+      </div>
+    </div>
+
+    <div class="k-kpi-card">
+      <div class="k-kpi-title">Season / Period</div>
+      <div class="k-kpi-value">Season {{ report.getSeasonsId() }}</div>
+      <div class="k-kpi-trend text-neutral">
+        <mat-icon class="k-icon-small">calendar_today</mat-icon>
+        <span>Active Period</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="k-chart-card">
+    <div class="k-card-header">
+      <h3 class="k-card-title">Distribution Overview</h3>
+      <span class="k-badge">All Categories</span>
+    </div>
+
+    <div class="k-mock-chart">
+      <div class="k-bar-group">
+        <div class="k-bar dark-green"
+             [style.height.%]="getBarHeight(totalExpenses)">
         </div>
-        <div class="detail-item">
-          <span class="label">Type</span>
-          <mat-chip>{{ report.getType() }}</mat-chip>
-        </div>
-        <div class="detail-item">
-          <span class="label">Season</span>
-          <span class="value">{{ report.getSeasonsId() }}</span>
-        </div>
-        <div class="detail-item">
-          <span class="label">User</span>
-          <span class="value">{{ report.getUsersId() }}</span>
-        </div>
+        <span>Gastos (S/. {{ totalExpenses }})</span>
       </div>
 
-      <mat-divider />
-
-      <div class="file-url">
-        <mat-icon>link</mat-icon>
-        <span>{{ report.getFileUrl() }}</span>
+      <div class="k-bar-group">
+        <div class="k-bar mid-green"
+             [style.height.%]="getBarHeight(totalSales)">
+        </div>
+        <span>Ventas (S/. {{ totalSales }})</span>
       </div>
-    }
-  </mat-card-content>
 
-  <mat-card-actions align="end">
-    <button
-      mat-raised-button
-      color="primary"
-      (click)="openFile()"
-      [disabled]="!report || isLoading"
-    >
-      <mat-icon>open_in_new</mat-icon>
-      Open File
-    </button>
-  </mat-card-actions>
-</mat-card>
+      <div class="k-bar-group">
+        <div class="k-bar orange"
+             [style.height.%]="getBarHeight(totalIncomes)">
+        </div>
+        <span>Ingresos (S/. {{ totalIncomes }})</span>
+      </div>
+
+      <div class="k-bar-group">
+        <div class="k-bar light-green"
+             [style.height.%]="getBarHeight(totalSales - totalExpenses)">
+        </div>
+        <span>Ganancia (S/. {{ totalSales - totalExpenses }})</span>
+      </div>
+    </div>
+  </div>
+</div>

@@ -56,7 +56,9 @@ export class FinancialStore {
 
   // Valor computado que indica si existe un registro cargado.
   readonly hasRecord = computed(() => this.record() !== null);
-
+  readonly expenses = computed(() => this.record()?.getExpenses() ?? []);
+  readonly incomes = computed(() => this.record()?.getIncomes() ?? []);
+  readonly sales = computed(() => this.record()?.getSales() ?? []);
   // Carga un registro financiero según fundo y temporada.
   // Obtiene información desde el repositorio y actualiza el estado reactivo.
   loadRecord(fundoId: FundoId, seasonId: SeasonId): void {
@@ -105,7 +107,8 @@ export class FinancialStore {
     // Activamos la carga y ejecutamos la persistencia en el backend
     this.isLoading.set(true);
 
-    this.repository.save(next)
+    this.repository
+      .save(next)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (savedRecord) => {
@@ -113,7 +116,7 @@ export class FinancialStore {
           this.record.set(savedRecord);
           this.computeProfitability();
         },
-        error: (err) => console.error('Error al guardar el gasto:', err)
+        error: (err) => console.error('Error al guardar el gasto:', err),
       });
   }
 
@@ -126,14 +129,15 @@ export class FinancialStore {
     next.addIncome(description, amount, date);
 
     this.isLoading.set(true);
-    this.repository.save(next)
+    this.repository
+      .save(next)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (savedRecord) => {
           this.record.set(savedRecord);
           this.computeProfitability();
         },
-        error: (err) => console.error('Error al guardar ingreso:', err)
+        error: (err) => console.error('Error al guardar ingreso:', err),
       });
   }
 
@@ -146,14 +150,15 @@ export class FinancialStore {
     next.addSale(cropName, quantity, pricePerUnit, date);
 
     this.isLoading.set(true);
-    this.repository.save(next)
+    this.repository
+      .save(next)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (savedRecord) => {
           this.record.set(savedRecord);
           this.computeProfitability();
         },
-        error: (err) => console.error('Error al guardar venta:', err)
+        error: (err) => console.error('Error al guardar venta:', err),
       });
   }
 
@@ -198,27 +203,21 @@ export class FinancialStore {
   }
   deleteExpense(expenseId: string): void {
     const current = this.record();
-    if (!current) {
-      return;
-    }
+    if (!current) return;
+
     const next = FinancialStore.cloneRecord(current);
     next.removeExpense(expenseId);
     this.isLoading.set(true);
 
-    this.repository.save(next).subscribe({
-      next: (savedRecord) => {
-        // Esto fuerza a Angular a detectar un cambio de referencia
-        this.record.set(new FinancialRecord(
-          savedRecord.getId(),
-          savedRecord.getFundoId(),
-          savedRecord.getSeasonId(),
-          savedRecord.getExpenses(),
-          savedRecord.getIncomes(),
-          savedRecord.getSales()
-        ));
-        this.computeProfitability();
-      }
-    });
+    this.repository
+      .save(next)
+      .pipe(finalize(() => this.isLoading.set(false)))
+      .subscribe({
+        next: (savedRecord) => {
+          this.record.set(savedRecord); // Usa el objeto que devuelve el backend
+          this.computeProfitability(); // Asegúrate de llamar esto
+        },
+      });
   }
 
   deleteIncome(incomeId: string): void {
@@ -229,21 +228,35 @@ export class FinancialStore {
     next.removeIncome(incomeId);
 
     this.isLoading.set(true);
-    this.repository.save(next)
+    this.repository
+      .save(next)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (savedRecord) => {
-          this.record.set(new FinancialRecord(
-            savedRecord.getId(),
-            savedRecord.getFundoId(),
-            savedRecord.getSeasonId(),
-            savedRecord.getExpenses(),
-            savedRecord.getIncomes(),
-            savedRecord.getSales()
-          ));
+          this.record.set(
+            new FinancialRecord(
+              savedRecord.getId(),
+              savedRecord.getFundoId(),
+              savedRecord.getSeasonId(),
+              savedRecord.getExpenses(),
+              savedRecord.getIncomes(),
+              savedRecord.getSales(),
+            ),
+          );
           this.computeProfitability();
         },
-        error: (err) => console.error('Error al eliminar ingreso:', err)
+        error: (err) => console.error('Error al eliminar ingreso:', err),
       });
+  }
+  // En FinancialStore
+  refreshAndCompute(): void {
+    const currentFundo = this.selectedFundoId();
+    const currentSeason = this.selectedSeasonId();
+
+    if (currentFundo && currentSeason) {
+      this.loadRecord(currentFundo, currentSeason); // Esto recarga todo desde la API
+    } else {
+      this.computeProfitability(); // Si ya tienes los datos, solo recalcula
+    }
   }
 }

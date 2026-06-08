@@ -182,16 +182,19 @@ export class FinancialRecord {
     return [...this.sales];
   }
 
-  // Determina la moneda utilizada dentro del aggregate.
-  // Busca la primera moneda disponible entre gastos, ingresos o ventas.
   private resolveCurrency(): string {
-    const first =
-      this.expenses[0]?.getAmount() ??
-      this.incomes[0]?.getAmount() ??
-      this.sales[0]?.getPricePerUnit();
+    const currencies = [
+      ...this.expenses.map((e) => e.getAmount().getCurrency()),
+      ...this.incomes.map((i) => i.getAmount().getCurrency()),
+      ...this.sales.map((s) => s.getPricePerUnit().getCurrency()),
+    ];
+    const uniqueCurrencies = Array.from(new Set(currencies.filter((c) => !!c)));
+    if (uniqueCurrencies.length > 1) {
+      throw new Error(`Conflicto de monedas detectado: ${uniqueCurrencies.join(', ')}.
+      Todos los registros deben usar la misma moneda.`);
+    }
 
-    // Si no existen registros, usa PEN por defecto.
-    return first?.getCurrency() ?? 'PEN';
+    return uniqueCurrencies[0] ?? 'PEN';
   }
 
   // Genera identificadores numéricos únicos de forma simple.

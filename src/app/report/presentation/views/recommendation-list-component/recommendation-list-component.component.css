@@ -1,9 +1,78 @@
-mat-card-title { display: flex; align-items: center; gap: 8px; }
-.spinner-container { display: flex; justify-content: center; padding: 32px; }
-.empty-state { display: flex; flex-direction: column; align-items: center; padding: 32px; color: #888; gap: 8px; }
-.empty-state mat-icon { font-size: 48px; width: 48px; height: 48px; }
-.chip-high   { background-color: #fce4ec !important; color: #b71c1c !important; }
-.chip-medium { background-color: #fff8e1 !important; color: #f57f17 !important; }
-.chip-low    { background-color: #e8f5e9 !important; color: #1b5e20 !important; }
-.chip-status-implemented { background-color: #e8f5e9 !important; color: #2e7d32 !important; }
-.chip-status-pending     { background-color: #fff3e0 !important; color: #e65100 !important; }
+.k-recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  margin-top: 16px;
+}
+
+.k-supplier-card {
+  background: white;
+  border: 1px solid #EAEAEA;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s;
+}
+
+.k-supplier-card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.k-card-icon {
+  padding: 20px 20px 0;
+  color: #666;
+}
+
+.k-card-content {
+  padding: 16px 20px;
+  flex-grow: 1;
+}
+
+.k-rec-title {
+  font-family: 'Georgia', serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin: 0 0 8px 0;
+  text-transform: capitalize;
+}
+
+.k-rec-desc {
+  font-size: 12px;
+  color: #666;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.k-card-footer {
+  padding: 12px 20px;
+  border-top: 1px solid #EAEAEA;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  color: #888;
+}
+
+.k-card-footer:hover .k-action-text,
+.k-card-footer:hover mat-icon {
+  color: #2D4A3E;
+}
+
+.k-action-text {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.empty-text {
+  color: #888;
+  font-size: 14px;
+}
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  padding: 24px;
+  width: 100%;
+}

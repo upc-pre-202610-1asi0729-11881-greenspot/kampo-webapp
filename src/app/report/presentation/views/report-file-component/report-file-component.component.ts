@@ -1,24 +1,12 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, inject } from '@angular/core';
 import { Report } from '../../../domain/model/entities/report.entity';
-import { MatCard, MatCardActions, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
-import { MatDivider } from '@angular/material/list';
-import { MatChip } from '@angular/material/chips';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { FinancialStore } from '../../../../finantial-management/application/financial.store';
 
 @Component({
   selector: 'app-report-file-component',
-  imports: [
-    MatCardActions,
-    MatIcon,
-    MatDivider,
-    MatChip,
-    MatProgressSpinner,
-    MatCardContent,
-    MatCardTitle,
-    MatCardHeader,
-    MatCard,
-  ],
+  standalone: true,
+  imports: [MatIcon],
   templateUrl: './report-file-component.component.html',
   styleUrl: './report-file-component.component.css',
 })
@@ -26,11 +14,27 @@ export class ReportFileComponentComponent implements OnInit {
   @Input() report!: Report;
   @Input() isLoading = false;
 
-  ngOnInit(): void {}
+  private financialStore = inject(FinancialStore);
 
-  openFile(): void {
-    if (this.report?.getFileUrl()) {
-      window.open(this.report.getFileUrl(), '_blank');
-    }
+  totalExpenses = 0;
+  totalSales = 0;
+  totalIncomes = 0;
+
+  maxValue = 1;
+
+  ngOnInit(): void {
+    const expenses = this.financialStore.expenses();
+    const sales = this.financialStore.sales();
+    const incomes = this.financialStore.incomes();
+
+    this.totalExpenses = expenses.reduce((sum, e) => sum + e.getAmount().getAmount(), 0);
+    this.totalSales = sales.reduce((sum, s) => sum + s.getTotalAmount().getAmount(), 0);
+    this.totalIncomes = incomes.reduce((sum, i) => sum + i.getAmount().getAmount(), 0);
+
+    this.maxValue = Math.max(this.totalExpenses, this.totalSales, this.totalIncomes, 1);
+  }
+
+  getBarHeight(value: number): number {
+    return Math.round((value / this.maxValue) * 100);
   }
 }

@@ -1,6 +1,95 @@
-.spacer { flex: 1; }
-.toolbar-select { margin-top: 20px; margin-right: 12px; width: 160px;
-  --mat-form-field-container-text-color: white;
-  --mat-select-enabled-trigger-text-color: white; }
-.view-body { padding: 24px; display: flex; flex-direction: column; gap: 24px; }
-.rec-actions { display: flex; align-items: center; gap: 16px; }
+.kampo-page-container {
+  padding: 32px 40px;
+  background-color: #FAFAFA;
+  min-height: 100vh;
+}
+
+.kampo-header-split {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-family: 'Georgia', serif;
+  font-size: 28px;
+  color: #1A1A1A;
+  margin: 0 0 8px 0;
+  font-weight: 500;
+}
+
+.subtitle {
+  color: #666;
+  font-size: 14px;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.clean-select {
+  width: 200px;
+}
+
+.btn-kampo {
+  height: 48px;
+  border-radius: 6px;
+  background-color: #2D4A3E;
+  color: white;
+  font-weight: 500;
+  padding: 0 24px;
+}
+
+.kampo-divider {
+  margin-bottom: 32px;
+}
+
+.report-detail-section {
+  margin-top: 40px;
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  border: 1px solid #EAEAEA;
+}
+
+.section-title {
+  font-family: 'Georgia', serif;
+  font-size: 20px;
+  margin-bottom: 20px;
+  color: #1A1A1A;
+}
+
+.recommendation-box {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px dashed #EAEAEA;
+}
+
+.rec-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.rec-header h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.rec-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.compact {
+  width: 140px;
+}
