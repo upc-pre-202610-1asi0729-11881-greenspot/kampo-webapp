@@ -1,0 +1,235 @@
+.settings-container {
+  padding: 32px 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+  background-color: #F8F9F8;
+  min-height: 100vh;
+}
+
+h2, .mat-mdc-card-title {
+  font-family: 'Georgia', serif;
+  color: #1A1A1A;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+mat-card {
+  border-radius: 12px !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
+  border: 1px solid #EAEAEA;
+  background: white;
+}
+
+/* === HEADER PROFILE === */
+.profile-header-card {
+  margin-bottom: 24px;
+}
+
+.profile-header-content {
+  display: flex;
+  align-items: center;
+  padding: 32px;
+  gap: 32px;
+}
+
+.avatar-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.edit-avatar-btn {
+  position: absolute;
+  bottom: -12px;
+  right: -12px;
+  background-color: #2D4A3E !important;
+  color: white !important;
+  transform: scale(0.85);
+}
+
+.profile-info h2 {
+  font-size: 26px;
+  margin: 0 0 4px 0;
+}
+
+.profile-info p {
+  color: #666;
+  margin: 0 0 20px 0;
+  font-size: 14px;
+}
+
+.profile-actions {
+  display: flex;
+  gap: 12px;
+}
+
+.btn-dark-green {
+  background-color: #1E362D !important;
+  color: white !important;
+  border-radius: 4px !important;
+  font-weight: 500;
+  padding: 0 20px !important;
+}
+
+.btn-outline {
+  border: 1px solid #CCC !important;
+  border-radius: 4px !important;
+  color: #333 !important;
+}
+
+/* === GRID PRINCIPAL === */
+.settings-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dividido en 2 columnas iguales */
+  gap: 24px;
+}
+
+.mat-mdc-card-header {
+  padding: 24px 24px 16px !important;
+  display: flex;
+  align-items: center;
+}
+
+.card-icon {
+  color: #666;
+  margin-right: 12px;
+}
+
+.mat-mdc-card-content {
+  padding: 0 24px 24px !important;
+}
+
+/* === FORMULARIOS === */
+.form-row {
+  display: flex;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.textarea-field {
+  margin-top: 8px;
+}
+
+.submit-action {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+/* === PREFERENCIAS === */
+.preference-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  background: #F9F9F9;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.pref-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.pref-title mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+  color: #555;
+}
+
+.pref-desc {
+  font-size: 12px;
+  color: #888;
+  margin-top: 4px;
+  padding-left: 32px;
+}
+
+/* Ajuste del Toggle Switch a Verde Kampo */
+::ng-deep .mdc-switch:hover .mdc-switch__track::before {
+  background-color: transparent !important;
+}
+::ng-deep .mdc-switch--selected .mdc-switch__track {
+  background-color: #1E362D !important;
+}
+::ng-deep .mdc-switch--selected .mdc-switch__handle::after {
+  background-color: white !important;
+}
+
+/* === BANNER === */
+.vineyard-banner {
+  margin-top: 24px;
+  height: 160px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+}
+
+.banner-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 24px;
+  background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);
+  color: white;
+}
+
+.banner-overlay h3 {
+  font-family: 'Georgia', serif;
+  margin: 0 0 4px 0;
+  font-size: 18px;
+}
+
+.banner-overlay p {
+  margin: 0;
+  font-size: 10px;
+  letter-spacing: 1px;
+  opacity: 0.8;
+  text-transform: uppercase;
+}
+
+/* === SIGN OUT === */
+.sign-out-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+.btn-sign-out {
+  background-color: #FFEBEE !important;
+  color: #C62828 !important;
+  border-radius: 4px !important;
+  font-weight: 500;
+  padding: 0 24px !important;
+}
+
+/* Media query rápida para que se adapte bien si la pantalla es más pequeña */
+@media (max-width: 900px) {
+  .settings-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}

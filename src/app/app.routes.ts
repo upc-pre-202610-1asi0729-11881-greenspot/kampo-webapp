@@ -84,6 +84,11 @@ export const routes: Routes = [
   },
 
   {
+    path: 'settings',
+    loadComponent: () =>
+      import('./shared/presentation/views/settings/settings').then((m) => m.Settings),
+  },
+  {
     path: '',
     redirectTo: 'dashboard',
     pathMatch: 'full',
