@@ -7,13 +7,26 @@
     <form (submit)="onLogin()">
       <mat-form-field appearance="outline">
         <mat-label>{{ 'organization.email' | translate }}</mat-label>
-        <input matInput [(ngModel)]="email" name="email" type="email" required />
+        <label>
+          <input matInput [(ngModel)]="email" name="email" type="email" required />
+        </label>
       </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>{{ 'common.password' | translate }}</mat-label>
+        <label>
+          <input matInput [(ngModel)]="password" name="password" type="password" required />
+        </label>
+      </mat-form-field>
+
+      @if (store.loginError) {
+      <p style="color: #c62828; font-size: 14px; margin: 4px 0;">{{ store.loginError }}</p>
+      }
     </form>
   </mat-card-content>
 
   <mat-card-actions>
-    <button mat-raised-button color="primary" (click)="onLogin()">
+    <button mat-raised-button color="primary" (click)="onLogin()" [disabled]="store.isLoading">
       {{ 'common.save' | translate }}
     </button>
   </mat-card-actions>

@@ -10,21 +10,29 @@ import { ProfileAccessStore } from '../../../application/profile-access.store';
 @Component({
   selector: 'app-registration-form',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, MatCardModule, MatInputModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    TranslateModule,
+    MatCardModule,
+    MatInputModule,
+    MatButtonModule,
+  ],
   templateUrl: './registration-form.html',
-  styleUrl: './registration-form.css'
+  styleUrl: './registration-form.css',
 })
 export class RegistrationFormComponent {
   firstName: string = '';
   lastName: string = '';
   email: string = '';
   phone: string = '';
+  password: string = '';
 
   constructor(public store: ProfileAccessStore) {}
 
   onRegisterUser(): void {
-    if (this.firstName && this.lastName && this.email) {
-      this.store.registerUser(this.firstName, this.lastName, this.email, this.phone);
+    if (this.firstName && this.lastName && this.email && this.password) {
+      this.store.registerUser(this.firstName, this.lastName, this.email, this.phone, this.password);
     }
   }
 }

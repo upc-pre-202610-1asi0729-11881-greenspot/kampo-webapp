@@ -9,15 +9,19 @@ import { Permission } from '../domain/model/permission.entity';
 import { UserResponse } from './responses/user.response';
 import { RoleResponse } from './responses/role.response';
 import { PermissionResponse } from './responses/permission.response';
+import { AuthTokenResponse } from './responses/auth-token.response';
 import { UserAssembler } from './assemblers/user.assembler';
 import { RoleAssembler } from './assemblers/role.assembler';
 import { PermissionAssembler } from './assemblers/permission.assembler';
+import { RegisterUserRequest } from './requests/register-user.request';
+import { LoginRequest } from './requests/login.request';
 
 @Injectable({ providedIn: 'root' })
 export class ProfileAccessApi extends BaseApi {
   private readonly usersEndpoint = `${environment.apiBaseUrl}/users`;
   private readonly rolesEndpoint = `${environment.apiBaseUrl}/roles`;
   private readonly permissionsEndpoint = `${environment.apiBaseUrl}/permissions`;
+  private readonly loginEndpoint = `${environment.apiBaseUrl}/auth/login`;
 
   private userAssembler = new UserAssembler();
   private roleAssembler = new RoleAssembler();
@@ -25,37 +29,44 @@ export class ProfileAccessApi extends BaseApi {
 
   getUsers(): Observable<User[]> {
     return this.get<UserResponse[]>(this.usersEndpoint).pipe(
-      map(responses => this.userAssembler.toEntitiesFromResponse(responses))
+      map((responses) => this.userAssembler.toEntitiesFromResponse(responses)),
     );
   }
 
   getRoles(): Observable<Role[]> {
     return this.get<RoleResponse[]>(this.rolesEndpoint).pipe(
-      map(responses => this.roleAssembler.toEntitiesFromResponse(responses))
+      map((responses) => this.roleAssembler.toEntitiesFromResponse(responses)),
     );
   }
 
   getPermissions(): Observable<Permission[]> {
     return this.get<PermissionResponse[]>(this.permissionsEndpoint).pipe(
-      map(responses => this.permissionAssembler.toEntitiesFromResponse(responses))
+      map((responses) => this.permissionAssembler.toEntitiesFromResponse(responses)),
     );
   }
 
-  registerUser(user: object): Observable<User> {
-    return this.post<UserResponse>(this.usersEndpoint, user).pipe(
-      map(response => this.userAssembler.toEntityFromResponse(response))
+  /**
+   * Registers a new user. Backend hashes the password and assigns
+   * the default AGRONOMIST role automatically.
+   */
+  registerUser(request: RegisterUserRequest): Observable<User> {
+    return this.post<UserResponse>(this.usersEndpoint, request).pipe(
+      map((response) => this.userAssembler.toEntityFromResponse(response)),
     );
   }
 
-  login(email: string): Observable<User> {
-    return this.get<UserResponse[]>(`${this.usersEndpoint}?email=${email}`).pipe(
-      map(responses => this.userAssembler.toEntityFromResponse((responses as UserResponse[])[0]))
-    );
+  /**
+   * Authenticates against POST /api/v1/auth/login.
+   * Returns the raw JWT token response — the store is responsible
+   * for persisting it via AuthTokenStorage.
+   */
+  login(request: LoginRequest): Observable<AuthTokenResponse> {
+    return this.post<AuthTokenResponse>(this.loginEndpoint, request);
   }
 
   modifyProfile(userId: number, user: object): Observable<User> {
     return this.put<UserResponse>(`${this.usersEndpoint}/${userId}`, user).pipe(
-      map(response => this.userAssembler.toEntityFromResponse(response))
+      map((response) => this.userAssembler.toEntityFromResponse(response)),
     );
   }
 }
