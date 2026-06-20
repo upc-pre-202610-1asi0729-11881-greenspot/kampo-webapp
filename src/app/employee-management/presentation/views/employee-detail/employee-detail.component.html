@@ -1,11 +1,27 @@
-<mat-card>
-  <mat-card-header>
-    <mat-card-title>{{ employee.getName() }}</mat-card-title>
-    <mat-card-subtitle>{{ employee.getEmail() }}</mat-card-subtitle>
-  </mat-card-header>
-  <mat-card-content>
-    <p><strong>Role:</strong> {{ showRole() }}</p>
-    <p><strong>Status:</strong> {{ showStatus() }}</p>
-    <p><strong>Field ID:</strong> {{ employee.getFieldId() }}</p>
-  </mat-card-content>
-</mat-card>
+<div class="container" style="padding: 24px; max-width: 500px; margin: 0 auto;">
+  @if (store.isLoading()) {
+  <p>Cargando…</p>
+  } @else if (store.selectedEmployee(); as emp) {
+  <h2>{{ emp.getName() }}</h2>
+  <p><strong>ID:</strong> {{ emp.getId() }}</p>
+  <p><strong>Correo:</strong> {{ emp.getEmail() }}</p>
+  <p><strong>Rol:</strong> {{ emp.getRole() }}</p>
+  <p><strong>Estado:</strong> {{ emp.getStatus() }}</p>
+  <p><strong>Campo:</strong> {{ emp.getFieldId() }}</p>
+
+  <div style="display: flex; gap: 8px; margin-top: 24px;">
+    <button mat-stroked-button type="button" (click)="back()">
+      <mat-icon>arrow_back</mat-icon> Volver
+    </button>
+    <button mat-raised-button color="primary" type="button" (click)="edit()">
+      <mat-icon>edit</mat-icon> Editar
+    </button>
+    <button mat-raised-button color="warn" type="button" (click)="onDelete()">
+      <mat-icon>delete</mat-icon> Eliminar
+    </button>
+  </div>
+  } @else {
+  <p>No se encontró el empleado.</p>
+  <button mat-stroked-button type="button" (click)="back()">Volver</button>
+  }
+</div>

@@ -70,16 +70,14 @@ export class ProfileAccessStore {
     });
   }
 
-  /**
-   * Registers a new user. The backend assigns the default AGRONOMIST
-   * role automatically — no role assignment needed here.
-   */
   registerUser(
     firstName: string,
     lastName: string,
     email: string,
     phone: string,
     password: string,
+    onSuccess?: () => void,
+    onError?: () => void,
   ): void {
     this.isLoading = true;
     const request = new RegisterUserRequest(firstName, lastName, email, phone, password);
@@ -87,18 +85,20 @@ export class ProfileAccessStore {
       next: () => {
         this.isLoading = false;
         this.loadUsers();
+        onSuccess?.();
       },
       error: () => {
         this.isLoading = false;
+        onError?.();
       },
     });
   }
 
   /**
-   * Authenticates the user. On success, persists the JWT token —
-   * all subsequent HTTP requests will carry it automatically via the interceptor.
+   * Authenticates the user. On success, persists the JWT token and invokes
+   * onSuccess — the component decides what to do (e.g. navigate to /dashboard).
    */
-  login(email: string, password: string): void {
+  login(email: string, password: string, onSuccess?: () => void): void {
     this.isLoading = true;
     this.loginError = null;
     const request = new LoginRequest(email, password);
@@ -106,6 +106,7 @@ export class ProfileAccessStore {
       next: (response) => {
         this.tokenStorage.saveToken(response.token);
         this.isLoading = false;
+        onSuccess?.();
       },
       error: () => {
         this.loginError = 'Email o contraseña incorrectos';

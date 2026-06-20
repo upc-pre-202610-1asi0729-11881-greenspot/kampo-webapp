@@ -33,11 +33,13 @@ export class OrganizationFormComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private organizationService = inject(OrganizationService);
 
+  // ruc, phone, email se mantienen en el formulario para UI futura,
+  // pero ya NO son required — el backend real solo exige name y address.
   form: FormGroup = this.fb.group({
     id: [0],
     name: ['', Validators.required],
-    ruc: ['', [Validators.required, Validators.maxLength(11), Validators.minLength(11)]],
-    address: [''],
+    ruc: ['', [Validators.maxLength(11), Validators.minLength(11)]],
+    address: ['', Validators.required],
     phone: [''],
     email: ['', Validators.email],
   });
@@ -62,24 +64,32 @@ export class OrganizationFormComponent implements OnInit {
     }
   }
 
+  /**
+   * Builds the exact payload the real backend expects:
+   * CreateOrganizationResource / UpdateOrganizationResource → { name, address }.
+   * ruc/phone/email are intentionally NOT sent — the backend doesn't have them.
+   */
+  private toBackendPayload(val: any): { name: string; address: string } {
+    return { name: val.name, address: val.address };
+  }
+
   onSubmit(): void {
     if (this.form.invalid) return;
 
     const val = this.form.value;
+    const payload = this.toBackendPayload(val);
     const entity = new Organization(val.id, val.name, val.ruc, val.address, val.phone, val.email);
 
     if (this.isEdit) {
-      this.organizationService.update(val.id, val).subscribe({
+      this.organizationService.update(val.id, payload).subscribe({
         next: () => {
           this.store.updateOrganization(entity);
-          // CAMBIA ESTO:
           this.router.navigate(['/organization-management']);
         },
         error: (err) => console.error('Error al actualizar:', err),
       });
     } else {
-      const { id, ...newOrg } = val;
-      this.organizationService.create(newOrg).subscribe({
+      this.organizationService.create(payload).subscribe({
         next: (response: any) => {
           const entityWithId = new Organization(
             response.id,
@@ -90,7 +100,6 @@ export class OrganizationFormComponent implements OnInit {
             val.email,
           );
           this.store.addOrganization(entityWithId);
-          // CAMBIA ESTO:
           this.router.navigate(['/organization-management']);
         },
         error: (err) => console.error('Error al guardar:', err),
@@ -99,7 +108,6 @@ export class OrganizationFormComponent implements OnInit {
   }
 
   cancel(): void {
-    // CAMBIA ESTO:
     this.router.navigate(['/organization-management']);
   }
 }

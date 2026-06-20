@@ -40,6 +40,11 @@ export class InventoryFormComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  /**
+   * Envía POST /api/v1/inventory con { name, quantity, unit, minStock }.
+   * El token JWT se agrega automáticamente vía authInterceptor — no se toca aquí.
+   * Solo navega y muestra éxito SI el backend confirma la creación.
+   */
   onRegisterInput(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
@@ -48,9 +53,20 @@ export class InventoryFormComponent implements OnInit {
     const v = this.form.getRawValue();
     const status = Inventory.resolveStatus(v.quantity, v.minStock);
     const entity = new Inventory(0, v.name, v.quantity, v.unit, v.minStock, status);
-    this.store.registerInput(entity);
-    this.snackBar.open('Ítem registrado (pendiente de API).', 'OK', { duration: 2500 });
-    this.router.navigate(['/inventory-management/inventario']);
+
+    this.store.registerInput(
+      entity,
+      () => {
+        this.snackBar.open('Ítem registrado correctamente.', 'OK', { duration: 2500 });
+        this.router.navigate(['/inventory-management/inventario']);
+      },
+      (err) => {
+        console.error('Error al registrar inventario:', err);
+        this.snackBar.open('No se pudo registrar el ítem. Verifica tu sesión.', 'OK', {
+          duration: 3000,
+        });
+      },
+    );
   }
 
   onUpdateStock(): void {

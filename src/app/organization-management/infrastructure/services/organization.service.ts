@@ -29,9 +29,4 @@ export class OrganizationService {
     return this.http.delete(`${this.resourcePath}/${id}`);
   }
 
-  // organization.service.ts
-  createOrganization(organization: any): Observable<any> {
-    return this.http.post('http://localhost:3000/organizations', organization);
-  }
-
 }

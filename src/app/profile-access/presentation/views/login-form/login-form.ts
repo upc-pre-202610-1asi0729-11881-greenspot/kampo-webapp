@@ -33,7 +33,9 @@ export class LoginFormComponent {
 
   onLogin(): void {
     if (this.email && this.password) {
-      this.store.login(this.email, this.password);
+      this.store.login(this.email, this.password, () => {
+        this.router.navigate(['/dashboard']);
+      });
     }
   }
 }

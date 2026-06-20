@@ -10,33 +10,44 @@
         <mat-form-field appearance="outline">
           <mat-label>Nombre de la Organización</mat-label>
           <mat-icon matPrefix>domain</mat-icon>
-          <input matInput formControlName="name" placeholder="Ej. Finca La Esperanza">
+          <label>
+            <input matInput formControlName="name" placeholder="Ej. Acme Agro SAC">
+          </label>
           <mat-error *ngIf="form.get('name')?.hasError('required')">Obligatorio</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>RUC</mat-label>
+          <mat-label>RUC (opcional)</mat-label>
           <mat-icon matPrefix>badge</mat-icon>
-          <input matInput formControlName="ruc" placeholder="11 dígitos">
-          <mat-error *ngIf="form.get('ruc')?.invalid">11 dígitos requeridos</mat-error>
+          <label>
+            <input matInput formControlName="ruc" placeholder="11 dígitos">
+          </label>
+          <mat-error *ngIf="form.get('ruc')?.invalid">Debe tener 11 dígitos</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Dirección</mat-label>
           <mat-icon matPrefix>location_on</mat-icon>
-          <input matInput formControlName="address">
+          <label>
+            <input matInput formControlName="address" placeholder="Ej. Av. La Mar 123, Lima">
+          </label>
+          <mat-error *ngIf="form.get('address')?.hasError('required')">Obligatorio</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Teléfono</mat-label>
+          <mat-label>Teléfono (opcional)</mat-label>
           <mat-icon matPrefix>phone</mat-icon>
-          <input matInput formControlName="phone" type="tel">
+          <label>
+            <input matInput formControlName="phone" type="tel">
+          </label>
         </mat-form-field>
 
         <mat-form-field appearance="outline">
-          <mat-label>Correo Electrónico</mat-label>
+          <mat-label>Correo Electrónico (opcional)</mat-label>
           <mat-icon matPrefix>email</mat-icon>
-          <input matInput formControlName="email" type="email" placeholder="ejemplo@kampo.com">
+          <label>
+            <input matInput formControlName="email" type="email" placeholder="ejemplo@kampo.com">
+          </label>
         </mat-form-field>
       </mat-card-content>
 
