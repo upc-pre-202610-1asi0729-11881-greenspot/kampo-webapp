@@ -17,47 +17,63 @@ export class FieldOperationStore {
   readonly error = signal<string | null>(null);
 
   readonly fieldVisitTableData = computed(() =>
-    this.fieldVisits().map(fv => ({
+    this.fieldVisits().map((fv) => ({
       id: fv.getId(),
       fieldId: fv.getFieldId(),
       scheduledAt: fv.getScheduledAt(),
       doneAt: fv.getDoneAt(),
       status: fv.getStatus(),
-      observationCount: fv.getObservations().length
-    }))
+      observationCount: fv.getObservations().length,
+    })),
   );
 
   loadFieldVisits(fieldId: number): void {
     this.isLoading.set(true);
-    this.api.getFieldVisitsByField(fieldId)
+    this.api
+      .getFieldVisitsByField(fieldId)
       .pipe(finalize(() => this.isLoading.set(false)))
       .subscribe({
         next: (visits) => {
           this.fieldVisits.set(visits);
-          const allObs = visits.flatMap(v => v.getObservations());
+          const allObs = visits.flatMap((v) => v.getObservations());
           this.observations.set(allObs);
         },
         error: (err) => {
           console.error(err);
           this.error.set('No se pudieron cargar las visitas de campo');
-        }
+        },
       });
   }
 
-  scheduleFieldVisit(fieldId: number, scheduledAt: Date): void {
-    const fieldVisit = new FieldVisit(0, fieldId, scheduledAt, null, FieldVisitStatus.SCHEDULED, []);
+  scheduleFieldVisit(
+    fieldId: number,
+    purpose: string,
+    technician: string,
+    scheduledAt: Date,
+  ): void {
+    const fieldVisit = new FieldVisit(
+      0,
+      fieldId,
+      purpose,
+      technician,
+      scheduledAt,
+      null,
+      FieldVisitStatus.SCHEDULED,
+      [],
+    );
     this.api.scheduleFieldVisit(fieldVisit).subscribe({
-      next: (created) => this.fieldVisits.update(list => [...list, created]),
-      error: (err) => console.error(err)
+      next: (created) => this.fieldVisits.update((list) => [...list, created]),
+      error: (err) => console.error(err),
     });
   }
 
   completeFieldVisit(fieldVisitId: number): void {
     this.api.completeFieldVisit(fieldVisitId).subscribe({
-      next: (updated) => this.fieldVisits.update(list =>
-        list.map(fv => fv.getId() === updated.getId() ? updated : fv)
-      ),
-      error: (err) => console.error(err)
+      next: (updated) =>
+        this.fieldVisits.update((list) =>
+          list.map((fv) => (fv.getId() === updated.getId() ? updated : fv)),
+        ),
+      error: (err) => console.error(err),
     });
   }
 
@@ -68,40 +84,55 @@ export class FieldOperationStore {
     pestSeverity: Severity,
     diseaseName: string,
     diseaseSeverity: Severity,
-    recommendation: string
+    recommendation: string,
   ): void {
     const observation = new Observation(
-      0, fieldVisitId, notes, pestName, pestSeverity,
-      diseaseName, diseaseSeverity, recommendation, ''
+      0,
+      fieldVisitId,
+      notes,
+      pestName,
+      pestSeverity,
+      diseaseName,
+      diseaseSeverity,
+      recommendation,
+      '',
     );
     this.api.registerObservation(observation).subscribe({
-      next: (created) => this.observations.update(list => [...list, created]),
-      error: (err) => console.error(err)
+      next: (created) => this.observations.update((list) => [...list, created]),
+      error: (err) => console.error(err),
     });
   }
 
   uploadEvidence(fieldVisitId: number, file: File): void {
     this.api.uploadEvidence(fieldVisitId, file).subscribe({
       next: (url) => console.log('Evidence uploaded:', url),
-      error: (err) => console.error(err)
+      error: (err) => console.error(err),
     });
   }
 
   implementRecommendation(observationId: number, recommendation: string): void {
     this.api.implementRecommendation(observationId, recommendation).subscribe({
-      next: (updated) => this.observations.update(list =>
-        list.map(o => o.getId() === updated.getId() ? updated : o)
-      ),
-      error: (err) => console.error(err)
+      next: (updated) =>
+        this.observations.update((list) =>
+          list.map((o) => (o.getId() === updated.getId() ? updated : o)),
+        ),
+      error: (err) => console.error(err),
     });
   }
 
   selectFieldVisit(id: number): void {
-    const found = this.fieldVisits().find(fv => fv.getId() === id) ?? null;
+    const found = this.fieldVisits().find((fv) => fv.getId() === id) ?? null;
     this.selectedFieldVisit.set(found);
   }
 
   getFieldVisitById(id: number): FieldVisit | undefined {
-    return this.fieldVisits().find(fv => fv.getId() === id);
+    return this.fieldVisits().find((fv) => fv.getId() === id);
+  }
+  deleteFieldVisit(id: number): void {
+    this.api.deleteFieldVisit(id).subscribe({
+      next: () => this.fieldVisits.update((list) => list.filter((fv) => fv.getId() !== id)),
+      error: (err) => console.error(err),
+    });
   }
 }
+

@@ -1,24 +1,56 @@
-import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { Employee } from '../../../domain/model/entities/employee.entity';
+import { Component, inject, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { EmployeeStore } from '../../../application/employee.store';
 
 @Component({
   selector: 'app-employee-detail',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatChipsModule],
+  imports: [MatButtonModule, MatIconModule, MatSnackBarModule],
   templateUrl: './employee-detail.component.html',
-  styleUrl: './employee-detail.component.css',
 })
-export class EmployeeDetailComponent {
-  @Input() employee!: Employee;
+export class EmployeeDetailComponent implements OnInit {
+  public store = inject(EmployeeStore);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private snackBar = inject(MatSnackBar);
 
-  showRole(): string {
-    return this.employee.getRole();
+  ngOnInit(): void {
+    const id = Number(this.route.snapshot.params['id']);
+    this.store.findById(id);
   }
 
-  showStatus(): string {
-    return this.employee.getStatus();
+  edit(): void {
+    const employee = this.store.selectedEmployee();
+    if (employee) {
+      this.router.navigate(['/employee-management', employee.getId(), 'edit']);
+    }
+  }
+
+  onDelete(): void {
+    const employee = this.store.selectedEmployee();
+    if (!employee) return;
+    if (
+      !confirm(`¿Eliminar al empleado "${employee.getName()}"? Esta acción no se puede deshacer.`)
+    )
+      return;
+
+    this.store.deleteEmployee(
+      employee.getId(),
+      () => {
+        this.snackBar.open('Empleado eliminado.', 'OK', { duration: 2500 });
+        this.router.navigate(['/employee-management']);
+      },
+      (err) => {
+        console.error(err);
+        this.snackBar.open('No se pudo eliminar el empleado.', 'OK', { duration: 3000 });
+      },
+    );
+  }
+
+  back(): void {
+    this.router.navigate(['/employee-management']);
   }
 }

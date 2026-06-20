@@ -59,17 +59,18 @@ export class ExpenseFormComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.form.invalid || !this.store.hasRecord()) {
+    if (this.form.invalid) {
       this.form.markAllAsTouched();
-      if (!this.store.hasRecord()) {
-        this.snackBar.open('No hay registro financiero cargado.', 'Cerrar', { duration: 4000 });
-      }
+      this.snackBar.open('Por favor, completa los campos requeridos.', 'Cerrar', { duration: 3000 });
       return;
     }
+
     const v = this.form.getRawValue();
     const money = new Money(v.amount, v.currency);
+
     this.store.addExpense(v.description, money, v.category, new Date(v.date));
-    this.snackBar.open('Gasto registrado.', 'OK', { duration: 2500 });
+
+    this.snackBar.open('Gasto registrado exitosamente.', 'OK', { duration: 2500 });
     this.router.navigate(['..'], { relativeTo: this.route, queryParamsHandling: 'preserve' });
   }
 

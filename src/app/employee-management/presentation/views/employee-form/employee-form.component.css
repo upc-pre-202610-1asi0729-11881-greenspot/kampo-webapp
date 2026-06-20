@@ -1,12 +1,68 @@
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+.emp-form-container {
+  max-width: 720px;
   padding: 24px;
-  max-width: 400px;
+  width: 100%;
 }
 
-.actions {
+.emp-form-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.emp-form-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1b2d1e;
+  margin: 0;
+}
+
+.emp-form-subtitle {
+  font-size: 0.85rem;
+  color: #78909c;
+  margin: 2px 0 0;
+}
+
+.emp-section {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #e8eaed;
+  padding: 20px;
+  margin-bottom: 16px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.role-section {
+  border-left: 4px solid #2e7d32;
+  background: #f0f7f0;
+}
+
+.emp-section-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1b2d1e;
+  margin-bottom: 16px;
+}
+
+.emp-section-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.emp-form-actions {
   display: flex;
   justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
 }

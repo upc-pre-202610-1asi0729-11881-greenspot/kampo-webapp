@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 import { AlertListComponent } from '../alert-list/alert-list.component';
 import { AlertRuleFormComponent } from '../alert-rule-form/alert-rule-form.component';
-import { MatButtonModule } from '@angular/material/button';
-import { AlertStore } from '../../../application/alert.store';
+import { AlertStore } from '../../../application/alert.store'; // Verifica tu ruta
 
 @Component({
   selector: 'app-alert-view',
@@ -13,9 +13,8 @@ import { AlertStore } from '../../../application/alert.store';
   styleUrl: './alert-view.component.css',
 })
 export class AlertViewComponent implements OnInit {
-  showForm = false;
-
-  constructor(public store: AlertStore) {}
+  public store = inject(AlertStore);
+  public showForm = false;
 
   ngOnInit(): void {
     this.store.getAlerts();

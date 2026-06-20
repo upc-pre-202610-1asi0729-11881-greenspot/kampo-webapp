@@ -4,7 +4,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
-import { Alert } from '../../../domain/model/alert.entity';
+import { Alert } from '../../../domain/model/alert.entity'; // Verifica tu ruta
 
 @Component({
   selector: 'app-alert-list',
@@ -22,6 +22,7 @@ import { Alert } from '../../../domain/model/alert.entity';
 export class AlertListComponent {
   @Input() alerts: Alert[] = [];
   @Input() isLoading: boolean = false;
+
   @Output() markRead = new EventEmitter<number>();
   @Output() selectAlert = new EventEmitter<number>();
 

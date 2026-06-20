@@ -143,5 +143,16 @@
     "type": "Tipo de reporte",
     "period": "Período",
     "download": "Descargar"
+  },
+  "dashboard_view": {
+    "main_title": "Main",
+    "welcome": "Bienvenido a KAMPO — Gestión Agrícola Inteligente",
+    "monthly_activity": "Actividad Mensual",
+    "quick_access": "Acceso Rápido",
+    "recent_logs": "Registros de Campo Recientes",
+    "system_alerts": "Alertas del Sistema",
+    "view_history": "Ver historial →",
+    "clear_all": "Limpiar todo",
+    "view_all_alerts": "Ver Todas las Alertas"
   }
 }

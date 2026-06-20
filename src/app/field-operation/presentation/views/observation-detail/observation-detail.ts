@@ -9,11 +9,11 @@ import { DatePipe } from '@angular/common';
 import { FieldOperationStore } from '../../../application/field-operation.store';
 import { Severity } from '../../../domain/model/enums/severity.enum';
 import { FieldVisit } from '../../../domain/model/entities/field-visit.entity';
-
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 @Component({
   selector: 'app-observation-detail',
   standalone: true,
-  imports: [MatCardModule, MatButtonModule, MatIconModule, MatDividerModule, MatChipsModule, DatePipe],
+  imports: [MatCardModule, MatButtonModule, MatIconModule, MatDividerModule, MatChipsModule, DatePipe,MatProgressSpinnerModule],
   templateUrl: './observation-detail.html',
   styleUrls: ['./observation-detail.css']
 })

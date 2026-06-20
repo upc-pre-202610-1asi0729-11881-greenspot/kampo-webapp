@@ -1,6 +1,6 @@
 export enum SeasonStatus {
-  ACTIVE = 'ACTIVE',
+  PLANTING = 'PLANTING',
+  GROWING = 'GROWING',
+  HARVESTING = 'HARVESTING',
   ENDED = 'ENDED',
-  PENDING = 'PENDING',
-  PLANTING = 'PLANTING'
 }

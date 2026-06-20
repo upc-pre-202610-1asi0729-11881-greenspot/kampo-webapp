@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -8,7 +8,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FieldOperationStore } from '../../../application/field-operation.store';
 import { Severity } from '../../../domain/model/enums/severity.enum';
-
 @Component({
   selector: 'app-observation-form',
   standalone: true,
@@ -18,9 +17,11 @@ import { Severity } from '../../../domain/model/enums/severity.enum';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
   ],
-  templateUrl: './observation-form.html'
+  templateUrl: './observation-form.html',
+  styleUrls: ['./observation-form.scss'], // <--- ¡ESTA ES LA LÍNEA QUE FALTABA!
+  encapsulation: ViewEncapsulation.None,
 })
 export class ObservationFormComponent implements OnInit {
   private fb = inject(FormBuilder);
@@ -39,7 +40,7 @@ export class ObservationFormComponent implements OnInit {
     pestSeverity: [Severity.LOW],
     diseaseName: [''],
     diseaseSeverity: [Severity.LOW],
-    recommendation: ['']
+    recommendation: [''],
   });
 
   ngOnInit(): void {
@@ -60,7 +61,7 @@ export class ObservationFormComponent implements OnInit {
       val.pestSeverity,
       val.diseaseName,
       val.diseaseSeverity,
-      val.recommendation
+      val.recommendation,
     );
     this.router.navigate(['/field-operation/view', val.fieldVisitId]);
   }

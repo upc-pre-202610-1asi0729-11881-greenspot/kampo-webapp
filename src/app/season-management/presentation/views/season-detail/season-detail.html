@@ -1,17 +1,45 @@
 <div class="container">
   @if (season) {
-    <h2>Temporada #{{ season.getId() }}</h2>
-    <p><strong>Campo:</strong> {{ season.getFieldId() }}</p>
-    <p><strong>Cultivo:</strong> {{ showCropName() }}</p>
-    <p><strong>Estado:</strong> {{ showSeasonStatus() }}</p>
-    <p><strong>Inicio:</strong> {{ season.getStartedAt() | date: 'mediumDate' }}</p>
-    <p><strong>Fin:</strong> {{ season.getEndedAt() ? (season.getEndedAt()! | date: 'mediumDate') : '—' }}</p>
+  <h2>Temporada #{{ season.getId() }}</h2>
+  <p><strong>Campo:</strong> {{ season.getFieldId() }}</p>
+  <p><strong>Cultivo:</strong> {{ showCropName() }}</p>
+  <p><strong>Estado:</strong> {{ showSeasonStatus() }}</p>
+  <p><strong>Inicio:</strong> {{ season.getStartedAt() | date: 'mediumDate' }}</p>
+  <p><strong>Fin:</strong> {{ season.getEndedAt() ? (season.getEndedAt()! | date: 'mediumDate') : '—' }}</p>
 
-    <button mat-stroked-button type="button" (click)="back()">
-      <mat-icon>arrow_back</mat-icon> Volver
+  @if (!isEnded()) {
+  <div class="season-actions" style="display: flex; flex-direction: column; gap: 16px; margin: 24px 0; max-width: 360px;">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cambiar estado</mat-label>
+      <mat-select [value]="season.getStatus()" (selectionChange)="onChangeStatus($event.value)">
+        @for (s of statusOptions; track s) {
+        <mat-option [value]="s">{{ s }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <mat-form-field appearance="outline" style="flex: 1;">
+        <mat-label>ID de cultivo</mat-label>
+        <input matInput type="number" [ngModel]="newCropId()" (ngModelChange)="newCropId.set($event)" />
+      </mat-form-field>
+      <button mat-stroked-button type="button" (click)="onAssignCrop()">
+        <mat-icon>eco</mat-icon> Asignar cultivo
+      </button>
+    </div>
+
+    <button mat-raised-button color="warn" type="button" (click)="onEndSeason()">
+      <mat-icon>event_busy</mat-icon> Finalizar temporada
     </button>
+  </div>
+  }
+
+  <button mat-stroked-button type="button" (click)="back()">
+    <mat-icon>arrow_back</mat-icon> Volver
+  </button>
   } @else {
-    <p>No se encontró la temporada.</p>
-    <button mat-stroked-button type="button" (click)="back()">Volver</button>
+  <p>No se encontró la temporada.</p>
+  <button mat-stroked-button type="button" (click)="back()">Volver</button>
   }
 </div>

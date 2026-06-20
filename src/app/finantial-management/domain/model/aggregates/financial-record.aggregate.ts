@@ -35,7 +35,7 @@ import { Profitability } from '../value-object/profitability.vo';
 // a un fundo y una temporada agrícola específica.
 export class FinancialRecord {
   // Colección de gastos registrados.
-  private readonly expenses: Expense[] = [];
+  private expenses: Expense[] = [];
 
   // Colección de ingresos registrados.
   private readonly incomes: Income[] = [];
@@ -65,7 +65,7 @@ export class FinancialRecord {
     sales: Sale[] = [],
   ) {
     // Agrega los elementos iniciales a las colecciones internas.
-    this.expenses.push(...expenses);
+    this.expenses = [...expenses];
     this.incomes.push(...incomes);
     this.sales.push(...sales);
   }
@@ -87,24 +87,13 @@ export class FinancialRecord {
 
   // Registra un nuevo gasto dentro del aggregate.
   addExpense(
-    // Descripción del gasto.
     description: string,
-
-    // Monto monetario del gasto.
     amount: Money,
-
-    // Categoría del gasto.
     category: ExpenseCategory,
-
-    // Fecha del gasto.
     date: Date,
-
-    // Identificador único del gasto.
-    // Si no se proporciona, se genera automáticamente.
-    id: ExpenseId = new ExpenseId(FinancialRecord.nextNumericId()),
+    id: string = Math.random().toString(36).substr(2, 9),
   ): void {
-    // Agrega una nueva entidad Expense a la colección.
-    this.expenses.push(new Expense(id, description, amount, category, date));
+    this.expenses.push(new Expense(new ExpenseId(id as any), description, amount, category, date));
   }
 
   // Registra un nuevo ingreso económico.
@@ -193,21 +182,38 @@ export class FinancialRecord {
     return [...this.sales];
   }
 
-  // Determina la moneda utilizada dentro del aggregate.
-  // Busca la primera moneda disponible entre gastos, ingresos o ventas.
   private resolveCurrency(): string {
-    const first =
-      this.expenses[0]?.getAmount() ??
-      this.incomes[0]?.getAmount() ??
-      this.sales[0]?.getPricePerUnit();
+    const currencies = [
+      ...this.expenses.map((e) => e.getAmount().getCurrency()),
+      ...this.incomes.map((i) => i.getAmount().getCurrency()),
+      ...this.sales.map((s) => s.getPricePerUnit().getCurrency()),
+    ];
+    const uniqueCurrencies = Array.from(new Set(currencies.filter((c) => !!c)));
+    if (uniqueCurrencies.length > 1) {
+      throw new Error(`Conflicto de monedas detectado: ${uniqueCurrencies.join(', ')}.
+      Todos los registros deben usar la misma moneda.`);
+    }
 
-    // Si no existen registros, usa PEN por defecto.
-    return first?.getCurrency() ?? 'PEN';
+    return uniqueCurrencies[0] ?? 'PEN';
   }
 
   // Genera identificadores numéricos únicos de forma simple.
   // Combina un número aleatorio con el timestamp actual.
   private static nextNumericId(): number {
     return Math.floor(Math.random() * 1_000_000_000) + Date.now();
+  }
+
+  removeExpense(expenseId: string): void {
+    this.expenses = this.expenses.filter((expense) => {
+      const idVO = expense.getId();
+      if (!idVO) return true;
+      const idAsString = String(idVO.getValue());
+      return idAsString !== expenseId;
+    });
+  }
+
+  removeIncome(incomeId: string): void {
+    const idx = this.incomes.findIndex((i) => String(i.getId().getValue()) === incomeId);
+    if (idx !== -1) this.incomes.splice(idx, 1);
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -6,10 +6,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { SeasonStore } from '../../../application/season.store';
-import { Season } from '../../../domain/model/season.entity';
-import { SeasonStatus } from '../../../domain/model/season-status.enum';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
+/**
+ * Solo creación — el backend real NO tiene PUT /{id}.
+ * Para modificar una temporada existente se usan los endpoints específicos:
+ * updateStatus, endSeason, assignCrop (ver SeasonDetailComponent).
+ */
 @Component({
   selector: 'app-season-form',
   standalone: true,
@@ -20,81 +26,64 @@ import { SeasonStatus } from '../../../domain/model/season-status.enum';
     MatSelectModule,
     MatButtonModule,
     MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSnackBarModule,
   ],
   templateUrl: './season-form.html',
+  styleUrl: './season-form.css',
 })
-export class SeasonFormComponent implements OnInit {
+export class SeasonFormComponent {
   private fb = inject(FormBuilder);
   public store = inject(SeasonStore);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
-
-  readonly statusOptions = Object.values(SeasonStatus);
+  private snackBar = inject(MatSnackBar);
 
   form: FormGroup = this.fb.group({
-    id: [0],
     fieldId: [1, [Validators.required, Validators.min(1)]],
-    cropId: [0, [Validators.required, Validators.min(0)]],
     cropName: ['', Validators.required],
-    status: [SeasonStatus.PLANTING, Validators.required],
-    startedAt: ['', Validators.required],
+    startAt: ['', Validators.required],
   });
 
-  isEdit = false;
-
-  ngOnInit(): void {
+  constructor() {
     const fieldIdParam = this.route.snapshot.queryParamMap.get('fieldId');
     if (fieldIdParam) {
       this.form.patchValue({ fieldId: Number(fieldIdParam) });
     }
-
-    const id = this.route.snapshot.params['id'];
-    if (id) {
-      this.isEdit = true;
-      const season = this.store.getSeasonById(+id);
-      if (season) {
-        const start = season.getStartedAt();
-        const startStr = start.toISOString().slice(0, 10);
-        this.form.patchValue({
-          id: season.getId(),
-          fieldId: season.getFieldId(),
-          cropId: season.getCropId(),
-          cropName: season.getCropName(),
-          status: season.getStatus(),
-          startedAt: startStr,
-        });
-      }
-    }
   }
 
+  /**
+   * Envía POST /api/v1/seasons con { fieldId, cropName, startAt }.
+   * El token JWT viaja automáticamente vía authInterceptor.
+   */
   save(): void {
-    if (this.form.invalid) return;
-    const val = this.form.value;
-    const startedAt = new Date(val.startedAt);
-    const entity = new Season(
-      val.id,
-      val.fieldId,
-      val.cropId,
-      val.cropName,
-      val.status as SeasonStatus,
-      startedAt,
-      null
-    );
-
-    if (this.isEdit) {
-      this.store.updateSeason(entity);
-    } else {
-      this.store.addSeason(entity);
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
     }
-    this.router.navigate(['/season-management'], {
-      queryParams: { fieldId: val.fieldId },
-    });
+    const val = this.form.value;
+    const startAt = new Date(val.startAt).toISOString().slice(0, 10);
+
+    this.store.createSeason(
+      val.fieldId,
+      val.cropName,
+      startAt,
+      () => {
+        this.snackBar.open('Temporada creada correctamente.', 'OK', { duration: 2500 });
+        this.router.navigate(['/season-management'], { queryParams: { fieldId: val.fieldId } });
+      },
+      (err) => {
+        console.error('Error al crear temporada:', err);
+        this.snackBar.open('No se pudo crear la temporada. Verifica tu sesión.', 'OK', {
+          duration: 3000,
+        });
+      },
+    );
   }
 
   cancel(): void {
     const fieldId = this.form.get('fieldId')?.value ?? 1;
-    this.router.navigate(['/season-management'], {
-      queryParams: { fieldId },
-    });
+    this.router.navigate(['/season-management'], { queryParams: { fieldId } });
   }
 }

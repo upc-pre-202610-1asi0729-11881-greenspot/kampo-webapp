@@ -14,6 +14,8 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FinancialStore } from '../../../application/financial.store';
 import { Money } from '../../../domain/model/value-object/money.vo';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-income-list-component',
@@ -33,6 +35,8 @@ import { Money } from '../../../domain/model/value-object/money.vo';
     MatProgressSpinnerModule,
     MatExpansionModule,
     MatSnackBarModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   templateUrl: './income-list-component.html',
   styleUrl: './income-list-component.css',
@@ -100,14 +104,14 @@ export class IncomeListComponent {
     this.pageIndex.set(0);
   }
 
-  setFromDate(ev: Event): void {
-    const v = (ev.target as HTMLInputElement).value;
+  setFromDate(ev: any): void {
+    const v = ev.value ? new Date(ev.value).toISOString().slice(0, 10) : '';
     this.fromDate.set(v);
     this.applyDateFilter();
   }
 
-  setToDate(ev: Event): void {
-    const v = (ev.target as HTMLInputElement).value;
+  setToDate(ev: any): void {
+    const v = ev.value ? new Date(ev.value).toISOString().slice(0, 10) : '';
     this.toDate.set(v);
     this.applyDateFilter();
   }
@@ -141,4 +145,16 @@ export class IncomeListComponent {
       this.incomeForm.patchValue({ date: today });
     }
   }
+
+  onEdit(row: any): void {
+    this.snackBar.open('Edición próximamente 🛠️', 'OK', { duration: 2500 });
+  }
+
+  onDelete(row: any): void {
+    const id = row.getId ? String(row.getId().getValue()) : String(row.id);
+    if (confirm('¿Eliminar este ingreso?')) {
+      this.store.deleteIncome(id);
+    }
+  }
+
 }

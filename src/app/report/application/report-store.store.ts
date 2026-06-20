@@ -5,12 +5,12 @@ import { ReportApi } from '../infrastructure/report-api';
 import { ReportType } from '../domain/model/enums/report-type.enum';
 import { PriorityLevel } from '../domain/model/enums/priority-level.enum';
 
-
 @Injectable({ providedIn: 'root' })
 export class ReportStore {
   private readonly _reports = signal<Report[]>([]);
   private readonly _recommendations = signal<Recommendation[]>([]);
-  private readonly _selectedReportId = signal<number | null>(null);
+  // Mantenemos el ID como string o number para manejar los alfanuméricos de la DB
+  private readonly _selectedReportId = signal<number | string | null>(null);
   private readonly _isLoading = signal<boolean>(false);
 
   readonly reports = computed(() => this._reports());
@@ -18,9 +18,12 @@ export class ReportStore {
   readonly selectedReportId = computed(() => this._selectedReportId());
   readonly isLoading = computed(() => this._isLoading());
 
-  readonly selectedReport = computed(
-    () => this._reports().find((r) => r.getId() === this._selectedReportId()) ?? null,
-  );
+  // CORRECCIÓN: Comparamos convirtiendo a string, respetando que la entity solo tiene number
+  readonly selectedReport = computed(() => {
+    const selectedId = this._selectedReportId();
+    if (selectedId === null) return null;
+    return this._reports().find((r) => r.getId().toString() === selectedId.toString()) ?? null;
+  });
 
   constructor(private api: ReportApi) {}
 
@@ -34,7 +37,9 @@ export class ReportStore {
       error: () => this._isLoading.set(false),
     });
   }
-  getRecommendations(reportId: number): void {
+
+  // Aceptamos string en el parámetro pero lo manejamos internamente
+  getRecommendations(reportId: number | string): void {
     this._isLoading.set(true);
     this.api.getRecommendations(reportId).subscribe({
       next: (recs) => {
@@ -44,6 +49,7 @@ export class ReportStore {
       error: () => this._isLoading.set(false),
     });
   }
+
   generateReport(type: ReportType, userId: number, seasonsID: number): void {
     this._isLoading.set(true);
     this.api.generateReport(type, userId, seasonsID).subscribe({
@@ -54,7 +60,8 @@ export class ReportStore {
       error: () => this._isLoading.set(false),
     });
   }
-  generateRecommendation(reportsId: number, priority: PriorityLevel): void {
+
+  generateRecommendation(reportsId: number | string, priority: PriorityLevel): void {
     this._isLoading.set(true);
     this.api.generateRecommendation(reportsId, priority).subscribe({
       next: (rec) => {
@@ -65,12 +72,12 @@ export class ReportStore {
     });
   }
 
-  implementRecommendation(recommendationId: number): void {
+  implementRecommendation(recommendationId: number | string): void {
     this._isLoading.set(true);
     this.api.implementRecommendation(recommendationId).subscribe({
       next: (updated) => {
         this._recommendations.update((list) =>
-          list.map((r) => (r.getId() === updated.getId() ? updated : r)),
+          list.map((r) => (r.getId().toString() === updated.getId().toString() ? updated : r)),
         );
         this._isLoading.set(false);
       },
@@ -78,7 +85,21 @@ export class ReportStore {
     });
   }
 
-  selectReport(id: number): void {
+  selectReport(id: number | string): void {
     this._selectedReportId.set(id);
+  }
+
+  deleteReport(id: number | string): void {
+    this._isLoading.set(true);
+    this.api.deleteReport(id).subscribe({
+      next: () => {
+        this._reports.update((list) => list.filter((r) => r.getId().toString() !== id.toString()));
+        if (this._selectedReportId()?.toString() === id.toString()) {
+          this._selectedReportId.set(null);
+        }
+        this._isLoading.set(false);
+      },
+      error: () => this._isLoading.set(false),
+    });
   }
 }

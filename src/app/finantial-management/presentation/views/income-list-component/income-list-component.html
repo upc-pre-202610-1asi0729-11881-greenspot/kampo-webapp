@@ -36,7 +36,10 @@
         </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>Fecha</mat-label>
-          <input matInput type="date" formControlName="date" />
+          <input matInput [matDatepicker]="picker" formControlName="date" />
+          <mat-hint>DD/MM/AAAA</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
         <div class="inline-form-actions">
           <button mat-raised-button color="primary" type="submit" [disabled]="incomeForm.invalid || !hasRecord()">
@@ -51,11 +54,15 @@
   <div class="filter-row" style="margin-top: 15px">
     <mat-form-field appearance="outline">
       <mat-label>Desde</mat-label>
-      <input matInput type="date" [value]="fromDate()" (change)="setFromDate($event)" />
+      <input matInput [matDatepicker]="pickerFrom" [value]="fromDate()" (dateChange)="setFromDate($event)" />
+      <mat-datepicker-toggle matIconSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+      <mat-datepicker #pickerFrom></mat-datepicker>
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Hasta</mat-label>
-      <input matInput type="date" [value]="toDate()" (change)="setToDate($event)" />
+      <input matInput [matDatepicker]="pickerTo" [value]="toDate()" (dateChange)="setToDate($event)" />
+      <mat-datepicker-toggle matIconSuffix [for]="pickerTo"></mat-datepicker-toggle>
+      <mat-datepicker #pickerTo></mat-datepicker>
     </mat-form-field>
     <button mat-stroked-button type="button" (click)="clearDateFilter()">
       <mat-icon>date_range</mat-icon>
@@ -95,8 +102,11 @@
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef class="col-actions">Acciones</th>
           <td mat-cell *matCellDef="let row" class="col-actions">
-            <button mat-icon-button disabled title="Edición próximamente">
+            <button mat-icon-button color="primary" title="Editar" (click)="onEdit(row)">
               <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" title="Eliminar" (click)="onDelete(row)">
+              <mat-icon>delete</mat-icon>
             </button>
           </td>
         </ng-container>

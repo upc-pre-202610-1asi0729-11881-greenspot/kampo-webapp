@@ -1,0 +1,135 @@
+<div class="dashboard">
+
+  <div class="dashboard-header">
+    <div>
+      <h1 class="dashboard-title">{{ 'dashboard_view.main_title' | translate }}</h1>
+      <p class="dashboard-subtitle">{{ 'dashboard_view.welcome' | translate }}</p>
+    </div>
+
+    <button mat-raised-button class="new-record-btn" [matMenuTriggerFor]="recordMenu">
+      <mat-icon>add</mat-icon> {{ 'common.add' | translate }}
+    </button>
+    <mat-menu #recordMenu="matMenu">
+      <button mat-menu-item routerLink="/field-operation">
+        <mat-icon>agriculture</mat-icon>
+        <span>{{ 'field_visit.new' | translate }}</span>
+      </button>
+      <button mat-menu-item routerLink="/employee-management">
+        <mat-icon>person_add</mat-icon>
+        <span>{{ 'employee.new' | translate }}</span>
+      </button>
+    </mat-menu>
+  </div>
+
+  <div class="metrics-grid">
+    @for (metric of metrics; track $index) {
+      <div class="metric-card" [routerLink]="metric.route">
+        <div class="metric-card-header">
+          <mat-icon class="card-icon">{{ metric.icon }}</mat-icon>
+          <span class="card-indicator" [style.color]="metric.indicatorColor">{{ metric.indicator | translate }}</span>
+        </div>
+        <div class="metric-card-body">
+          <span class="card-title">{{ metric.title | translate }}</span>
+          <span class="card-value">{{ metric.value }}</span>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="middle-section">
+
+    <div class="dashboard-card chart-card">
+      <div class="card-header">
+        <h2 class="card-title">{{ 'dashboard_view.monthly_activity' | translate }}</h2>
+        <span class="chart-subtitle">Operaciones de campo 2026</span>
+      </div>
+      <div class="bar-chart">
+        @for (item of monthlyActivity; track item.month) {
+          <div class="bar-col">
+            <div class="bar-wrap">
+              <div class="bar" [style.height.%]="(item.value / maxActivity) * 100"></div>
+            </div>
+            <span class="bar-label">{{ item.month | translate }}</span>
+            <span class="bar-value">{{ item.value }}</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="dashboard-card quick-card">
+      <div class="card-header">
+        <h2 class="card-title">{{ 'dashboard_view.quick_access' | translate }}</h2>
+      </div>
+      <div class="quick-grid">
+        @for (item of quickAccess; track item.label) {
+          <a class="quick-item" [routerLink]="item.route">
+            <div class="quick-icon" [style.background]="item.color + '20'">
+              <mat-icon [style.color]="item.color">{{ item.icon }}</mat-icon>
+            </div>
+            <span class="quick-label">{{ item.label | translate }}</span>
+          </a>
+        }
+      </div>
+    </div>
+
+  </div>
+
+  <div class="dashboard-content">
+
+    <div class="dashboard-card activity-card">
+      <div class="card-header">
+        <h2 class="card-title">{{ 'dashboard_view.recent_logs' | translate }}</h2>
+        <a class="view-all" routerLink="/field-operation">{{ 'dashboard_view.view_history' | translate }}</a>
+      </div>
+      <div class="table-responsive">
+        <table class="activity-table">
+          <thead>
+          <tr>
+            <th>{{ 'common.date' | translate | uppercase }}</th>
+            <th>ACTIVITY BLOCK</th>
+            <th>OPERATOR</th>
+            <th>{{ 'common.status' | translate | uppercase }}</th>
+          </tr>
+          </thead>
+          <tbody>
+            @for (item of recentActivity; track $index) {
+              <tr>
+                <td class="time-cell">{{ item.time }}</td>
+                <td>{{ item.action }}</td>
+                <td>{{ item.operator }}</td>
+                <td><span class="status-badge">{{ item.status | translate }}</span></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="dashboard-card alerts-card">
+      <div class="card-header">
+        <h2 class="card-title">{{ 'dashboard_view.system_alerts' | translate }}</h2>
+        <a class="view-all">{{ 'dashboard_view.clear_all' | translate }}</a>
+      </div>
+      <div class="alerts-list">
+        @for (alert of systemAlerts; track $index) {
+          <div class="alert-item" [ngClass]="alert.type">
+            <div class="alert-body">
+              <span class="alert-title">
+                <mat-icon class="alert-icon-small">
+                  {{ alert.type === 'critical' ? 'error_outline' : alert.type === 'warning' ? 'warning_amber' : 'info_outline' }}
+                </mat-icon>
+                {{ alert.title | translate }}
+              </span>
+              <span class="alert-desc">{{ alert.description | translate }}</span>
+              <span class="alert-time">{{ alert.time }}</span>
+            </div>
+          </div>
+        }
+      </div>
+      <button mat-stroked-button class="view-all-btn" routerLink="/alert-management">
+        {{ 'dashboard_view.view_all_alerts' | translate }}
+      </button>
+    </div>
+
+  </div>
+</div>

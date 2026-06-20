@@ -6,22 +6,37 @@
   <mat-card-content>
     <mat-form-field appearance="outline">
       <mat-label>{{ 'employee.dni' | translate }}</mat-label>
-      <input matInput [(ngModel)]="firstName" name="firstName" />
+      <label>
+        <input matInput [(ngModel)]="firstName" name="firstName" />
+      </label>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>{{ 'common.name' | translate }}</mat-label>
-      <input matInput [(ngModel)]="lastName" name="lastName" />
+      <label>
+        <input matInput [(ngModel)]="lastName" name="lastName" />
+      </label>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>{{ 'organization.email' | translate }}</mat-label>
-      <input matInput [(ngModel)]="email" name="email" type="email" />
+      <label>
+        <input matInput [(ngModel)]="email" name="email" type="email" />
+      </label>
     </mat-form-field>
 
     <mat-form-field appearance="outline">
       <mat-label>{{ 'organization.phone' | translate }}</mat-label>
-      <input matInput [(ngModel)]="phone" name="phone" />
+      <label>
+        <input matInput [(ngModel)]="phone" name="phone" />
+      </label>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>{{ 'common.password' | translate }}</mat-label>
+      <label>
+        <input matInput [(ngModel)]="password" name="password" type="password" />
+      </label>
     </mat-form-field>
   </mat-card-content>
 

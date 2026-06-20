@@ -49,7 +49,9 @@ export class NavbarComponent implements OnInit {
     { labelKey: 'nav.reports', icon: 'bar_chart', route: '/report-management' },
   ];
 
-  bottomItems: NavItem[] = [{ labelKey: 'nav.settings', icon: 'settings', route: '/settings' }];
+  bottomItems: NavItem[] = [
+    { labelKey: 'nav.settings', icon: 'settings', route: '/settings' },
+  ];
 
   /** Mock user — replace with your AuthService */
   currentUser = {

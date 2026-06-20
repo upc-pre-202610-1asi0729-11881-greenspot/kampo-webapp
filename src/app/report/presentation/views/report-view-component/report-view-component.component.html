@@ -1,60 +1,76 @@
-<mat-toolbar color="primary" style="margin-top: 12px">
-  <mat-icon>analytics</mat-icon>
-  <span style="margin-left: 8px">Reports</span>
-  <span class="spacer"></span>
+<div class="kampo-page-container">
+  <div class="kampo-header-split">
+    <div class="header-titles">
+      <h1 class="title">Reports & Insights</h1>
+      <p class="subtitle">Análisis financiero y agronómico del fundo.</p>
+    </div>
 
-  <mat-form-field appearance="outline" class="toolbar-select">
-    <mat-label>Type</mat-label>
-    <mat-select [(ngModel)]="selectedType">
-      @for (t of reportTypes; track t) {
-        <mat-option [value]="t">{{ t }}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-
-  <button mat-stroked-button [disabled]="store.isLoading()" (click)="onGenerateReport()">
-    <mat-icon>add</mat-icon>
-    Generate Report
-  </button>
-</mat-toolbar>
-
-<div class="view-body">
-  <app-report-list-component
-    [reports]="store.reports()"
-    [isLoading]="store.isLoading()"
-    (selectReport)="onSelectReport($event)"
-  />
-
-  @if (store.selectedReport()) {
-    <mat-divider />
-
-    <app-report-file-component
-      [report]="store.selectedReport()!"
-      [isLoading]="store.isLoading()"
-    />
-
-    <div class="rec-actions">
-      <mat-form-field appearance="outline">
-        <mat-label>Priority</mat-label>
-        <mat-select [(ngModel)]="selectedPriority">
-          @for (p of priorities; track p) {
-            <mat-option [value]="p">{{ p }}</mat-option>
+    <div class="header-actions">
+      <mat-form-field appearance="outline" class="clean-select">
+        <mat-label>Tipo de Reporte</mat-label>
+        <mat-select [(ngModel)]="selectedType">
+          @for (t of reportTypes; track t) {
+            <mat-option [value]="t">{{ t }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
 
-      <button mat-raised-button color="accent"
-              [disabled]="store.isLoading()"
-              (click)="onGenerateRecommendation()">
-        <mat-icon>auto_fix_high</mat-icon>
-        Generate Recommendation
+      <button mat-flat-button color="primary" class="btn-kampo"
+              [disabled]="store.isLoading()" (click)="onGenerateReport()">
+        <mat-icon>add</mat-icon> Generate Report
       </button>
     </div>
+  </div>
 
-    <app-recommendation-list-component
-      [recommendations]="store.recommendations()"
+  <mat-divider class="kampo-divider"></mat-divider>
+
+  <div class="kampo-content">
+
+    <app-report-list-component
+      [reports]="store.reports()"
       [isLoading]="store.isLoading()"
-      (implement)="onImplementRecommendation($event)"
+      (selectReport)="onSelectReport($event)"
+      (deleteReport)="onDeleteReport($event)"
     />
-  }
+
+    @if (store.selectedReport()) {
+      <div class="report-detail-section">
+        <h2 class="section-title">Report Details</h2>
+
+        <app-report-file-component
+          [report]="store.selectedReport()!"
+          [isLoading]="store.isLoading()"
+        />
+
+        <div class="recommendation-box">
+          <div class="rec-header">
+            <h3>Strategic Recommendations</h3>
+            <div class="rec-actions">
+              <mat-form-field appearance="outline" class="clean-select compact">
+                <mat-label>Prioridad</mat-label>
+                <mat-select [(ngModel)]="selectedPriority">
+                  @for (p of priorities; track p) {
+                    <mat-option [value]="p">{{ p }}</mat-option>
+                  }
+                </mat-select>
+              </mat-form-field>
+
+              <button mat-stroked-button color="accent"
+                      [disabled]="store.isLoading()"
+                      (click)="onGenerateRecommendation()">
+                <mat-icon>auto_fix_high</mat-icon> Get Insights
+              </button>
+            </div>
+          </div>
+
+          <app-recommendation-list-component
+            [recommendations]="store.recommendations()"
+            [isLoading]="store.isLoading()"
+            (implement)="onImplementRecommendation($event)"
+          />
+
+        </div>
+      </div>
+    }
+  </div>
 </div>

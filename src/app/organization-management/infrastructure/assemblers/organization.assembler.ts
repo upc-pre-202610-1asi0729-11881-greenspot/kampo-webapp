@@ -6,10 +6,10 @@ export class OrganizationAssembler {
     return new Organization(
       response.id,
       response.name,
-      response.ruc,
+      response.ruc ?? '',
       response.address,
-      response.phone,
-      response.email
+      response.phone ?? '',
+      response.email ?? '',
     );
   }
 }

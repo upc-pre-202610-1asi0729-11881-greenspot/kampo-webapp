@@ -29,7 +29,8 @@ export class ProfitabilityDashboardComponent implements OnInit {
   }
 
   loadProfitability(): void {
-    this.store.computeProfitability();
+    // En lugar de solo computeProfitability, usamos la recarga completa
+    this.store.refreshAndCompute();
   }
 
   getMarginColor(): string {

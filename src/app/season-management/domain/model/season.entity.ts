@@ -16,7 +16,7 @@ export class Season extends BaseEntity {
     cropName: string,
     status: SeasonStatus,
     startedAt: Date,
-    endedAt: Date | null = null
+    endedAt: Date | null = null,
   ) {
     super(id);
     this.fieldId = fieldId;
@@ -26,7 +26,6 @@ export class Season extends BaseEntity {
     this.startedAt = startedAt;
     this.endedAt = endedAt;
   }
-
 
   getFieldId(): number {
     return this.fieldId;

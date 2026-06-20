@@ -3,6 +3,7 @@ import { Season } from '../domain/model/season.entity';
 import { SeasonStatus } from '../domain/model/season-status.enum';
 import { SeasonService } from '../infrastructure/services/season.service';
 import { SeasonResponse } from '../infrastructure/responses/season.response';
+import { SeasonCreateResource } from '../infrastructure/responses/season-create.resource';
 import { SeasonAssembler } from '../infrastructure/assemblers/season.assembler';
 
 @Injectable({ providedIn: 'root' })
@@ -24,7 +25,7 @@ export class SeasonStore {
       status: s.getStatus(),
       startedAt: s.getStartedAt(),
       endedAt: s.getEndedAt(),
-    }))
+    })),
   );
 
   setSeasons(responses: SeasonResponse[]): void {
@@ -48,22 +49,46 @@ export class SeasonStore {
     });
   }
 
-  loadAllSeasons(): void {
+  /**
+   * Carga la temporada activa de un campo (GET /seasons/active?fieldId=X).
+   * Útil para mostrar "temporada en curso" sin tener que buscarla manualmente.
+   */
+  loadActiveByField(fieldId: number, onSuccess?: (season: Season | null) => void): void {
     this.isLoading.set(true);
-    this.seasonService.getAll().subscribe({
-      next: (responses) => this.setSeasons(responses),
-      error: (err) => console.error(err),
-      complete: () => this.isLoading.set(false)
+    this.seasonService.getActiveByField(fieldId).subscribe({
+      next: (response) => {
+        const entity = this.assembler.toEntityFromResponse(response);
+        onSuccess?.(entity);
+      },
+      error: () => {
+        onSuccess?.(null);
+      },
+      complete: () => this.isLoading.set(false),
     });
   }
 
-  createSeason(body: any): void {
+  /**
+   * Crea una temporada. Backend real: POST /seasons con { fieldId, cropName, startAt }.
+   * onSuccess/onError permiten al componente actuar tras la confirmación real.
+   */
+  createSeason(
+    fieldId: number,
+    cropName: string,
+    startAt: string,
+    onSuccess?: (created: Season) => void,
+    onError?: (err: unknown) => void,
+  ): void {
+    this.isLoading.set(true);
+    const body = new SeasonCreateResource(fieldId, cropName, startAt);
+
     this.seasonService.create(body).subscribe({
       next: (response) => {
         const entity = this.assembler.toEntityFromResponse(response);
         this.addSeason(entity);
+        onSuccess?.(entity);
       },
-      error: (err) => console.error(err)
+      error: (err) => onError?.(err),
+      complete: () => this.isLoading.set(false),
     });
   }
 
@@ -72,14 +97,76 @@ export class SeasonStore {
   }
 
   getSeasonById(id: number): Season | undefined {
-    return this.seasons().find((s) => s.getId() === id);
+    return this.seasons().find((s) => String(s.getId()) === String(id));
   }
 
   addSeason(entity: Season): void {
     this.seasons.update((list) => [...list, entity]);
   }
 
-  updateSeason(entity: Season): void {
-    this.seasons.update((list) => list.map((s) => (s.getId() === entity.getId() ? entity : s)));
+  private replaceSeason(updated: Season): void {
+    this.seasons.update((list) => list.map((s) => (s.getId() === updated.getId() ? updated : s)));
+  }
+
+  /**
+   * Cambia el estado de la temporada (PATCH /{id}/status).
+   */
+  updateStatus(
+    seasonId: number,
+    status: SeasonStatus,
+    onSuccess?: (updated: Season) => void,
+    onError?: (err: unknown) => void,
+  ): void {
+    this.isLoading.set(true);
+    this.seasonService.updateStatus(seasonId, status).subscribe({
+      next: (response) => {
+        const updated = this.assembler.toEntityFromResponse(response);
+        this.replaceSeason(updated);
+        onSuccess?.(updated);
+      },
+      error: (err) => onError?.(err),
+      complete: () => this.isLoading.set(false),
+    });
+  }
+
+  /**
+   * Finaliza la temporada (PATCH /{id}/end) — sin body.
+   */
+  endSeason(
+    seasonId: number,
+    onSuccess?: (updated: Season) => void,
+    onError?: (err: unknown) => void,
+  ): void {
+    this.isLoading.set(true);
+    this.seasonService.endSeason(seasonId).subscribe({
+      next: (response) => {
+        const updated = this.assembler.toEntityFromResponse(response);
+        this.replaceSeason(updated);
+        onSuccess?.(updated);
+      },
+      error: (err) => onError?.(err),
+      complete: () => this.isLoading.set(false),
+    });
+  }
+
+  /**
+   * Asigna un cultivo a la temporada (PATCH /{id}/crop).
+   */
+  assignCrop(
+    seasonId: number,
+    cropId: number,
+    onSuccess?: (updated: Season) => void,
+    onError?: (err: unknown) => void,
+  ): void {
+    this.isLoading.set(true);
+    this.seasonService.assignCrop(seasonId, cropId).subscribe({
+      next: (response) => {
+        const updated = this.assembler.toEntityFromResponse(response);
+        this.replaceSeason(updated);
+        onSuccess?.(updated);
+      },
+      error: (err) => onError?.(err),
+      complete: () => this.isLoading.set(false),
+    });
   }
 }

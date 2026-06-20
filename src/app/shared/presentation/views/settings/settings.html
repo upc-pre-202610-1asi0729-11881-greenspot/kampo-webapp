@@ -1,0 +1,120 @@
+<div class="settings-container">
+
+  <mat-card class="profile-header-card">
+    <div class="profile-header-content">
+      <div class="avatar-container">
+        <img src="" alt="Profile Avatar" class="profile-avatar">
+        <button mat-mini-fab class="edit-avatar-btn">
+          <mat-icon>camera_alt</mat-icon>
+        </button>
+      </div>
+      <div class="profile-info">
+        <h2>Marcus Va ne</h2>
+        <p>Estate Manager • Highland Grove Vineyards</p>
+        <div class="profile-actions">
+          <button mat-flat-button class="btn-dark-green">
+            <mat-icon>edit</mat-icon> Edit Profile
+          </button>
+          <button mat-stroked-button class="btn-outline">
+            <mat-icon>lock</mat-icon> Change Password
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+
+  <div class="settings-grid">
+
+    <mat-card class="personal-info-card">
+      <mat-card-header>
+        <mat-icon mat-card-avatar class="card-icon">badge</mat-icon>
+        <mat-card-title>Personal Information</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Full Name</mat-label>
+            <input matInput value="Elias Thorne">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Email Address</mat-label>
+            <input matInput value="e.thorne@kampoagri.com">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput value="+1 (555) 924-1082">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Primary Location</mat-label>
+            <input matInput value="Napa Valley, CA">
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width textarea-field">
+          <mat-label>Professional Bio</mat-label>
+          <textarea matInput rows="4">Estate manager with over 15 years of experience in high-yield agricultural operations and sustainable water management.</textarea>
+        </mat-form-field>
+
+        <div class="submit-action">
+          <button mat-flat-button class="btn-dark-green">Save All Changes</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="right-column">
+
+      <mat-card class="preferences-card">
+        <mat-card-header>
+          <mat-icon mat-card-avatar class="card-icon">tune</mat-icon>
+          <mat-card-title>System Preferences</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <div class="preference-item">
+            <div class="pref-text">
+              <div class="pref-title"><mat-icon>notifications</mat-icon> Notifications</div>
+              <div class="pref-desc">Alerts for moisture levels & weather</div>
+            </div>
+            <mat-slide-toggle [(ngModel)]="notificationsEnabled" color="primary"></mat-slide-toggle>
+          </div>
+
+          <div class="preference-item">
+            <div class="pref-text">
+              <div class="pref-title"><mat-icon>gpp_good</mat-icon> Two-Factor Authentication</div>
+              <div class="pref-desc">Required for financial reports</div>
+            </div>
+            <mat-slide-toggle [(ngModel)]="twoFactorEnabled" color="primary"></mat-slide-toggle>
+          </div>
+
+          <div class="preference-item">
+            <div class="pref-text">
+              <div class="pref-title"><mat-icon>dark_mode</mat-icon> Dark Mode</div>
+              <div class="pref-desc">Reduce eye strain for night shifts</div>
+            </div>
+            <mat-slide-toggle [(ngModel)]="darkModeEnabled" color="primary"></mat-slide-toggle>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="vineyard-banner">
+        <div class="banner-overlay">
+          <h3>Highland Grove Vineyards</h3>
+          <p>PREMIUM SECTOR A-12</p>
+        </div>
+      </div>
+
+      <div class="sign-out-container">
+        <button mat-flat-button class="btn-sign-out">
+          <mat-icon>logout</mat-icon> Sign Out
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

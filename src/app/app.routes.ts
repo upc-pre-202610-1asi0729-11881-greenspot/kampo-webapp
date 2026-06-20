@@ -77,5 +77,22 @@ export const routes: Routes = [
       ),
   },
 
-  { path: '**', redirectTo: '' },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./shared/presentation/views/dashboard/dashboard').then((m) => m.Dashboard),
+  },
+
+  {
+    path: 'settings',
+    loadComponent: () =>
+      import('./shared/presentation/views/settings/settings').then((m) => m.Settings),
+  },
+  {
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full',
+  },
+
+  { path: '**', redirectTo: 'dashboard' },
 ];

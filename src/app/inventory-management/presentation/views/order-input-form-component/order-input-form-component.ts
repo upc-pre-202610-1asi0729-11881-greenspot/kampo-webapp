@@ -42,7 +42,14 @@ export class OrderInputFormComponent implements OnInit {
     quantity: [1, [Validators.required, Validators.min(1)]],
   });
 
-  readonly orderColumns: string[] = ['id', 'inventory', 'supplier', 'quantity', 'status', 'actions'];
+  readonly orderColumns: string[] = [
+    'id',
+    'inventory',
+    'supplier',
+    'quantity',
+    'status',
+    'actions',
+  ];
 
   ngOnInit(): void {
     if (!this.store.inventories().length) {
@@ -57,11 +64,21 @@ export class OrderInputFormComponent implements OnInit {
   }
 
   inventoryLabel(id: number): string {
-    return this.store.inventories().find((i) => i.getId() === id)?.getName() ?? `#${id}`;
+    return (
+      this.store
+        .inventories()
+        .find((i) => i.getId() === id)
+        ?.getName() ?? `#${id}`
+    );
   }
 
   supplierLabel(id: number): string {
-    return this.store.suppliers().find((s) => s.getId() === id)?.getName() ?? `#${id}`;
+    return (
+      this.store
+        .suppliers()
+        .find((s) => s.getId() === id)
+        ?.getName() ?? `#${id}`
+    );
   }
 
   orderStatusLabel(status: OrderStatus): string {
@@ -77,18 +94,60 @@ export class OrderInputFormComponent implements OnInit {
     }
   }
 
+  /**
+   * Envía POST /api/v1/order-inputs con { inventoryId, supplierId, quantity }.
+   * El token JWT viaja automáticamente vía authInterceptor.
+   * Solo resetea el formulario y muestra éxito SI el backend confirma.
+   */
   onOrderInput(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
     const v = this.form.getRawValue();
-    this.store.orderInput(v.inventoryId, v.supplierId, v.quantity);
-    this.snackBar.open('Pedido creado (pendiente de API).', 'OK', { duration: 2500 });
+
+    this.store.orderInput(
+      v.inventoryId,
+      v.supplierId,
+      v.quantity,
+      () => {
+        this.snackBar.open('Pedido creado exitosamente.', 'Cerrar', {
+          duration: 3000,
+          panelClass: ['success-snackbar'],
+        });
+        this.form.reset({ inventoryId: 0, supplierId: 0, quantity: 1 });
+      },
+      (err) => {
+        console.error('Error al crear pedido:', err);
+        this.snackBar.open('No se pudo crear el pedido. Verifica tu sesión.', 'Cerrar', {
+          duration: 3000,
+        });
+      },
+    );
   }
 
   onReceiveInput(orderId: number, quantity: number): void {
-    this.store.receiveInput(orderId, quantity);
-    this.snackBar.open('Recepción registrada.', 'OK', { duration: 2000 });
+    this.store.receiveInput(
+      orderId,
+      quantity,
+      () => this.snackBar.open('Recepción registrada.', 'OK', { duration: 2000 }),
+      (err) => {
+        console.error('Error al recibir pedido:', err);
+        this.snackBar.open('No se pudo registrar la recepción.', 'OK', { duration: 3000 });
+      },
+    );
+  }
+
+  onDeleteOrder(orderId: number): void {
+    if (confirm('¿Estás seguro de que deseas eliminar este pedido?')) {
+      this.store.deleteOrder(
+        orderId,
+        () => this.snackBar.open('Pedido eliminado exitosamente.', 'Cerrar', { duration: 3000 }),
+        (err) => {
+          console.error('Error al eliminar pedido:', err);
+          this.snackBar.open('No se pudo eliminar el pedido.', 'Cerrar', { duration: 3000 });
+        },
+      );
+    }
   }
 }

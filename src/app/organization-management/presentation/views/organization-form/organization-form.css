@@ -1,40 +1,45 @@
-.organization-form-container {
-  padding: 40px;
-  max-width: 650px;
-  margin: 40px auto;
-  background: white;
+.page-container {
+  padding: 40px 20px;
+  background-color: #f8fafc;
+  min-height: 100vh;
+}
+
+.form-card {
+  max-width: 800px;
+  margin: 0 auto;
   border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  padding: 20px;
 }
 
-h2 {
-  font-size: 24px;
+.header {
+  margin-bottom: 24px;
+  padding-left: 10px;
+}
+
+.header mat-card-title {
+  color: var(--mat-sys-primary);
   font-weight: 600;
-  color: #2e7d32;
-  margin-bottom: 32px;
-  text-align: center;
+  font-size: 24px;
 }
 
-.form-field-full-width {
-  width: 100%;
-  margin-bottom: 8px;
-}
-
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Dos columnas iguales */
   gap: 16px;
-  margin-top: 32px;
-  padding-top: 20px;
-  border-top: 1px solid #eee;
+  padding: 10px;
 }
 
-button[color="primary"] {
-  padding: 0 24px;
-  height: 48px;
-  border-radius: 8px;
+.full-width {
+  grid-column: span 2; /* Ocupa toda la fila */
 }
 
-button[color="warn"] {
-  border-radius: 8px;
+.actions {
+  padding: 20px 10px;
+  gap: 12px;
+}
+
+/* Ajuste de iconos */
+mat-icon {
+  margin-right: 8px;
+  color: var(--mat-sys-secondary);
 }

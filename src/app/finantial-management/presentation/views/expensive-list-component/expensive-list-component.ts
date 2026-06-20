@@ -8,10 +8,15 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
+import { FundoId } from '../../../domain/model/value-object/fundo-id.vo';
+import { SeasonId } from '../../../domain/model/value-object/season-id.vo';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { ExpenseCategory } from '../../../domain/model/enums/expense-category.enum';
 import { FinancialStore } from '../../../application/financial.store';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-expensive-list-component',
@@ -27,6 +32,8 @@ import { FinancialStore } from '../../../application/financial.store';
     MatSelectModule,
     MatCardModule,
     MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   templateUrl: './expensive-list-component.html',
   styleUrl: './expensive-list-component.css',
@@ -35,6 +42,7 @@ export class ExpenseListComponent {
   private readonly store = inject(FinancialStore);
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
+  private readonly snackBar = inject(MatSnackBar);
 
   readonly isLoading = this.store.isLoading;
   readonly hasRecord = this.store.hasRecord;
@@ -88,5 +96,27 @@ export class ExpenseListComponent {
   clearFilter(): void {
     this.categoryFilter.set('');
     this.pageIndex.set(0);
+  }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      const fundoId = params['fundoId'];
+      const seasonId = params['seasonId'];
+
+      if (fundoId && seasonId) {
+        this.store.loadRecord(new FundoId(Number(fundoId)), new SeasonId(Number(seasonId)));
+      }
+    });
+  }
+  onEdit(row: any): void {
+    this.snackBar.open('Pantalla de edición en construcción 🛠️', 'OK', { duration: 2500 });
+  }
+
+  onDelete(row: any): void {
+    const idParaBorrar = row.id?.getValue ? String(row.id.getValue()) : String(row.id);
+
+    if (confirm('¿Eliminar este gasto?')) {
+      this.store.deleteExpense(idParaBorrar);
+    }
   }
 }

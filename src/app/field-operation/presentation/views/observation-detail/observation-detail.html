@@ -1,72 +1,128 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Detalles de observaciones</title>
-</head>
-<body>
-<div class="container">
-  <div class="header">
-    <button mat-button (click)="back()">
-      <mat-icon>arrow_back</mat-icon> Volver
+<div class="detail-container">
+
+  <div class="detail-header">
+    <button mat-icon-button (click)="back()">
+      <mat-icon>arrow_back</mat-icon>
     </button>
-    <h2>Detalle de Visita</h2>
+    <div class="detail-header-info">
+      <h2 class="detail-title">Detalle de Visita</h2>
+      @if (fieldVisit) {
+        <p class="detail-subtitle">
+          Lote {{ fieldVisit.getFieldId() }} · {{ fieldVisit.getScheduledAt() | date: 'mediumDate' }}
+        </p>
+      }
+    </div>
     <button mat-raised-button color="primary" (click)="onAddObservation()">
       <mat-icon>add</mat-icon> Nueva Observación
     </button>
   </div>
 
   @if (fieldVisit) {
-    <mat-card class="visit-card">
-      <mat-card-header>
-        <mat-card-title>Visita #{{ fieldVisit.getId() }}</mat-card-title>
-        <mat-card-subtitle>
-          Lote: {{ fieldVisit.getFieldId() }} |
-          Programada: {{ fieldVisit.getScheduledAt() | date: 'shortDate' }} |
-          Estado: {{ fieldVisit.getStatus() }}
-        </mat-card-subtitle>
-      </mat-card-header>
-    </mat-card>
 
-    <h3>Observaciones</h3>
+    <!-- Visit info card -->
+    <div class="visit-info-card">
+      <div class="visit-info-item">
+        <mat-icon>person</mat-icon>
+        <div>
+          <span class="info-label">Técnico</span>
+          <span class="info-value">{{ fieldVisit.getTechnician() }}</span>
+        </div>
+      </div>
+      <div class="visit-info-item">
+        <mat-icon>assignment</mat-icon>
+        <div>
+          <span class="info-label">Propósito</span>
+          <span class="info-value">{{ fieldVisit.getPurpose() }}</span>
+        </div>
+      </div>
+      <div class="visit-info-item">
+        <mat-icon>event</mat-icon>
+        <div>
+          <span class="info-label">Programada</span>
+          <span class="info-value">{{ fieldVisit.getScheduledAt() | date: 'shortDate' }}</span>
+        </div>
+      </div>
+      <div class="visit-info-item">
+        <mat-icon>flag</mat-icon>
+        <div>
+          <span class="info-label">Estado</span>
+          <span class="status-chip"
+                [style.background]="fieldVisit.getStatus() === 'DONE' ? '#e8f5e9' : '#fff3e0'"
+                [style.color]="fieldVisit.getStatus() === 'DONE' ? '#2e7d32' : '#e65100'">
+            {{ fieldVisit.getStatus() === 'DONE' ? 'Completada' : 'Programada' }}
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Observations -->
+    <div class="obs-section-header">
+      <h3>Observaciones</h3>
+      <span class="obs-count">{{ fieldVisit.getObservations().length }} registradas</span>
+    </div>
 
     @if (fieldVisit.getObservations().length === 0) {
-      <p class="empty-message">No hay observaciones registradas para esta visita.</p>
+      <div class="empty-state">
+        <mat-icon>search</mat-icon>
+        <p>No hay observaciones registradas para esta visita.</p>
+        <button mat-stroked-button color="primary" (click)="onAddObservation()">
+          Agregar primera observación
+        </button>
+      </div>
     }
 
     @for (obs of fieldVisit.getObservations(); track obs.getId()) {
-      <mat-card class="observation-card">
-        <mat-card-header>
-          <mat-card-title>Observación #{{ obs.getId() }}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p><strong>Notas:</strong> {{ obs.getNotes() }}</p>
-          <mat-divider></mat-divider>
-          <div class="severity-row">
-            <div>
-              <p><strong>Plaga:</strong> {{ obs.getPestName() || '—' }}</p>
-              <p><strong>Severidad:</strong> {{ showPestSeverity(obs.getPestSeverity()) }}</p>
+      <div class="obs-card">
+        <div class="obs-card-header">
+          <span class="obs-number">Observación #{{ obs.getId() }}</span>
+        </div>
+
+        <p class="obs-notes">{{ obs.getNotes() }}</p>
+
+        <div class="obs-details-grid">
+          <div class="obs-detail-item pest">
+            <div class="detail-item-label">
+              <mat-icon>bug_report</mat-icon> Plaga
             </div>
-            <div>
-              <p><strong>Enfermedad:</strong> {{ obs.getDiseaseName() || '—' }}</p>
-              <p><strong>Severidad:</strong> {{ showDiseaseSeverity(obs.getDiseaseSeverity()) }}</p>
-            </div>
+            <span class="detail-item-name">{{ obs.getPestName() || '—' }}</span>
+            <span class="severity-badge"
+                  [class]="'severity-' + obs.getPestSeverity().toLowerCase()">
+              {{ showPestSeverity(obs.getPestSeverity()) }}
+            </span>
           </div>
-          @if (obs.getRecommendation()) {
-            <p><strong>Recomendación:</strong> {{ obs.getRecommendation() }}</p>
-          }
-          @if (obs.getEvidenceUrl()) {
-            <p><strong>Evidencia:</strong>
-              <a [href]="obs.getEvidenceUrl()" target="_blank">Ver archivo</a>
-            </p>
-          }
-        </mat-card-content>
-      </mat-card>
+          <div class="obs-detail-item disease">
+            <div class="detail-item-label">
+              <mat-icon>coronavirus</mat-icon> Enfermedad
+            </div>
+            <span class="detail-item-name">{{ obs.getDiseaseName() || '—' }}</span>
+            <span class="severity-badge"
+                  [class]="'severity-' + obs.getDiseaseSeverity().toLowerCase()">
+              {{ showDiseaseSeverity(obs.getDiseaseSeverity()) }}
+            </span>
+          </div>
+        </div>
+
+        @if (obs.getRecommendation()) {
+          <div class="obs-recommendation">
+            <mat-icon>lightbulb</mat-icon>
+            <span>{{ obs.getRecommendation() }}</span>
+          </div>
+        }
+
+        @if (obs.getEvidenceUrl()) {
+          <div class="obs-evidence">
+            <a [href]="obs.getEvidenceUrl()" target="_blank">
+              <mat-icon>attach_file</mat-icon> Ver evidencia
+            </a>
+          </div>
+        }
+      </div>
     }
+
   } @else {
-    <p>Cargando visita...</p>
+    <div style="text-align:center; padding: 40px; color: #78909c;">
+      <mat-spinner diameter="40" style="margin: 0 auto;"></mat-spinner>
+      <p style="margin-top: 16px;">Cargando visita...</p>
+    </div>
   }
 </div>
-
-</body>
-</html>

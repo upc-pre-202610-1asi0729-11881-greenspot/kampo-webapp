@@ -11,12 +11,13 @@ import {
 import { ReportType } from '../domain/model/enums/report-type.enum';
 import { PriorityLevel } from '../domain/model/enums/priority-level.enum';
 import { Recommendation } from '../domain/model/entities/recommendation.entity';
-import {Report} from '../domain/model/entities/report.entity';
+import { Report } from '../domain/model/entities/report.entity';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class ReportApi {
-  private readonly reportsEndpoint = '/api/reports';
-  private readonly recommendationEndpoint = '/api/recommendations';
+  private readonly reportsEndpoint = `${environment.apiBaseUrl}/reports`;
+  private readonly recommendationEndpoint = `${environment.apiBaseUrl}/recommendations`;
 
   constructor(
     private http: HttpClient,
@@ -29,7 +30,8 @@ export class ReportApi {
       .get<ReportResponse[]>(this.reportsEndpoint)
       .pipe(map((res) => res.map((r) => this.reportAssembler.toEntityFromResponse(r))));
   }
-  getRecommendations(reportId: number): Observable<Recommendation[]> {
+
+  getRecommendations(reportId: number | string): Observable<Recommendation[]> {
     return this.http
       .get<RecommendationResponse[]>(`${this.recommendationEndpoint}?reportId=${reportId}`)
       .pipe(map((res) => res.map((r) => this.recommendationAssembler.toEntityFromResponse(r))));
@@ -42,19 +44,25 @@ export class ReportApi {
       .pipe(map((r) => this.reportAssembler.toEntityFromResponse(r)));
   }
 
-  generateRecommendation(reportsId: number, priority: PriorityLevel): Observable<Recommendation> {
-    const resource: RecommendationResource = { reportsId, priority };
+  generateRecommendation(
+    reportsId: number | string,
+    priority: PriorityLevel,
+  ): Observable<Recommendation> {
+    const resource: RecommendationResource = { reportsId: Number(reportsId), priority };
     return this.http
       .post<RecommendationResponse>(this.recommendationEndpoint, resource)
       .pipe(map((r) => this.recommendationAssembler.toEntityFromResponse(r)));
   }
 
-  implementRecommendation(recommendationId: number): Observable<Recommendation> {
+  implementRecommendation(recommendationId: number | string): Observable<Recommendation> {
     return this.http
-      .patch<RecommendationResponse>(
-        `${this.recommendationEndpoint}/${recommendationId}/implement`,
-        {},
-      )
+      .patch<RecommendationResponse>(`${this.recommendationEndpoint}/${recommendationId}`, {
+        status: 'IMPLEMENTED',
+      })
       .pipe(map((r) => this.recommendationAssembler.toEntityFromResponse(r)));
+  }
+
+  deleteReport(reportId: number | string): Observable<void> {
+    return this.http.delete<void>(`${this.reportsEndpoint}/${reportId}`);
   }
 }

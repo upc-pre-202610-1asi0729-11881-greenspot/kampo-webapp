@@ -1,3 +1,17 @@
 .container { margin: 16px; }
 .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
 .loading { display: flex; justify-content: center; padding: 24px; }
+::ng-deep .field-tabs .mat-mdc-tab-header {
+  background: white;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid #e8eaed;
+  border-bottom: none;
+}
+
+::ng-deep .field-tabs .mat-mdc-tab.mdc-tab--active {
+  color: #2e7d32;
+}
+
+::ng-deep .field-tabs .mdc-tab-indicator__content--underline {
+  border-color: #2e7d32;
+}

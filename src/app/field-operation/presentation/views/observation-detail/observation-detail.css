@@ -1,6 +1,233 @@
-.container { margin: 16px; }
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.visit-card { margin-bottom: 16px; }
-.observation-card { margin-bottom: 12px; }
-.severity-row { display: flex; gap: 32px; margin: 8px 0; }
-.empty-message { color: gray; font-style: italic; }
+.detail-container {
+  max-width: 900px;
+  padding: 24px;
+}
+
+.detail-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.detail-header-info {
+  flex: 1;
+}
+
+.detail-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1b2d1e;
+  margin: 0;
+}
+
+.detail-subtitle {
+  font-size: 0.85rem;
+  color: #78909c;
+  margin: 2px 0 0;
+}
+
+/* Visit info card */
+.visit-info-card {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #e8eaed;
+  padding: 20px;
+  margin-bottom: 24px;
+}
+
+.visit-info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+
+  mat-icon {
+    color: #2e7d32;
+    margin-top: 2px;
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+
+  div {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+}
+
+.info-label {
+  font-size: 0.72rem;
+  color: #90a4ae;
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.info-value {
+  font-size: 0.9rem;
+  color: #1b2d1e;
+  font-weight: 500;
+}
+
+.status-chip {
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* Observations header */
+.obs-section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  h3 { margin: 0; color: #1b2d1e; font-size: 1rem; font-weight: 600; }
+}
+
+.obs-count {
+  font-size: 0.78rem;
+  color: #78909c;
+  background: #f0f4f0;
+  padding: 2px 10px;
+  border-radius: 12px;
+}
+
+/* Empty state */
+.empty-state {
+  text-align: center;
+  padding: 48px;
+  background: white;
+  border-radius: 10px;
+  border: 1px dashed #ccc;
+  color: #78909c;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    color: #ccc;
+    margin-bottom: 8px;
+  }
+
+  p { margin-bottom: 16px; }
+}
+
+/* Observation card */
+.obs-card {
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #e8eaed;
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+.obs-card-header {
+  margin-bottom: 12px;
+}
+
+.obs-number {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #78909c;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.obs-notes {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.obs-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.obs-detail-item {
+  padding: 14px;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &.pest { background: #fff8f8; border-left: 3px solid #e53935; }
+  &.disease { background: #fffde7; border-left: 3px solid #f57f17; }
+}
+
+.detail-item-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #78909c;
+  text-transform: uppercase;
+
+  mat-icon { font-size: 14px; width: 14px; height: 14px; }
+}
+
+.detail-item-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #1b2d1e;
+}
+
+.severity-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  width: fit-content;
+
+  &.severity-low { background: #e8f5e9; color: #2e7d32; }
+  &.severity-medium { background: #fff3e0; color: #e65100; }
+  &.severity-high { background: #ffebee; color: #c62828; }
+  &.severity-critical { background: #f3e5f5; color: #6a1b9a; }
+}
+
+.obs-recommendation {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 12px;
+  background: #f0f7f0;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  color: #1b2d1e;
+  margin-top: 8px;
+
+  mat-icon { color: #2e7d32; font-size: 18px; width: 18px; height: 18px; flex-shrink: 0; }
+}
+
+.obs-evidence {
+  margin-top: 8px;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: #1565c0;
+    font-size: 0.85rem;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+
+    mat-icon { font-size: 16px; width: 16px; height: 16px; }
+  }
+}
+
+@media (max-width: 768px) {
+  .visit-info-card { grid-template-columns: 1fr 1fr; }
+  .obs-details-grid { grid-template-columns: 1fr; }
+}

@@ -1,47 +1,63 @@
-<div class="container">
-  <div class="header">
-    <h2>{{ isEdit ? 'Editar Organización' : 'Nueva Organización' }}</h2>
-  </div>
+<div class="page-container">
+  <mat-card class="form-card">
+    <mat-card-header class="header">
+      <mat-card-title>{{ isEdit ? 'Editar Organización' : 'Nueva Organización' }}</mat-card-title>
+    </mat-card-header>
 
-  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container">
-    <div class="form-grid">
-      <mat-form-field appearance="outline">
-        <mat-label>Nombre de la Organización</mat-label>
-        <input matInput formControlName="name" placeholder="Ej. Finca La Esperanza">
-        <mat-error *ngIf="form.get('name')?.hasError('required')">El nombre es obligatorio</mat-error>
-      </mat-form-field>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-card-content class="form-grid">
 
-      <mat-form-field appearance="outline">
-        <mat-label>RUC</mat-label>
-        <input matInput formControlName="ruc" placeholder="11 dígitos">
-        <mat-error *ngIf="form.get('ruc')?.invalid">RUC inválido (debe tener 11 dígitos)</mat-error>
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Nombre de la Organización</mat-label>
+          <mat-icon matPrefix>domain</mat-icon>
+          <label>
+            <input matInput formControlName="name" placeholder="Ej. Acme Agro SAC">
+          </label>
+          <mat-error *ngIf="form.get('name')?.hasError('required')">Obligatorio</mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Dirección</mat-label>
-        <input matInput formControlName="address">
-      </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>RUC (opcional)</mat-label>
+          <mat-icon matPrefix>badge</mat-icon>
+          <label>
+            <input matInput formControlName="ruc" placeholder="11 dígitos">
+          </label>
+          <mat-error *ngIf="form.get('ruc')?.invalid">Debe tener 11 dígitos</mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Teléfono</mat-label>
-        <input matInput formControlName="phone" type="tel">
-      </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Dirección</mat-label>
+          <mat-icon matPrefix>location_on</mat-icon>
+          <label>
+            <input matInput formControlName="address" placeholder="Ej. Av. La Mar 123, Lima">
+          </label>
+          <mat-error *ngIf="form.get('address')?.hasError('required')">Obligatorio</mat-error>
+        </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>Correo Electrónico</mat-label>
-        <input matInput formControlName="email" type="email" placeholder="ejemplo@kampo.com">
-        <mat-error *ngIf="form.get('email')?.hasError('email')">Formato de correo inválido</mat-error>
-      </mat-form-field>
-    </div>
+        <mat-form-field appearance="outline">
+          <mat-label>Teléfono (opcional)</mat-label>
+          <mat-icon matPrefix>phone</mat-icon>
+          <label>
+            <input matInput formControlName="phone" type="tel">
+          </label>
+        </mat-form-field>
 
-    <div class="actions">
-      <button mat-button type="button" (click)="cancel()">
-        Cancelar
-      </button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-        <mat-icon>save</mat-icon>
-        {{ isEdit ? 'Actualizar' : 'Guardar' }}
-      </button>
-    </div>
-  </form>
+        <mat-form-field appearance="outline">
+          <mat-label>Correo Electrónico (opcional)</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <label>
+            <input matInput formControlName="email" type="email" placeholder="ejemplo@kampo.com">
+          </label>
+        </mat-form-field>
+      </mat-card-content>
+
+      <mat-card-actions align="end" class="actions">
+        <button mat-button type="button" (click)="cancel()">Cancelar</button>
+        <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid">
+          <mat-icon>save</mat-icon>
+          {{ isEdit ? 'Actualizar' : 'Guardar' }}
+        </button>
+      </mat-card-actions>
+    </form>
+  </mat-card>
 </div>

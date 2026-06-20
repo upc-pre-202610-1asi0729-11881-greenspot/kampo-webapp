@@ -1,7 +1,7 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "firstName": "Juan",
       "lastName": "Pérez",
       "email": "juan@kampo.com",
@@ -11,31 +11,31 @@
   ],
   "roles": [
     {
-      "id": 1,
+      "id": "1",
       "position": "ADMIN",
       "description": "Administrador total del sistema"
     },
     {
-      "id": 2,
+      "id": "2",
       "position": "AGRONOMIST",
       "description": "Ingeniero agrónomo supervisor"
     }
   ],
   "permissions": [
     {
-      "id": 1,
+      "id": "1",
       "category": "USERS",
       "description": "Gestión completa de usuarios"
     },
     {
-      "id": 2,
+      "id": "2",
       "category": "REPORTS",
       "description": "Acceso a generación de reportes"
     }
   ],
   "organizations": [
     {
-      "id": 1,
+      "id": "1",
       "name": "AgroExportadora Sur",
       "ruc": "20123456789",
       "address": "Valle de Ica",
@@ -43,18 +43,17 @@
       "email": "contacto@agrosur.com"
     },
     {
-      "name": "Prueba1",
-      "ruc": "11111111111",
-      "address": "Jr Prueba1",
-      "phone": "999999999",
-      "email": "prueba1@gmail.com",
-      "apiId": "v1",
-      "id": 2
+      "name": "prueba1",
+      "ruc": "12345678901",
+      "address": "jr prueba 1",
+      "phone": "987 123 123",
+      "email": "prueba@gmail.com",
+      "id": "aJ_QB8A"
     }
   ],
   "fundos": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Fundo Santa Clara",
       "organizationId": 1,
       "location": "Ica, Perú",
@@ -63,7 +62,7 @@
   ],
   "fields": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Parcela A1",
       "fundoId": 1,
       "area": 50,
@@ -73,74 +72,30 @@
   ],
   "crops": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Uva Red Globe",
       "scientificName": "Vitis vinifera",
       "variety": "Red Globe",
       "growthCycle": 120
     }
   ],
-  "seasons": [
-    {
-      "id": 1,
-      "fieldId": 1,
-      "cropId": 1,
-      "cropName": "Uva Red Globe",
-      "status": "ACTIVE",
-      "startedAt": "2026-01-15T08:00:00Z",
-      "endedAt": null
-    }
-  ],
+  "seasons": [],
   "fieldOperations": [
     {
-      "id": 1,
       "fieldId": 1,
-      "seasonId": 1,
-      "technician": "Carlos Ruiz",
-      "purpose": "Revisión de plagas",
-      "visitDate": "2026-05-12T09:30:00Z"
+      "purpose": "riego",
+      "technician": "Pepe",
+      "scheduledAt": "2026-07-09T05:00:00.000Z",
+      "status": "SCHEDULED",
+      "id": "NAx-lTJ"
     }
   ],
-  "observations": [
-    {
-      "id": 1,
-      "fieldOperationId": 1,
-      "type": "PLAGA",
-      "severity": "Media",
-      "recommendation": "Aplicar pesticida orgánico en el cuadrante norte"
-    }
-  ],
-  "expenses": [
-    {
-      "id": 1,
-      "fundoId": 1,
-      "seasonId": 1,
-      "category": "FERTILIZANTES",
-      "amount": 850,
-      "date": "2026-04-10"
-    },
-    {
-      "id": 2,
-      "fundoId": 1,
-      "seasonId": 1,
-      "category": "MAQUINARIA",
-      "amount": 1200.5,
-      "date": "2026-04-12"
-    }
-  ],
-  "sales": [
-    {
-      "id": 1,
-      "fundoId": 1,
-      "seasonId": 1,
-      "category": "COSECHA",
-      "amount": 5400,
-      "date": "2026-05-01"
-    }
-  ],
+  "observations": [],
+  "expenses": [],
+  "sales": [],
   "inventories": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Fertilizante Hzp",
       "quantity": 120,
       "unit": "kg.",
@@ -148,47 +103,93 @@
       "status": "AVAILABLE"
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Hidroxido de Dimetile",
       "quantity": 120,
       "unit": "Lt.",
       "minStock": 80,
       "status": "AVAILABLE"
+    },
+    {
+      "name": "Fertilizante Prueba",
+      "quantity": 10,
+      "unit": "kg",
+      "minStock": 20,
+      "id": "XtU7abc"
     }
   ],
   "suppliers": [
     {
-      "id": 1,
+      "id": "1",
       "name": "AgroInsumos S.A.",
       "contact": "Ventas: 999888777"
+    },
+    {
+      "name": "InsumosAgro",
+      "contact": "987 123 123",
+      "email": "insumosagro@gmail.com",
+      "id": "Ky6qnux"
+    }
+  ],
+  "orders": [
+    {
+      "inventoryId": "2",
+      "supplierId": "Ky6qnux",
+      "quantity": 1,
+      "id": 2
+    },
+    {
+      "inventoryId": "2",
+      "supplierId": "1",
+      "quantity": 1,
+      "id": 3
     }
   ],
   "alerts": [
     {
-      "id": 1,
-      "title": "Bajo nivel de humedad en Parcela A1",
-      "severity": "HIGH"
+      "id": "1",
+      "message": "Bajo nivel de humedad en Parcela A1",
+      "priority": "HIGH",
+      "isRead": false,
+      "fieldId": 1
     }
   ],
   "alertRules": [
     {
-      "id": 1,
+      "id": "1",
       "ruleName": "Humedad Crítica",
       "condition": "< 20%"
     }
   ],
   "employees": [
     {
-      "id": 1,
-      "dni": "76543210",
-      "role": "TECHNICIAN",
-      "startDate": "2025-11-01",
-      "salary": 2500
+      "id": "1",
+      "name": "Xiomara Lozano",
+      "email": "xiomara.lozano@gmail.com",
+      "role": "SUPERVISOR",
+      "status": "ACTIVE",
+      "fieldId": 1
+    },
+    {
+      "id": "2",
+      "name": "Ana Torres",
+      "email": "ana.torres@gmail.com",
+      "role": "SUPERVISOR",
+      "status": "ACTIVE",
+      "fieldId": 1
+    },
+    {
+      "name": "Mathias",
+      "email": "mathias@gmail.com",
+      "role": "ADMIN",
+      "status": "ACTIVE",
+      "fieldId": 1,
+      "id": "vYgyWB9"
     }
   ],
   "subscriptions": [
     {
-      "id": 1,
+      "id": "1",
       "plan": "PREMIUM",
       "startDate": "2026-01-01",
       "endDate": "2026-12-31",
@@ -196,12 +197,8 @@
       "status": "ACTIVE"
     }
   ],
-  "reports": [
-    {
-      "id": 1,
-      "type": "FINANCIERO",
-      "period": "Q1 2026",
-      "downloadUrl": "https://kampo.com/reports/1"
-    }
-  ]
+  "reports": [],
+  "$schema": "./node_modules/json-server/schema.json",
+  "financial-records": [],
+  "recommendations": []
 }

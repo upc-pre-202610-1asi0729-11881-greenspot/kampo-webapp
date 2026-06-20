@@ -1,5 +1,9 @@
 import { BaseResponse } from '../../../shared/infrastructure/base-response';
 
+/**
+ * Matches the real backend response:
+ * { id, fieldId, cropId, cropName, status, startedAt, endedAt }
+ */
 export class SeasonResponse extends BaseResponse {
   fieldId: number;
   cropId: number;

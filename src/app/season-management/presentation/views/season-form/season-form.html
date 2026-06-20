@@ -1,47 +1,70 @@
-<div class="container">
-  <h2>{{ isEdit ? 'Editar' : 'Nueva' }} temporada</h2>
+<div class="season-form-container">
+
+  <div class="season-form-header">
+    <button mat-icon-button (click)="cancel()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <div>
+      <h2 class="season-form-title">Nueva temporada</h2>
+      <p class="season-form-subtitle">Registra una nueva temporada de cultivo</p>
+    </div>
+  </div>
 
   <form [formGroup]="form" (ngSubmit)="save()">
-    <div class="form-grid">
-      <mat-form-field appearance="outline">
-        <mat-label>ID campo (lote)</mat-label>
-        <input matInput type="number" formControlName="fieldId" />
-        @if (form.get('fieldId')?.invalid && form.get('fieldId')?.touched) {
-          <mat-error>Campo obligatorio</mat-error>
-        }
-      </mat-form-field>
 
-      <mat-form-field appearance="outline">
-        <mat-label>ID cultivo</mat-label>
-        <input matInput type="number" formControlName="cropId" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Nombre cultivo</mat-label>
-        <input matInput formControlName="cropName" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Estado</mat-label>
-        <mat-select formControlName="status">
-          @for (s of statusOptions; track s) {
-            <mat-option [value]="s">{{ s }}</mat-option>
+    <div class="season-section">
+      <div class="season-section-label">
+        <mat-icon>location_on</mat-icon>
+        <span>Campo y cultivo</span>
+      </div>
+      <div class="season-section-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Campo (lote)</mat-label>
+          <mat-select formControlName="fieldId">
+            <mat-option [value]="1">Lote 1 - Zona Norte</mat-option>
+            <mat-option [value]="2">Lote 2 - Zona Sur</mat-option>
+            <mat-option [value]="3">Lote 3 - Invernadero</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" style="grid-column: 1 / -1;">
+          <mat-label>Nombre del cultivo</mat-label>
+          <input matInput formControlName="cropName" placeholder="Ej. Tomato" />
+          @if (form.get('cropName')?.invalid && form.get('cropName')?.touched) {
+          <mat-error>Nombre requerido</mat-error>
           }
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Inicio</mat-label>
-        <input matInput type="date" formControlName="startedAt" />
-      </mat-form-field>
+        </mat-form-field>
+      </div>
     </div>
 
-    <div class="form-actions">
-      <button mat-button type="button" (click)="cancel()">Cancelar</button>
-      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-        <mat-icon>save</mat-icon>
-        {{ isEdit ? 'Actualizar' : 'Guardar' }}
+    <div class="season-section status-section">
+      <div class="season-section-label">
+        <mat-icon>event</mat-icon>
+        <span>Fecha de inicio</span>
+      </div>
+      <div class="season-section-grid">
+        <mat-form-field appearance="outline">
+          <mat-label>Fecha de inicio</mat-label>
+          <input matInput [matDatepicker]="picker" formControlName="startAt" />
+          <mat-hint>DD/MM/AAAA</mat-hint>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          @if (form.get('startAt')?.invalid && form.get('startAt')?.touched) {
+          <mat-error>Fecha requerida</mat-error>
+          }
+        </mat-form-field>
+      </div>
+    </div>
+
+    <p class="season-form-hint">
+      El estado inicial (PLANTING) y el cultivo se gestionan después desde el detalle de la temporada.
+    </p>
+
+    <div class="season-form-actions">
+      <button mat-stroked-button type="button" (click)="cancel()">Cancelar</button>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || store.isLoading()">
+        <mat-icon>save</mat-icon> Guardar temporada
       </button>
     </div>
+
   </form>
 </div>
